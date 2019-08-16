@@ -1,5 +1,5 @@
-function ya_rpy = acc_meas(A_rpy, m_a, mis_a, ba, sigma_acc)
+function ya_rpy = acc_meas(A_rpy, acc_parameters)
 
-  ya_rpy = (eye(3,3) + m_a + mis_a)* A_rpy(1:3,1) + ba + sigma_acc*randn(3,1);
+  ya_rpy = (eye(3,3) + acc_parameters.m_a + acc_parameters.mis_a)* A_rpy(1:3,1) + acc_parameters.b_a + acc_parameters.sigma * randn(3,1);
   
 end
