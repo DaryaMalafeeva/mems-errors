@@ -1,5 +1,5 @@
 # mems-errors
-This script (main.m) can be useful for developers who works on inertial navigation (or something else using  mems-accelerometeres and mems-magnitometeres).
+This script (acc_model_enu.m) can be useful for developers who works on inertial navigation (or something else using  mems-accelerometeres and mems-magnitometeres).
 
 What's that?  
 
