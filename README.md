@@ -8,4 +8,4 @@ We used ENU coordiate system as LCS (local coordinate system) and RPY as body fr
 
 Here is the results for low-cost IMU MPU9250. 
 
-
+также сюда стоит включить инструкцию какие параметры из даташита куда пихать
