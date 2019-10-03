@@ -1,4 +1,4 @@
-<img src="https://habrastorage.org/webt/wo/mp/pp/womppp7kaq77uokpwcuhbnflf_s.png" />
+<img src="https://habrastorage.org/webt/ku/3s/cx/ku3scxjdjpln8q8migqrpdy1ct8.png" />" 
 
 TLDR Описан небольшой скрипт для Octave/MATLAB, позволяющий оценить ошибки расчёта углов ориентации по измерениям МЭМС акселерометров и магнитометров. На входе скрипта - параметры датчиков из datasheet (и/или погрешности калибровки). Статья может быть полезна тем, кто начинает использовать инерциальные датчики в своих устройствах. Небольшой ликбез по датчикам и модели их погрешностей прилагается.
 <cut />
@@ -27,7 +27,7 @@ $$display$$a_{rpy}=\left ( I+m_{a} \right )\cdot A_{rpy}+b_{a}+n_{a},$$display$$
 $$display$$m_{rpy}=S_{m}\cdot M_{rpy}+b_{m}+n_{m},$$display$$ где $inline$m_{rpy}$inline$ – измерения магнитометра в ССК RPY, $inline$S_{m}$inline$ – диагональная<cut /> матрица перекосов осей, которая включает в себя эффект soft–iron, $inline$M_{rpy}$inline$ – вектор истинной магнитной индукции в ССК, $inline$b_{m}$inline$ – смещение нулей магнитометра и эффект hard–iron, $inline$n_{m}$inline$ – шум измерений.
 
 <h3>Расчет углов ориентации</h3>Возьмем самый простой способ расчета углов, приведенный, например, <a href="https://www.nxp.com/docs/en/application-note/AN3461.pdf"> тут.</a>
-$$display$$R=\arctan \left ( \frac{a_{p}}{a_{y}} \right ),$$display$$ $$display$$P=\arctan\left ( \frac{-a_{r}}{\sqrt{a_{p}^{2}+a_{y}^{2}}} \right ),$$display$$ $$display$$Y=\arctan 2\left ( \frac{M_{p}}{M_{r}} \right ),$$display$$ где $inline$arctan 2$inline$ - функция полного арктангенса, $inline$a_{r}$inline$, $inline$a_{p}$inline$, $inline$a_{r}$inline$ - измерения акселерометра по трём осям в ССК, $inline$M_{r}$inline$, $inline$M_{p}$inline$ - измерения магнетометра по осям R, P соответственно.
+$$display$$R=\arctan \left ( \frac{a_{p}}{a_{y}} \right ),$$display$$ $$display$$P=\arctan\left ( \frac{-a_{r}}{\sqrt{a_{p}^{2}+a_{y}^{2}}} \right ),$$display$$ $$display$$Y=\arctan 2\left ( \frac{M_{p}}{M_{r}} \right ),$$display$$ где $inline$arctan 2$inline$ - функция полного арктангенса, $inline$a_{r}$inline$, $inline$a_{p}$inline$, $inline$a_{y}$inline$ - измерения акселерометра по трём осям в ССК, $inline$M_{r}$inline$, $inline$M_{p}$inline$ - измерения магнетометра по осям R, P соответственно.
 
 <h2>Ошибки оценивания углов ориентации</h2> <h3>Описание алгоритма</h3>
 <img src="http://habrastorage.org/webt/mr/1a/st/mr1astvnpi2hg1takl2oya6hnwu.png" alt="image"/>
@@ -102,9 +102,9 @@ cy\cdot cp &-cr\cdot sy+sr\cdot cy\cdot sp &sr\cdot sy+cr\cdot cy\cdot sp \\
 (тут картинки ошибок углов roll pitch yaw в зависимости от них же)
 <img src="https://habrastorage.org/webt/mg/6o/eb/mg6oebpyq4pvqcwxwrymdvjab_y.jpeg" />
 (график слишком крупно выглядит)
+может сделать так: в ряд два графика, один для мпу, второй - для адис?
 
-(спойлер - Почему на границах ошибки больше? - объяснение про то, что такая математика)
-
+<spoiler title="Почему на границах ошибки больше?">Такая математика</spoiler>
 (спойлер - можем поиграться с входными параметрами и понять, чем определяются ошибки)
 <b>Влияние погрешностей акселерометра на ошибки оценивания углов крена и тангажа</b>
 <b>Влияние погрешностей магнитометра на ошибки оценивания магнитного азимута</b> 
@@ -124,7 +124,6 @@ cy\cdot cp &-cr\cdot sy+sr\cdot cy\cdot sp &sr\cdot sy+cr\cdot cy\cdot sp \\
 	<li> Не учитываем влияние вибрации, влияние нелинейности измерений, нестабильности - это первое приближение к ошибкам.</li>
 </ul>
 </spoiler>
-
 <h2>Литература</h2>
 <ul>
 	<li>Перов А. И., Харисов В. Н. ГЛОНАСС. Принципы построения и функционирования М.:Радиотехника, 2010. – 800 с.</li>
