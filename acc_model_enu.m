@@ -33,6 +33,8 @@ Y = (rand(N,1)*2*pi - pi)* 165/180;
 RPY = [R P Y]; % angles matrix
 M_enu = [0; 11; -8] * 1e-6 * 1; % vector of the true value of the magnetic field 
 
+
+if a = 1
 % imu parameters from its datasheet 
 s_m = eye(3,3)+ diag([ 1/10; 1/10; 1/10]) * 1;
 b_m = [1 ; 1; 1]* 1e-6 * 1;
@@ -46,6 +48,7 @@ Density = 300 * 1e-6;
 BW = 218.1;
 sigma = Density*sqrt(BW) * 1;
 
+else if a = 0
 acc_parameters  = struct('b_a', b_a, 'mis_a', mis_a, 'm_a', m_a, 'sigma', sigma);
 magn_parameters = struct('s_m', s_m, 'b_m', b_m, 'sigma_m', sigma_m);
 
@@ -97,73 +100,75 @@ for i = 1:N
   end
 end
 
+
+    end
 % rad2deg
 err_PPY_deg = err_RPY*180/pi;
 err_Azimuth_deg = err_Azimuth*180/pi;
 
 % plotting
 
-% roll error vs roll & pitch
-figure
-plot3(R*180/pi, P*180/pi, err_PPY_deg(:,1), '.')
-ax = gca;
-set(ax,'xtick',(-180:90:180));
-set(ax,'ytick',(-90:30:90));
-title('roll error vs roll & pitch')
-grid on
-xlabel('roll, deg')
-ylabel('pitch, deg')
-zlabel('roll error, deg')
-grid on
-
-% pitch error vs roll & pitch
-figure
-plot3(R*180/pi, P*180/pi, err_PPY_deg(:,2), '.')
-ax = gca;
-set(ax,'xtick',(-180:90:180));
-set(ax,'ytick',(-90:90:90));
-title('pitch error vs roll & pitch')
-xlabel('roll, deg')
-ylabel('pitch, deg')
-zlabel('pitch error, deg')
-grid on
-
-% to plot the following dependencies correctly you must set one of the
-% angles by zeros 
-
-% azimuth error vs roll & pitch
-figure
-plot3(R*180/pi, P*180/pi, err_Azimuth_deg, '.')
-ax = gca;
-set(ax,'xtick',(-180:90:180));
-set(ax,'ytick',(-90:30:90));
-title('azimuth error vs roll & pitch ')
-xlabel('roll, deg')
-ylabel('pitch, deg')
-zlabel('azimuth error, deg')
-grid on
-
-% azimuth error vs roll & azimuth
-figure
-plot3(R*180/pi, Y*180/pi, err_Azimuth_deg, '.')
-ax = gca;
-set(ax,'xtick',(-180:90:180));
-set(ax,'ytick',(-180:90:180));
-title('azimuth error vs roll & azimuth ')
-xlabel('roll, deg')
-ylabel('azimuth, deg')
-zlabel('azimuth error, deg')
-grid on
-
-% azimuth error vs pitch & azimuth
-figure
-plot3(P*180/pi, Y*180/pi, err_Azimuth_deg, '.')
-ax = gca;
-set(ax,'xtick',(-90:30:90));
-set(ax,'ytick',(-180:90:180));
-title('azimuth error vs pitch & azimuth')
-xlabel('pitch, deg')
-ylabel('azimuth, deg')
-zlabel('azimuth error')
-grid on
-
+% % roll error vs roll & pitch
+% figure
+% plot3(R*180/pi, P*180/pi, err_PPY_deg(:,1), '.')
+% ax = gca;
+% set(ax,'xtick',(-180:90:180));
+% set(ax,'ytick',(-90:30:90));
+% title('roll error vs roll & pitch')
+% grid on
+% xlabel('roll, deg')
+% ylabel('pitch, deg')
+% zlabel('roll error, deg')
+% grid on
+% 
+% % pitch error vs roll & pitch
+% figure
+% plot3(R*180/pi, P*180/pi, err_PPY_deg(:,2), '.')
+% ax = gca;
+% set(ax,'xtick',(-180:90:180));
+% set(ax,'ytick',(-90:90:90));
+% title('pitch error vs roll & pitch')
+% xlabel('roll, deg')
+% ylabel('pitch, deg')
+% zlabel('pitch error, deg')
+% grid on
+% 
+% % to plot the following dependencies correctly you must set one of the
+% % angles by zeros 
+% 
+% % azimuth error vs roll & pitch
+% figure
+% plot3(R*180/pi, P*180/pi, err_Azimuth_deg, '.')
+% ax = gca;
+% set(ax,'xtick',(-180:90:180));
+% set(ax,'ytick',(-90:30:90));
+% title('azimuth error vs roll & pitch ')
+% xlabel('roll, deg')
+% ylabel('pitch, deg')
+% zlabel('azimuth error, deg')
+% grid on
+% 
+% % azimuth error vs roll & azimuth
+% figure
+% plot3(R*180/pi, Y*180/pi, err_Azimuth_deg, '.')
+% ax = gca;
+% set(ax,'xtick',(-180:90:180));
+% set(ax,'ytick',(-180:90:180));
+% title('azimuth error vs roll & azimuth ')
+% xlabel('roll, deg')
+% ylabel('azimuth, deg')
+% zlabel('azimuth error, deg')
+% grid on
+% 
+% % azimuth error vs pitch & azimuth
+% figure
+% plot3(P*180/pi, Y*180/pi, err_Azimuth_deg, '.')
+% ax = gca;
+% set(ax,'xtick',(-90:30:90));
+% set(ax,'ytick',(-180:90:180));
+% title('azimuth error vs pitch & azimuth')
+% xlabel('pitch, deg')
+% ylabel('azimuth, deg')
+% zlabel('azimuth error')
+% grid on
+% 
