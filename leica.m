@@ -1,41 +1,83 @@
 clear all; close all; clc;
 
-N = 10;
+N = 1000;
 
-R = (rand(N,1)*2*pi - pi);
-P = (rand(N,1)*pi - pi/2);
-Y = (rand(N,1)*2*pi - pi);
+% истинные углы
+R_true   = (rand(N,1)*2*pi - pi);
+P_true   = (rand(N,1)*pi - pi/2);
+Y_true   = (rand(N,1)*2*pi - pi);
+RPY_true = [R_true P_true Y_true]';
 
-RPY = [ R P Y];
+% длина вехи
+L_rpy = [ 0 0 2]';
 
-L_rpy = [ rand(N,1) rand(N,1) rand(N,1)]';
+% истинные координаты второго конца вехи в ecef
+x2_true   = randn(N,1);
+y2_true   = randn(N,1);
+z2_true   = randn(N,1);
+xyz2_true = [ x2_true y2_true z2_true]';
 
-X1_ecef = randn(N,1);
-Y1_ecef = randn(N,1);
-Z1_ecef = randn(N,1);
+% шум приемника
+sigma_gnss = (0.018 + 0.024)/2; % в метрах
 
-XYZ_1 = [ X1_ecef Y1_ecef Z1_ecef]';
+% шум IMU
+sigma_imu = (0.011 + 0.017)/2; % метры
 
+% пустые матрицы
+xyz1_true  = zeros(3,N);
+xyz1_new   = zeros(3,N);
+RPY_new    = zeros(3,N);
+xyz2_new   = zeros(3,N);
+xyz2_error = zeros(3,N);
+T_true     = zeros(1,N);
+
+% расчёты
 for i = 1:N
-C_rpy_ecef = rpy2mat(RPY(i,1:3)');
+% истинная матрица преобразования
+C_rpy_ecef_true = rpy2mat(RPY_true(1:3,i));
 
-XYZ_2 = XYZ_1 - C_rpy_ecef * L_rpy;
+% истинные координаты первого конца вехи
+xyz1_true(1:3,i) = xyz2_true(1:3,i) + C_rpy_ecef_true * L_rpy;
 
-% теперь рассчитаем угол наклона
-TILT(i) = asin(sin(R(i)) * sin(P(i)));
+% координаты первого конца вехи с учетом шума приемника
+xyz1_new(1:3,i) = xyz1_true(1:3,i) + sigma_gnss;
 
-% видимо надо добавить расчет азимута?
-% AZIMUTH(i) = 
+% углы с учетом шума IMU
+RPY_new(1:3,i) = RPY_true(1:3,i) + sigma_imu;
 
-% зададим точность оценки углов ( 3d attitude error)
-attitude_error = (1.014 + 1.498)/ 2; % два теста - я взяла среднее
+% шумная матрица преобразования
+C_rpy_ecef_new = rpy2mat(RPY_new(1:3,i));
 
+% координаты второго конца вехи с учетом шумов
+xyz2_new(1:3,i) = xyz1_new(1:3,i) - C_rpy_ecef_new * L_rpy;
+
+% ошибки оценивания координат второго конца 
+xyz2_error(1:3,i) = xyz2_new(1:3,i) - xyz2_true(1:3,i);
+
+% расчет угла наклона
+T_true(i) = asin( sin(R_true(i)) * sin(P_true(i)));
 end
-% теперь надо для разных углов крена рассчитывать из этих углов координаты
-% for j = 1: length(R)
-%     X_new(j) = L * sin(AZIMUTH(j) * sin(TILT(j));
-%     Y_new(j) = L * sin(AZIMUTH(j) * cos(TILT(j));
-%     Z_new(j) = L * cos(AZIMUTH(j));
-% end
-%     
+
+% построение графиков
+figure
+plot(rad2deg(T_true),(xyz2_error(1,:)), '.','LineWidth',2);
+title('x2 coordinate error vs Tilt')
+xlabel('Tilt, deg')
+ylabel('x2 coordinate error, m')
+grid on
+
+figure
+plot(rad2deg(T_true),xyz2_error(2,:), '.','LineWidth',2);
+title('y2 coordinate error vs Tilt')
+xlabel('Tilt, deg')
+ylabel('y2 coordinate error, m')
+grid on
+
+figure
+plot(rad2deg(T_true),xyz2_error(3,:), '.','LineWidth',2);
+title('z2 coordinate error vs Tilt')
+xlabel('Tilt, deg')
+ylabel('z2 coordinate error, m')
+grid on
+
 
