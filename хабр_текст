@@ -29,8 +29,7 @@ $$display$$m_{XYZ}=S_{m}\cdot M_{XYZ}+b_{m}+n_{m},$$display$$ где $inline$m_{
 $$display$$roll=\arctan \left ( \frac{a_{Y}}{a_{Z}} \right ),$$display$$ $$display$$pitch=\arctan\left ( \frac{-a_{X}}{\sqrt{a_{Y}^{2}+a_{Z}^{2}}} \right ),$$display$$ $$display$$yaw=\arctan 2\left ( \frac{m_{Y}}{m_{X}} \right ),$$display$$ где $inline$arctan 2$inline$ - функция полного арктангенса, $inline$a_{X}$inline$, $inline$a_{Y}$inline$, $inline$a_{Z}$inline$ - измерения акселерометра по трём осям в ССК, $inline$m_{X}$inline$, $inline$m_{Y}$inline$ - измерения магнетометра по осям X, Y в ЛСК.
 
 <h2>Ошибки оценивания углов ориентации</h2> <h3>Описание алгоритма</h3>
-<img src="http://habrastorage.org/webt/mr/1a/st/mr1astvnpi2hg1takl2oya6hnwu.png" alt="image"/>
-<ol>
+<img src="https://habrastorage.org/webt/yf/tb/uq/yftbuqgffxnnrddyfw0hzhv0yja.png" alt="image"/>
 	<li>Сформируем массивы случайных углов Эйлера roll, pitch, yaw. Они будут задавать "истинную" ориентацию объекта в модели.<spoiler title="Зачем много углов?">Потому что ошибки зависят от значения углов ориентации, и если мы хотим получить представление об их величине во всем диапазоне изменения - то это самый простой способ.</spoiler>Еще необходимо сформировать вектор истинных магнитных плотностей по трём осям в ЛСК. И задать вектор силы тяжести.</li>
 	<li>Заполняем модели погрешностей датчиков. Из даташитов для выбранных датчиков взяты необходимые параметры:
 <table>
