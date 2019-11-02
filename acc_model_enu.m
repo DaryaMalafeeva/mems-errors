@@ -1,26 +1,30 @@
-clear all
-close all
-clc
-N = 2000; % number of points
+clear all; close all; clc
+% number of points
+N = 2000; 
 
 % memory allocation
-C_rpy_ned = zeros(3,3);
-ya_rpy = zeros(3,N);
-RPY_new = zeros(N,3);
-err_RPY = zeros(N,3);
-M_rpy = zeros(3,N);
-A_rpy = zeros(3,N);
-ym_rpy = zeros(3,N);
-ym_rp0 = zeros();
+C_rpy_ned    = zeros(3,3);
+ya_rpy       = zeros(3,N);
+RPY_new      = zeros(N,3);
+err_RPY      = zeros(N,3);
+M_rpy        = zeros(3,N);
+A_rpy        = zeros(3,N);
+ym_rpy       = zeros(3,N);
+ym_rp0       = zeros();
 Azimuth_magn = zeros(1,N);
-err_Azimuth = zeros(1,N);
-Azimuth = zeros(1,N);
-ym_enu = zeros(3,N);
+err_Azimuth  = zeros(1,N);
+Azimuth      = zeros(1,N);
+ym_enu       = zeros(3,N);
 
 % true roll, pitch, yaw angles
-R = (rand(N,1)*2*pi - pi)* 165/180; % random limited angles 
-%R = ones(N,1)*deg2rad(180);        % constant angles
-%R = zeros(N,1);                    % zero angles
+% random limited angles 
+R = (rand(N,1)*2*pi - pi)* 165/180;  
+
+% constant angles
+%R = ones(N,1)*deg2rad(180);
+
+ % zero angles
+%R = zeros(N,1);                   
 
 P = (rand(N,1)*pi - pi/2)* 75/90; 
 %P = ones(N,1)*deg2rad(90);
@@ -30,44 +34,74 @@ Y = (rand(N,1)*2*pi - pi)* 165/180;
 %Y = ones(N,1)*deg2rad(180);
 %Y = zeros(N,1);
 
-RPY = [R P Y]; % angles matrix
-M_enu = [0; 11; -8] * 1e-6 * 1; % vector of the true value of the magnetic field 
+% angles matrix
+RPY = [R P Y]; 
 
+% vector of the true value of the magnetic field 
+M_enu = [0; 11; -8] * 1e-6 * 1; 
 
 if a = 1
-% imu parameters from its datasheet 
-s_m = eye(3,3)+ diag([ 1/10; 1/10; 1/10]) * 1;
-b_m = [1 ; 1; 1]* 1e-6 * 1;
-sigma_m = 0.6 * 1e-6 * 1;
-b_a = [0.06; -0.06; 0.08] * 1;
-mis_a = [0 -0.02 0.02;
-         -0.02 0 0.02;
-         0.02 -0.02 0] * 1;
-m_a = diag([-0.03; 0.03; -0.03]) * 1;
+%IMU PARAMETERS
+
+% MAGNETOMETER
+% sensitivity - масштабный коэффициент 
+s_m     = eye(3,3)+ diag([ 0.02; 0.02; 0.02]) * 1;
+
+% смещение нулей магнитометра -?
+b_m     = [1 ; 1; 1]* 1e-6 * 1;
+
+% output noise
+sigma_m = 0.22 * 1e-6 * 1;
+
+% ACCELEROMETER
+% bias repeatability - смещение нулей
+b_a     = [0.016; -0.016; 0.016] * 1;
+
+% axis to axis misalignment - перекосы осей (degrees)
+mis_a   = [0 -0.035 0.035; -0.035 0 0.035; 0.35 -0.035 0] * 1;
+
+% sensitivity repeatability - масшатбные коэффициенты
+m_a     = diag([-0.005; 0.005; -0.005]) * 1;
+
 Density = 300 * 1e-6;
-BW = 218.1;
-sigma = Density*sqrt(BW) * 1;
+
+BW      = 218.1;
+sigma   = Density*sqrt(BW) * 1;
 
 else if a = 0
+        
 acc_parameters  = struct('b_a', b_a, 'mis_a', mis_a, 'm_a', m_a, 'sigma', sigma);
+
 magn_parameters = struct('s_m', s_m, 'b_m', b_m, 'sigma_m', sigma_m);
 
 % calculations
 for i = 1:N
-  %C_rpy_enu(1:3,1:3) = rpy2mat(RPY(i,1:3)');
-  Quat_rpy_enu = rpy2q(RPY(i,1:3)'); % true angles to quaternion convertion
-  C_rpy_enu(1:3,1:3) = q2mat(Quat_rpy_enu); % quaternion to matrix convertion
+  % true angles to quaternion convertion
+  Quat_rpy_enu = rpy2q(RPY(i,1:3)'); 
   
-  A_rpy(1:3,i) = C_rpy_enu(1:3,1:3)' *[0; 0; -1]; % true acceleration vector
-  M_rpy(1:3,i) = C_rpy_enu(1:3,1:3)' * M_enu;     % true magnetic field vector
+  % quaternion to matrix convertion
+  C_rpy_enu(1:3,1:3) = q2mat(Quat_rpy_enu); 
   
-  Azimuth(i) = Y(i);                              % true azimuth angle
-   
-  ya_rpy(1:3,i)= acc_meas(A_rpy(1:3,i), acc_parameters); % accelerometer error model application 
-  ym_rpy(1:3,i) = m_meas(M_rpy(1:3,i), magn_parameters); % magnetometer error model application 
+  % true acceleration vector
+  A_rpy(1:3,i) = C_rpy_enu(1:3,1:3)' *[0; 0; -1]; 
   
-  %RPY_new1 = angle_calc(A_rpy(1:3,i)); % angles calculating by true accelaration vector 
-  RPY_new1 = angle_calc(ya_rpy(1:3,i)); % angles calculating by accelerometer measurements 
+  % true magnetic field vector
+  M_rpy(1:3,i) = C_rpy_enu(1:3,1:3)' * M_enu;     
+  
+  % true azimuth angle
+  Azimuth(i) = Y(i);                              
+  
+  % accelerometer error model application 
+  ya_rpy(1:3,i)= acc_meas(A_rpy(1:3,i), acc_parameters); 
+  
+  % magnetometer error model application
+  ym_rpy(1:3,i) = m_meas(M_rpy(1:3,i), magn_parameters);  
+  
+  % angles calculating by true accelaration vector
+  %RPY_new1 = angle_calc(A_rpy(1:3,i)); 
+  
+  % angles calculating by accelerometer measurements 
+  RPY_new1 = angle_calc(ya_rpy(1:3,i));
   RPY_new(i,1:3)= RPY_new1;
   
   % debug
@@ -77,14 +111,19 @@ for i = 1:N
   %C_rpy_enu(1:3,1:3) = rpy2mat([R(i); P(i); 0]);
   %C_rpy_enu(1:3,1:3) = rpy2mat([RPY_new1(1:2)'; 0]);
   
-  Quat_rpy_enu_new = rpy2q([RPY_new1(1:2)'; 0]); % measured angles to quaternion convertion
+  % measured angles to quaternion convertion
+  Quat_rpy_enu_new = rpy2q([RPY_new1(1:2)'; 0]); 
   C_rpy_enu_new(1:3,1:3) = q2mat(Quat_rpy_enu_new); 
   
-  ym_enu(1:3,i) = C_rpy_enu_new(1:3,1:3) * ym_rpy(1:3,i); % magnetometer measurements convertion from OCS to LCS
+  % magnetometer measurements convertion from body frame coordinates to LCS
+  ym_enu(1:3,i) = C_rpy_enu_new(1:3,1:3) * ym_rpy(1:3,i); 
   %ym_enu(1:3,i) = C_rpy_enu_new(1:3,1:3) * M_rpy(1:3,i);
-  Azimuth_magn(i) = atan2(ym_enu(1,i),ym_enu(2,i)); % azimuth angle calculation
+  
+  % azimuth angle calculation
+  Azimuth_magn(i) = atan2(ym_enu(1,i),ym_enu(2,i)); 
  
-  err_RPY(i,1:3) = RPY(i,1:3) - RPY_new(i,1:3); % angles errors calculation
+  % angles errors calculation
+  err_RPY(i,1:3) = RPY(i,1:3) - RPY_new(i,1:3); 
   err_Azimuth(i) = Azimuth_magn(i) -  Azimuth(i); 
   
   % angles correction 
