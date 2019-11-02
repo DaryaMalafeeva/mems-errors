@@ -39,37 +39,38 @@ RPY = [R P Y];
 
 % vector of the true value of the magnetic field 
 M_enu = [0; 11; -8] * 1e-6 * 1; 
-
-if a = 1
-    
+  
 % imu parameters from its datasheet 
 % MAGNETOMETER
-% sensitivity - масштабный коэффициент
+% sensitivity  - масштабный коэффициент
 s_m = eye(3,3)+ diag([ 1/10; 1/10; 1/10]) * 1;
 
-% смещение нулей магнитометра -?
+% смещение нулей магнитометра (после калибровки)
 b_m = [1 ; 1; 1]* 1e-6 * 1;
 
-% output noise
-sigma_m = 0.6 * 1e-6 * 1;
+% шум на выходе магнитометра
+sigma_m = 0.6 * 1e-6 * 1; 
 
 %ACCELEROMETER
-% bias repeatability - смещение нулей
+% zero-g initial calibration tolerance - смещение нулей
 b_a = [0.06; -0.06; 0.08] * 1;
 
-% axis to axis misalignment - перекосы осей (degrees)
+%cross axis sensitivity - перекосы осей (degrees)
 mis_a = [0 -0.02 0.02; -0.02 0 0.02; 0.02 -0.02 0] * 1;
 
-% sensitivity repeatability - масшатбные коэффициенты
+% sensitivity scale factor initial tolerance - масшатбные коэффициенты
 m_a = diag([-0.03; 0.03; -0.03]) * 1;
 
-
+% noise power spectral density
 Density = 300 * 1e-6;
-BW = 218.1;
-sigma = Density*sqrt(BW) * 1;
 
-else if a = 0
-acc_parameters  = struct('b_a', b_a, 'mis_a', mis_a, 'm_a', m_a, 'sigma', sigma);
+% ширина полосы
+BW = 218.1;
+
+% шум на выходе акселерометра
+sigma_a = Density*sqrt(BW) * 1;
+
+acc_parameters  = struct('b_a', b_a, 'mis_a', mis_a, 'm_a', m_a, 'sigma_a', sigma_a);
 magn_parameters = struct('s_m', s_m, 'b_m', b_m, 'sigma_m', sigma_m);
 
 % calculations
@@ -120,7 +121,7 @@ for i = 1:N
   % azimuth angle calculation
   Azimuth_magn(i) = atan2(ym_enu(1,i),ym_enu(2,i));
   
-  % angles errors calculation
+ % angles errors calculation
   err_RPY(i,1:3) = RPY(i,1:3) - RPY_new(i,1:3); 
   err_Azimuth(i) = Azimuth_magn(i) -  Azimuth(i); 
   
@@ -137,8 +138,6 @@ for i = 1:N
   end
 end
 
-
-    end
 % rad2deg
 err_PPY_deg = err_RPY*180/pi;
 err_Azimuth_deg = err_Azimuth*180/pi;
@@ -146,17 +145,17 @@ err_Azimuth_deg = err_Azimuth*180/pi;
 % plotting
 
 % % roll error vs roll & pitch
-% figure
-% plot3(R*180/pi, P*180/pi, err_PPY_deg(:,1), '.')
-% ax = gca;
-% set(ax,'xtick',(-180:90:180));
-% set(ax,'ytick',(-90:30:90));
-% title('roll error vs roll & pitch')
-% grid on
-% xlabel('roll, deg')
-% ylabel('pitch, deg')
-% zlabel('roll error, deg')
-% grid on
+figure
+plot3(R*180/pi, P*180/pi, err_PPY_deg(:,1), '.')
+ax = gca;
+set(ax,'xtick',(-180:90:180));
+set(ax,'ytick',(-90:30:90));
+title('roll error vs roll & pitch')
+grid on
+xlabel('roll, deg')
+ylabel('pitch, deg')
+zlabel('roll error, deg')
+grid on
 % 
 % % pitch error vs roll & pitch
 % figure
