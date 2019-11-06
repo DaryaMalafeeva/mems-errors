@@ -24,10 +24,14 @@ $$display$$a_{XYZ}=\left ( I+m_{a} \right )\cdot A_{XYZ}+b_{a}+n_{a},$$display$$
 <spoiler title="Как выбираются параметры акселерометра из даташита ">
 <h3>Для MPU-9250:</h3>
 <ul>
-	<li>Смещение нулей - Zero-G Initial Calibration Tolerance - выражается в даташите как mg, то есть для расчётов надо домножить на $inline$10^{-3}$inline$.</li>
-        <li>Погрешность масштабных коэффициентов - Initial Tolerance - выражается в процентах, для расчётов надо домножить на $inline$10^{-2}$inline$.</li>
-        <li>Перекосы осей - Cross Axis Sensitivity - также выражены в процентах. </li>
-        <li> </li>
+	<li>Смещение нулей (Zero-G Initial Calibration Tolerance) - выражается в даташите как mg (миллиГаусс), то есть для расчётов надо домножить на $inline$10^{-3}$inline$.</li>
+        <li>Погрешность масштабных коэффициентов (Initial Tolerance) - выражается в процентах, для расчётов надо домножить на $inline$10^{-2}$inline$.</li>
+        <li>Перекосы осей (Cross Axis Sensitivity) - также выражены в процентах. </li>
+        <li>Спектральная плотность мощности шума (Noise Power Spectral Density) - $inline$G_{0}= 300 \left (\frac{\mu g}{\sqrt{Hz}}  \right )$inline$.
+<li>Полоса пропускания (Bandthwidth) - $inline$\Pi_{noise}$inline$ - в прямом виде в даташите к этому ИИБ она не указана, но мы как то получили 218.1 Гц</li>
+Теперь, зная спектральную плотность мощности шума и полосу пропускания можно рассчитать СКО шума:
+$$display$$\sigma _{noise}=G_{0}\cdot\sqrt{\Pi_{noise}}$$display$$</li>
+
         <li> </li>
 </ul>
 <h3>Для ADIS16488A:</h3>
