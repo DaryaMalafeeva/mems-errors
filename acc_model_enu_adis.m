@@ -41,37 +41,45 @@ RPY = [R P Y];
 M_enu = [0; 11; -8] * 1e-6 * 1; 
 
 if a = 1
+
 %IMU PARAMETERS
 
 % MAGNETOMETER
-% sensitivity - масштабный коэффициент 
-s_m     = eye(3,3)+ diag([ 0.02; 0.02; 0.02]) * 1;
+% initial bias error - СЃРјРµС‰РµРЅРёРµ РЅСѓР»РµР№ РјР°РіРЅРёС‚РѕРјРµС‚СЂР° from mgauss to tesla
+b_m = [15e-3 * e-4; 15e-3 * e-4;15e-3 * e-4] * 1;
+ 
+% misalignment - axis to frame - РїРµСЂРµРєРѕСЃС‹ РѕСЃРµР№ РјР°РіРЅРёС‚РѕРјРµС‚СЂР°
+mis_m   = [0 -1 1; -1 0 1; 1 -1 0] * 1; % in degrees
 
-% смещение нулей магнитометра -?
-b_m     = [1 ; 1; 1]* 1e-6 * 1;
+% initial sensitivity tolerance - РјР°СЃС€С‚Р°Р±РЅС‹Р№ РєРѕСЌС„С„РёС†РёРµРЅС‚ РјР°РіРЅРёС‚РѕРјРµС‚СЂР°
+m_m = diag([ 0.02; 0.02; 0.02] * 1; % in %
 
 % output noise
-sigma_m = 0.22 * 1e-6 * 1;
+Density_m = 0.042 * 1e-6; % spectral density
+BW      = 218.1; % bandwidth
+sigma_m   = Density_m*sqrt(BW) * 1
+
 
 % ACCELEROMETER
-% bias repeatability - смещение нулей
+% bias repeatability - Г±Г¬ГҐГ№ГҐГ­ГЁГҐ Г­ГіГ«ГҐГ©
 b_a     = [0.016; -0.016; 0.016] * 1;
 
-% axis to axis misalignment - перекосы осей (degrees)
-mis_a   = [0 -0.035 0.035; -0.035 0 0.035; 0.35 -0.035 0] * 1;
+% axis to axis misalignment - ГЇГҐГ°ГҐГЄГ®Г±Г» Г®Г±ГҐГ© (degrees)
+mis_a   = [0 -1e-3 0.035; -0.035 0 0.035; 0.35 -0.035 0] * 1; % in degrees
 
-% sensitivity repeatability - масшатбные коэффициенты
-m_a     = diag([-0.005; 0.005; -0.005]) * 1;
+% repeatability - Г¬Г Г±ГёГ ГІГЎГ­Г»ГҐ ГЄГ®ГЅГґГґГЁГ¶ГЁГҐГ­ГІГ»
+m_a     = diag([-0.005; 0.005; -0.005]) * 1; % in %
 
-Density = 300 * 1e-6;
+% output noise
+Density_a = 300 * 1e-6;
 BW      = 218.1;
-sigma   = Density*sqrt(BW) * 1;
+sigma_a   = Density*sqrt(BW) * 1;
 
 else if a = 0
         
-acc_parameters  = struct('b_a', b_a, 'mis_a', mis_a, 'm_a', m_a, 'sigma', sigma);
+acc_parameters  = struct('b_a', b_a, 'mis_a', mis_a, 'm_a', m_a, 'sigma_a', sigma_a);
 
-magn_parameters = struct('s_m', s_m, 'b_m', b_m, 'sigma_m', sigma_m);
+magn_parameters = struct('b_m', b_m, 'mis_m', mis_m,'m_m', m_m 'sigma_m', sigma_m);
 
 % calculations
 for i = 1:N
