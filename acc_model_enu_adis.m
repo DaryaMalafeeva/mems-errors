@@ -40,46 +40,50 @@ RPY = [R P Y];
 % vector of the true value of the magnetic field 
 M_enu = [0; 11; -8] * 1e-6 * 1; 
 
-if a = 1
 
 %IMU PARAMETERS
 
 % MAGNETOMETER
-% initial bias error - смещение нулей магнитометра from mgauss to tesla
-b_m = [15e-3 * e-4; 15e-3 * e-4;15e-3 * e-4] * 1;
- 
-% misalignment - axis to frame - перекосы осей магнитометра
-mis_m   = [0 -1 1; -1 0 1; 1 -1 0] * 1; % in degrees
 
-% initial sensitivity tolerance - масштабный коэффициент магнитометра
-m_m = diag([ 0.02; 0.02; 0.02] * 1; % in %
+% initial bias error - ???????? ????? ???????????? from mgauss to tesla
+b_m = [15e-3; 15e-3; 15e-3] * 1e-4;
+ 
+% misalignment - axis to frame - ???????? ???? ????????????
+mis_m   = deg2rad([0 -1 1; -1 0 1; 1 -1 0]) ; 
+
+% initial sensitivity tolerance - ?????????? ??????????? ????????????
+m_m = diag([ 0.02; 0.02; 0.02]) * 1; % in %
 
 % output noise
 Density_m = 0.042 * 1e-6; % spectral density
-BW      = 218.1; % bandwidth
-sigma_m   = Density_m*sqrt(BW) * 1
+
+BW        = 218.1; % bandwidth
+
+sigma_m   = Density_m*sqrt(BW) * 1;
 
 
 % ACCELEROMETER
+
 % bias repeatability - ñìåùåíèå íóëåé
 b_a     = [0.016; -0.016; 0.016] * 1;
 
-% axis to axis misalignment - ïåðåêîñû îñåé (degrees)
-mis_a   = [0 -1e-3 0.035; -0.035 0 0.035; 0.35 -0.035 0] * 1; % in degrees
+% axis to axis misalignment - ïåðåêîñû îñåé 
+mis_a   = deg2rad([0 -1e-3 0.035; -0.035 0 0.035; 0.35 -0.035 0]); 
 
 % repeatability - ìàñøàòáíûå êîýôôèöèåíòû
 m_a     = diag([-0.005; 0.005; -0.005]) * 1; % in %
 
 % output noise
-Density_a = 300 * 1e-6;
-BW      = 218.1;
-sigma_a   = Density*sqrt(BW) * 1;
 
-else if a = 0
+Density_a = 300 * 1e-6;
+
+BW        = 218.1;
+
+sigma_a   = Density_a * sqrt(BW) * 1;
         
 acc_parameters  = struct('b_a', b_a, 'mis_a', mis_a, 'm_a', m_a, 'sigma_a', sigma_a);
 
-magn_parameters = struct('b_m', b_m, 'mis_m', mis_m,'m_m', m_m 'sigma_m', sigma_m);
+magn_parameters = struct('b_m', b_m, 'mis_m', mis_m,'m_m', m_m,'sigma_m', sigma_m);
 
 % calculations
 for i = 1:N
@@ -90,7 +94,7 @@ for i = 1:N
   C_rpy_enu(1:3,1:3) = q2mat(Quat_rpy_enu); 
   
   % true acceleration vector
-  A_rpy(1:3,i) = C_rpy_enu(1:3,1:3)' *[0; 0; -1]; 
+  A_rpy(1:3,i) = C_rpy_enu(1:3,1:3)' * [0; 0; -1]; 
   
   % true magnetic field vector
   M_rpy(1:3,i) = C_rpy_enu(1:3,1:3)' * M_enu;     
@@ -146,39 +150,37 @@ for i = 1:N
   end
 end
 
-
-    end
 % rad2deg
 err_PPY_deg = err_RPY*180/pi;
 err_Azimuth_deg = err_Azimuth*180/pi;
 
 % plotting
 
-% % roll error vs roll & pitch
-% figure
-% plot3(R*180/pi, P*180/pi, err_PPY_deg(:,1), '.')
-% ax = gca;
-% set(ax,'xtick',(-180:90:180));
-% set(ax,'ytick',(-90:30:90));
-% title('roll error vs roll & pitch')
-% grid on
-% xlabel('roll, deg')
-% ylabel('pitch, deg')
-% zlabel('roll error, deg')
-% grid on
-% 
-% % pitch error vs roll & pitch
-% figure
-% plot3(R*180/pi, P*180/pi, err_PPY_deg(:,2), '.')
-% ax = gca;
-% set(ax,'xtick',(-180:90:180));
-% set(ax,'ytick',(-90:90:90));
-% title('pitch error vs roll & pitch')
-% xlabel('roll, deg')
-% ylabel('pitch, deg')
-% zlabel('pitch error, deg')
-% grid on
-% 
+% roll error vs roll & pitch
+figure
+plot3(R*180/pi, P*180/pi, err_PPY_deg(:,1), '.')
+ax = gca;
+set(ax,'xtick',(-180:90:180));
+set(ax,'ytick',(-90:30:90));
+title('roll error vs roll & pitch')
+grid on
+xlabel('roll, deg')
+ylabel('pitch, deg')
+zlabel('roll error, deg')
+grid on
+
+% pitch error vs roll & pitch
+figure
+plot3(R*180/pi, P*180/pi, err_PPY_deg(:,2), '.')
+ax = gca;
+set(ax,'xtick',(-180:90:180));
+set(ax,'ytick',(-90:90:90));
+title('pitch error vs roll & pitch')
+xlabel('roll, deg')
+ylabel('pitch, deg')
+zlabel('pitch error, deg')
+grid on
+
 % % to plot the following dependencies correctly you must set one of the
 % % angles by zeros 
 % 
