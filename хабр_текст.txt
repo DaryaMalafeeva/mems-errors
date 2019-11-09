@@ -63,14 +63,13 @@ $$display$$m_{XYZ}=S_{m}\cdot M_{XYZ}+b_{m}+n_{m},$$display$$ где $inline$m_{
       <li> Полоса пропускания - также $inline$\left (3dB Bandwidth \right )$inline$. Берём везде одно значение. </li> 
 </ul>
 </spoiler>
-
 Для наглядности все параметры сведены в таблицу:
 <table>
   <tr>
     <th>ИИБ (инерциальный измерительный блок)</th>
-    <th>MPU9250
+    <th>MPU-9250
 Акселерометр</th>
-     <th>MPU9250
+     <th>MPU-9250
 Магнитометр</th>
 <th>ADIS16488A
 Акселерометр</th>
@@ -79,16 +78,18 @@ $$display$$m_{XYZ}=S_{m}\cdot M_{XYZ}+b_{m}+n_{m},$$display$$ где $inline$m_{
   </tr>
   <tr>
     <td>Смещение нулей</td>
-    <td>$$display$$\pm 60(X,Y), 
-$$display$$ $$display$$\pm 80(Z) mg $$display$$ </td>
-    <td>$$display$$1 \ мкТл (после\ калибровки)$$display$$</td>
+    <td>$$display$$\pm 60mg(X,Y),$$display$$ 
+$$display$$\pm 80mg(Z)$$display$$ </td>
+    <td>$$display$$1 \mu Tesla$$display$$
+                  после калибровки</td>
 <td>ячейка 41</td>
 <td>Ячейка 51</td>
   </tr>
   <tr> 
     <td>Погрешность масштабного коэффициента</td>
     <td>$$display$$\pm3\% $$display$$</td>
-    <td>$$display$$10\%(после калибровки)$$display$$</td>
+    <td>$$display$$10\%$$display$$
+            после калибровки</td>
 <td>Ячейка 42</td>
 <td>Ячейка 52</td>
   </tr>
