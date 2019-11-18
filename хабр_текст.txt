@@ -64,52 +64,60 @@ $$display$$m_{XYZ}=S_{m}\cdot M_{XYZ}+b_{m}+n_{m},$$display$$ где $inline$m_{
 </ul>
 </spoiler>
 Для наглядности все параметры сведены в таблицу:
-<table>
-  <tr>
-    <th>ИИБ (инерциальный измерительный блок)</th>
-    <th>MPU-9250
-Акселерометр</th>
-     <th>MPU-9250
-Магнитометр</th>
-<th>ADIS16488A
-Акселерометр</th>
-<th>ADIS16488A
-Магнитометр</th>
-  </tr>
-  <tr>
-    <td>Смещение нулей</td>
-    <td>$$display$$\pm 60mg(X,Y),$$display$$ 
-$$display$$\pm 80mg(Z)$$display$$ </td>
-    <td>$$display$$1 \mu Tesla$$display$$
-                  после калибровки</td>
-<td>ячейка 41</td>
-<td>Ячейка 51</td>
-  </tr>
-  <tr> 
-    <td>Погрешность масштабного коэффициента</td>
-    <td>$$display$$\pm3\% $$display$$</td>
-    <td>$$display$$10\%$$display$$
-            после калибровки</td>
-<td>Ячейка 42</td>
-<td>Ячейка 52</td>
-  </tr>
-<tr> 
-    <td>Перекосы осей</td>
-    <td>$$display$$\pm2\%$$display$$</td>
-    <td>$$display$$ – $$display$$</td>
-<td>Ячейка 43</td>
-<td>Ячейка 53</td>
-  </tr>
-<tr> 
-    <td>Шум на выходе</td>
-    <td>$inline$ 0.3 mg/sqrt(Гц)\rightarrow 
-4.4 mg\:СКО (218 Гц)$inline$</td>
-    <td>$inline$ 0.6 mg\: мкТл\:СКО $inline$</td>
-<td>Ячейка 44</td>
-<td>Ячейка 54</td>
-  </tr>
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;border-color:#ccc;}
+.tg td{font-family:Arial, sans-serif;font-size:14px;padding:8px 3px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#ccc;color:#333;background-color:#fff;}
+.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#ccc;color:#333;background-color:#f0f0f0;}
+.tg .tg-v9j9{font-size:10px;font-family:Arial, Helvetica, sans-serif !important;;background-color:#f0f0f0;color:#333333;text-align:center;vertical-align:top}
+.tg .tg-p7s4{background-color:#f0f0f0;color:#333333;text-align:center;vertical-align:top}
+.tg .tg-ph2p{background-color:#f0f0f0;color:#333333;text-align:center;vertical-align:top}
+.tg .tg-90sw{background-color:#f0f0f0;font-size:10px;font-family:Arial, Helvetica, sans-serif !important;;color:#333333;text-align:center;vertical-align:top}
+</style>
+<table class="tg">
+  <tr>
+    <th class="tg-v9j9" rowspan="2">ИИБ</th>
+    <th class="tg-p7s4" rowspan="2">Параметр</th>
+    <th class="tg-v9j9" colspan="2">MPU-9250</th>
+    <th class="tg-v9j9" colspan="2">ADIS16488A</th>
+  </tr>
+  <tr>
+    <td class="tg-90sw">Акселерометр</td>
+    <td class="tg-90sw">Магнитометр</td>
+    <td class="tg-90sw">Акселерометр</td>
+    <td class="tg-90sw">Магнитометр</td>
+  </tr>
+  <tr>
+    <td class="tg-v9j9" rowspan="4"></td>
+    <td class="tg-p7s4">Смещение нулей</td>
+    <td class="tg-v9j9">$$display$$\pm 60mg(X,Y),$$display$$ $$display$$\pm 80mg(Z)$$display$$</td>
+    <td class="tg-v9j9">$$display$$1 \mu Tesla$$display$$(после калибровки)</td>
+    <td class="tg-v9j9">$$display$$\pm 16mg$$display$$</td>
+    <td class="tg-v9j9">$$display$$\pm 15mgauss$$display$$</td>
+  </tr>
+  <tr>
+    <td class="tg-ph2p">Погрешность масштабного коэффициента</td>
+    <td class="tg-90sw">$$display$$\pm3\% $$display$$</td>
+    <td class="tg-90sw">$$display$$10\%$$display$$ (после калибровки)</td>
+    <td class="tg-90sw">$$display$$\pm 0.5\%$$display$$</td>
+    <td class="tg-90sw">$$display$$\pm 2\%$$display$$</td>
+  </tr>
+  <tr>
+    <td class="tg-p7s4">Перекосы осей</td>
+    <td class="tg-v9j9">$$display$$\pm2\%$$display$$</td>
+    <td class="tg-v9j9">$$display$$ – $$display$$</td>
+    <td class="tg-v9j9">$$display$$\pm 1^{\circ}$$display$$</td>
+    <td class="tg-v9j9">$$display$$\pm 0.35^{\circ}$$display$$</td>
+  </tr>
+  <tr>
+    <td class="tg-ph2p">Шум на выходе</td>
+    <td class="tg-90sw">$$display$$0.3mg/sqrt(Гц)
+\rightarrow
+4.4 mg\:СКО (218 Гц)$$display$$</td>
+    <td class="tg-90sw">$$display$$0.6mg\: мкТл\:СКО$$display$$</td>
+    <td class="tg-90sw"></td>
+    <td class="tg-90sw"></td>
+  </tr>
 </table>
-
 <h2>Расчет углов ориентации</h2>Возьмем самый простой способ расчета углов, приведенный <a href="https://www.nxp.com/docs/en/application-note/AN3461.pdf"> тут.</a> Благодаря наличию на Земле силы тяжести, акселерометры "чувствуют" направление вниз. Их измерения используются для расчета углов крена и тангажа. Третий угол - рыскания (а в данном случае - магнитного азимута), может быть определен благодаря наличию у Земли магнитного поля. Вектор индукции магнитного поля измеряется магнитометрами и их измерения участвуют в расчете угла рыскания.
 $$display$$roll=\arctan \left ( \frac{a_{Y}}{a_{Z}} \right ),$$display$$ $$display$$pitch=\arctan\left ( \frac{-a_{X}}{\sqrt{a_{Y}^{2}+a_{Z}^{2}}} \right ),$$display$$ $$display$$yaw=\arctan 2\left ( \frac{m_{E}}{m_{N}} \right ),$$display$$ где $inline$arctan 2$inline$ - функция полного арктангенса, $inline$a_{X}$inline$, $inline$a_{Y}$inline$, $inline$a_{Z}$inline$ - измерения акселерометра по трём осям в ССК, $inline$m_{E}$inline$, $inline$m_{N}$inline$ - измерения магнитометра по осям E, N (измерения магнитометров пересчитаны в плоскость).
 
