@@ -1,0 +1,17 @@
+When it's necessary to evaluate the orientation angles you may have the question - which MEMS sensor to choose. Sensors manufacturers provide a great amound of different parameters and it becomes a pretty hard deal to get the information about the quality of the sensor. 
+Here's the description of the script for Octave/Matlab which allows to estimate the orientation angles errors from MEMS accelerometer and magnetometer measurements. The input data for script are datasheet parameters for the sensors. Article can be useful for those who start using MEMS sensors in their devices. You can find the project on GitHub.
+We're going to estimate the orientation angles of the stationary device. Why? 
+The orientation of the mobile device simply cannot be calculated using formulas. You need to use tricky algorithms.
+To estimate the angles we will use the MEMS accelerometers and magnetometers measurements.
+Bit of theory
+Orientation angles
+We will understand the orientation angles as the Euler Angles - Roll, Pitch and Yaw. They connect the object's own coordinate system XYZ and the local coordinate system East-North-Up (ENU). The Roll, Pitch, Yaw angles denote the rotation that the XYZ axes must make in order to move in the ENU axis. Accordingly, zero angles mean that the X axis of the object is oriented to the east, the Y axis of the object is oriented to the north, the Z axis is oriented up. The rotation order of the axes is from the last corner: first on Yaw (around the Z axis), then on Pitch (around the Y axis) and then on Roll (around the X axis).
+Accelerometer
+It's the sensor that measures the projection of apparent acceleration onto the sensitivity axis. It is apparent acceleration because the accelerometer measures gravity too even while the sensor is stationary. You can imagine the accelerometer as the weight on a spring. Its measured values are proportional to the degree of tention of the spring. If the accelerometer is stationary, the spring is stretched only by gravity. If the accelerometer is in a dynamic state, the spring is stretched by gravity and inertia of the weight.
+We accept the following model of measurements of the triad of orthogonal (mutually perpendicular) accelerometers:
+- measured acceleration in XYZ native coordinate system
+- identity matrix (in this case its dimension is 3 * 3)
+- matrix of distortions of the axes and scale factors of the accelerometer
+- true acceleration vector in the body frame coordinates XYZ
+- accelerometer zero displacement vector
+- measurements noise
