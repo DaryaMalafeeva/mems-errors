@@ -46,7 +46,7 @@ M_enu = [0; 11; -8] * 1e-6 * 1;
 % MAGNETOMETER
 
 % 
-mis_m = eye(3,3);
+mis_m = zeros(3,3);
 
 % 
 m_m = diag([ 1/10; 1/10; 1/10]);
