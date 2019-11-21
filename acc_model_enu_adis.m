@@ -40,50 +40,7 @@ RPY = [R P Y];
 % vector of the true value of the magnetic field 
 M_enu = [0; 11; -8] * 1e-6 * 1; 
 
-
-%IMU PARAMETERS
-
-% MAGNETOMETER
-
-% initial bias error - ???????? ????? ???????????? from mgauss to tesla
-b_m = [15e-3; 15e-3; 15e-3] * 1e-4;
- 
-% misalignment - axis to frame - ???????? ???? ????????????
-mis_m   = deg2rad([0 -1 1; -1 0 1; 1 -1 0]) ; 
-
-% initial sensitivity tolerance - ?????????? ??????????? ????????????
-m_m = diag([ 0.02; 0.02; 0.02]) * 1; % in %
-
-% output noise
-Density_m = 0.042 * 1e-6; % spectral density
-
-BW        = 218.1; % bandwidth
-
-sigma_m   = Density_m*sqrt(BW) * 1;
-
-
-% ACCELEROMETER
-
-% bias repeatability - ñìåùåíèå íóëåé
-b_a     = [0.016; -0.016; 0.016] * 1;
-
-% axis to axis misalignment - ïåðåêîñû îñåé 
-mis_a   = deg2rad([0 -1e-3 0.035; -0.035 0 0.035; 0.35 -0.035 0]); 
-
-% repeatability - ìàñøàòáíûå êîýôôèöèåíòû
-m_a     = diag([-0.005; 0.005; -0.005]) * 1; % in %
-
-% output noise
-
-Density_a = 300 * 1e-6;
-
-BW        = 218.1;
-
-sigma_a   = Density_a * sqrt(BW) * 1;
-        
-acc_parameters  = struct('b_a', b_a, 'mis_a', mis_a, 'm_a', m_a, 'sigma_a', sigma_a);
-
-magn_parameters = struct('b_m', b_m, 'mis_m', mis_m,'m_m', m_m,'sigma_m', sigma_m);
+[acc_parameters,magn_parameters] = get_ADIS16488A_parameters()
 
 % calculations
 for i = 1:N

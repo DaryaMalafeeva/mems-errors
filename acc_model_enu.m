@@ -41,46 +41,9 @@ RPY = [R P Y];
 % vector of the true value of the magnetic field 
 M_enu = [0; 11; -8] * 1e-6 * 1;  
 
-% IMU PARAMETERS
+% [acc_parameters,magn_parameters,imu_name] = get_MPU9250A_parameters();
+[acc_parameters,magn_parameters,imu_name] = get_ADIS16488A_parameters();
 
-% MAGNETOMETER
-
-% 
-mis_m = zeros(3,3);
-
-% 
-m_m = diag([ 1/10; 1/10; 1/10]);
-
-%
-b_m = [1 ; 1; 1]* 1e-6 * 1;
-
-% output noise
-
-sigma_m = 0.6 * 1e-6 * 1;
-
-% ACCELEROMETER
-
-% zero-g initial calibration tolerance (bias)
-b_a = [0.06; -0.06; 0.08];
-
-% cross axis sensitivity
-mis_a = [0 -0.002 0.002; -0.002 0 0.002; 0.002 -0.002 0] * 1;
-
-% initial tolerance
-m_a = diag([-0.03; 0.03; -0.03]) * 1;
-
-% output noise 
-
-Density_a = 300 * 1e-6; % noise power spectral density
-
-BW = 218.1; % bandwidth
-
-sigma_a = Density_a *sqrt(BW) * 1; 
-
-
-acc_parameters  = struct('b_a', b_a, 'mis_a', mis_a, 'm_a', m_a, 'sigma_a', sigma_a);
-
-magn_parameters = struct('b_m', b_m, 'mis_m', mis_m, 'm_m', m_m, 'sigma_m', sigma_m);
 
 % calculations
 for i = 1:N
@@ -161,7 +124,8 @@ plot3(R*180/pi, P*180/pi, err_PPY_deg(:,1), '.')
 ax = gca;
 set(ax,'xtick',(-180:90:180));
 set(ax,'ytick',(-90:30:90));
-title('?????? ????? ?? ????? ? ???????')
+% title('?????? ????? ?? ????? ? ???????')
+title(['roll error vs roll&pitch ' imu_name])
 grid on
 xlabel('????, ????')
 ylabel('??????, ????')
