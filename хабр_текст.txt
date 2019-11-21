@@ -24,23 +24,23 @@ $$display$$a_{XYZ}=\left ( I+m_{a} \right )\cdot A_{XYZ}+b_{a}+n_{a},$$display$$
 <ul>
 	<li>Смещение нуля акселерометра - Zero-G Initial Calibration Tolerance ($inline$\pm60mg$inline$ для компонент $inline$X, Y$inline$, $inline$\pm80mg$inline$ для компоненты $inline$Z$inline$) - для расчётов переводим в единицы $inline$g$inline$ домножив на $inline$10^{-3}$inline$.</li>
         <li>Погрешность масштабного коэффициента - Initial Tolerance ($inline$\pm3\%$inline$) - выражается в процентах. Для расчётов надо перевести в разы, домножив на $inline$10^{-2}$inline$.</li>
-        <li>Перекосы осей - Cross Axis Sensitivity ($inline$\pm2\%$inline$) - также в процентах. </li>
-        <li>Спектральная плотность мощности шума акселерометра - Noise Power Spectral Density $inline$\left (300\frac{\mu g}{\sqrt{Hz}}  \right )$inline$ -  переводим числитель в $inline$g$inline$ домножая его на $inline$10^{-6}$inline$.</li>
-<li>Полоса пропускания - Low Pass Filter Response $inline$\left (5-260 Hz\right )$inline$  - приведен разброс, в пределах которого её можно изменять. Меняя в этой модели полосу пропускания от минимально до максимально возможного значения, можно заметить, что значения ошибок определения углов ориентации не меняются. (связано с тем, что датчик неподвижен???) Мы выбрали $inline$218.1 Hz$inline$ потому что...(неважно ведь ничего не меняется).</li></ul>
+        <li>Перекосы осей - Cross Axis Sensitivity ($inline$\pm2\%$inline$) - также умножаем на $inline$10^{-2}$inline$. </li>
+        <li>Спектральная плотность мощности шума акселерометра - Noise Power Spectral Density $inline$\left (300\frac{\mu g}{\sqrt{Hz}}  \right )$inline$ -  переводим числитель в $inline$g$inline$ домножая все на $inline$10^{-6}$inline$.</li>
+<li>Полоса пропускания - Low Pass Filter Response $inline$\left (5-260 Hz\right )$inline$  - приведены границы, в пределах которых её можно изменять. Установим максимальную полосу. Все равно ошибки будут определяться не шумами.</li></ul>
 Зная спектральную плотность мощности шума и полосу пропускания датчика можно рассчитать СКО шума на выходе датчика:
 $$display$$\sigma _{noise}=G_{0}\cdot\sqrt{\Pi_{noise}}$$display$$
 <h3>Акселерометр ADIS16488A:</h3>
 <ul>
        <li>Смещение нуля - Bias Repeatability ($inline$\pm 16mg$inline$)  - переводим в $inline$g$inline$ домножая на $inline$10^{-3}$inline$.</li>
        <li>Погрешность масштабного коэффициента - (Sensitivity) Repeatability ($inline$\pm 0.5\%$inline$) - переводим из процентов в разы.</li>
-       <li> Перекосы осей - Misalignment Axis to frame  ($inline$\pm1^{\circ}$inline$) - в градусах - ?</li>
+       <li> Перекосы осей - Misalignment Axis to frame  ($inline$\pm1^{\circ}$inline$) - в градусах, переводим в разы (радианы, поскольку величины малые)</li>
        <li> Спектральная плотность мощности шума - Noise Density $inline$\left ( 0.063\frac{mg}{\sqrt{Hz}}rms  \right )$inline$ - переводим числитель в $inline$g$inline$.</li>
-       <li> Полоса пропускания - $inline$\left (3dB Bandwidth\right)$inline$ - это ширина полосы пропусания по уровню $inline$0.707$inline$ на АЧХ. Мы выбрали её, соответственно, такой же как и для MPU-9250.</li>
+       <li> Полоса пропускания - $inline$\left (3dB Bandwidth\right)$inline$ - выберем такой же, как у MPU-9250.</li>
 </ul>
 </spoiler>
 <h2>Магнитометр</h2>Датчик, который измеряет проекцию индукции магнитного поля на ось чувствительности. Магнитометру свойственны искажения hard-iron и soft-iron. Hard-iron искажение - это аддитивный эффект, когда к измеряемому полю добавляется постоянная составляющая. Причиной может быть, например, действие постоянного магнита или собственное смещение нуля датчика. Искажение soft-iron - мультипликативный эффект, отражающий изменение направления и/или ослабление вектора магнитной индукции. Этот эффект может быть вызван наличием металлического предмета в непосредственной близости от магнитометра или же собственными искажениями датчика - погрешностью масштабного коэффициента или перекосом его оси чувствительности.
 Примем модель измерений триады магнитометров:
-$$display$$m_{XYZ}=S_{m}\cdot M_{XYZ}+b_{m}+n_{m},$$display$$ где $inline$m_{XYZ}$inline$ – измерения магнитометра в ССК XYZ, $inline$S_{m}$inline$ – диагональная матрица перекосов осей, которая включает в себя эффект soft–iron, $inline$M_{XYZ}$inline$ – вектор истинной магнитной индукции в ССК, $inline$b_{m}$inline$ – смещение нулей магнитометра и эффект hard–iron, $inline$n_{m}$inline$ – шум измерений.
+$$display$$m_{XYZ}=S_{m}\cdot M_{XYZ}+b_{m}+n_{m},$$display$$ где $inline$m_{XYZ}$inline$ – измерения магнитометра в ССК XYZ, $inline$S_{m}$inline$ – диагональная матрица перекосов осей и масштабных коэффициентов (которая описывает эффект soft–iron), $inline$M_{XYZ}$inline$ – вектор истинной магнитной индукции в ССК, $inline$b_{m}$inline$ – смещение нулей магнитометра (описывает эффект hard–iron), $inline$n_{m}$inline$ – шум измерений.
 <spoiler title="Выбор параметров магнитометра из даташита">
 <h3>Магнитометр MPU-9250:</h3>
 <ul>
@@ -51,11 +51,11 @@ $$display$$m_{XYZ}=S_{m}\cdot M_{XYZ}+b_{m}+n_{m},$$display$$ где $inline$m_{
 </ul>
 <h3>Магнитометр ADIS16488A:</h3>
 <ul>
-       <li>Смещение нуля - Initial Bias  Error $inline$\left (\pm15mgauss \right )$inline$ - здесь этот параметр выражен в миллиГаусах, мы приводим к Тесла как к единице измерения магнитной индукции. Для перевода из миллиГаусс в миллиТесла  надо умножить на $inline$10^{-4}$inline$, а также на $inline$10^{-3} $inline$ чтобы от миллиТесла перейти к Тесла.</li>
+       <li>Смещение нуля - Initial Bias  Error $inline$\left (\pm15 mgauss \right )$inline$ - здесь этот параметр выражен в миллигауссах, мы приводим к тесла как к единице измерения магнитной индукции. Для перевода из миллигаусс в миллитесла  надо умножить на $inline$10^{-4}$inline$, а также на $inline$10^{-3} $inline$ чтобы перейти к тесла.</li>
        <li> Погрешность масштабного коэффициента - Initial Sensitivity Tolerance $inline$\left (2\% \right )$inline$ - переводим в разы.</li>
-       <li>Перекосы осей - Misalignment Axis to axis $inline$\left (0.35^{\circ} \right )$inline$ - в градусах. Что с нмии делать?</li>
+       <li>Перекосы осей - Misalignment Axis to axis $inline$\left (0.35^{\circ} \right )$inline$ - в градусах, переводим в разы (радианы, так как величина маленькая).</li>
        <li> Спектральная плотность мощности шума - Noise Density $inline$\left (0.042\frac{mgauss}{\sqrt{Hz}} \right )$inline$ - переводим в $inline$\left (\frac{Tesla}{\sqrt{Hz}}  \right )$inline$.</li> 
-      <li> Полоса пропускания - также $inline$\left (3dB Bandwidth \right )$inline$. Берём везде одно значение. </li> 
+      <li> Полоса пропускания - возьмем для модели значение 260 Гц. </li> 
 </ul>
 </spoiler>
 Для наглядности все параметры сведены в таблицу:
@@ -132,7 +132,7 @@ cy\cdot cp &-cr\cdot sy+sr\cdot cy\cdot sp &sr\cdot sy+cr\cdot cy\cdot sp \\
 </li>
 	<li>По измерениям акселерометра рассчитываются новые углы по формулам:
 	$$display$$roll'=\arctan \left ( \frac{a_{Y}}{a_{Z}} \right ),$$display$$ $$display$$pitch'=\arctan\left ( \frac{-a_{X}}{\sqrt{a_{Y}^{2}+a_{Z}^{2}}} \right ).$$display$$ По измерениям магнитометра расчитывается угол магнитного азимута:$$display$$yaw'=\arctan 2\left ( \frac{m_{E}}{m_{N}} \right ).$$display$$ </li>
-	<li>Ошибки оценивания углов ориентации рассчитываются как разность между истинными углами roll, pitch, yaw и смоделированными измерениями датчиков - roll', pitch', yaw'.</li>
+	<li>Ошибки оценивания углов ориентации рассчитываются как разность между истинными углами roll, pitch, yaw и рассчитанными по измерениям датчиков - roll', pitch', yaw'.</li>
 </ol>
 
 <h2>Результаты</h2> <i>Для двух датчиков, которые мы взяли для примера:</i>

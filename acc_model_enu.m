@@ -80,11 +80,13 @@ for i = 1:N
   %C_rpy_enu(1:3,1:3) = rpy2mat([R(i); P(i); 0]);
   %C_rpy_enu(1:3,1:3) = rpy2mat([RPY_new1(1:2)'; 0]);
   
-  % measured angles to quaternion convertion
-  Quat_rpy_enu_new = rpy2q([RPY_new1(1:2)'; 0]); 
-  
-  % q2m convertion 
-  C_rpy_enu_new(1:3,1:3) = q2mat(Quat_rpy_enu_new); 
+% % % legacy  
+% % %   % measured angles to quaternion convertion
+% % %   Quat_rpy_enu_new = rpy2q([RPY_new1(1:2)'; 0]);   
+% % %   % q2m convertion 
+% % %   C_rpy_enu_new(1:3,1:3) = q2mat(Quat_rpy_enu_new); 
+% % %   
+  C_rpy_enu_new(1:3,1:3) = rpy2mat([RPY_new1(1:2)'; 0]); % magn to horizontal plane
   
   % magnetometer measurements convertion from body frame coordinates to horizontal
   ym_enu(1:3,i) = C_rpy_enu_new(1:3,1:3) * ym_rpy(1:3,i); 
