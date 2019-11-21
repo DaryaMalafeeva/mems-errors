@@ -11,7 +11,7 @@ err_RPY = zeros(N,3);
 M_rpy = zeros(3,N);
 A_rpy = zeros(3,N);
 ym_rpy = zeros(3,N);
-ym_rp0 = zeros();
+% ym_rp0 = zeros();
 Azimuth_magn = zeros(1,N);
 err_Azimuth = zeros(1,N);
 Azimuth = zeros(1,N);
@@ -20,30 +20,28 @@ ym_enu = zeros(3,N);
 % true roll, pitch, yaw angles
 % random limited angles 
 R = (rand(N,1)*2*pi - pi)* 165/180;
+P = (rand(N,1)*pi - pi/2)* 75/90; 
+Y = (rand(N,1)*2*pi - pi)* 165/180; 
 
 % constant angles
 %R = ones(N,1)*deg2rad(180);  
+%P = ones(N,1)*deg2rad(90);
+%Y = ones(N,1)*deg2rad(180);
 
 % zero angles
 %R = zeros(N,1);                    
-
-P = (rand(N,1)*pi - pi/2)* 75/90; 
-%P = ones(N,1)*deg2rad(90);
 %P = zeros(N,1);
-
-%Y = (rand(N,1)*2*pi - pi)* 165/180; 
-%Y = ones(N,1)*deg2rad(180);
-Y = zeros(N,1);
+% Y = zeros(N,1);
 
 % angles matrix
 RPY = [R P Y];            
 
 % vector of the true value of the magnetic field 
-M_enu = [0; 11; -8] * 1e-6 * 1;  
+M_enu = [0; 11; -8] * 1e-6 * 1;  % uT
+A_enu = [0; 0; -1];  % g
 
-% [acc_parameters,magn_parameters,imu_name] = get_MPU9250A_parameters();
-[acc_parameters,magn_parameters,imu_name] = get_ADIS16488A_parameters();
-
+% [acc_parameters, magn_parameters, imu_name] = get_MPU9250A_parameters();
+[acc_parameters, magn_parameters, imu_name] = get_ADIS16488A_parameters();
 
 % calculations
 for i = 1:N
@@ -54,12 +52,12 @@ for i = 1:N
   C_rpy_enu(1:3,1:3) = q2mat(Quat_rpy_enu);               
   
   % true acceleration vector
-  A_rpy(1:3,i) = C_rpy_enu(1:3,1:3)' *[0; 0; -1];        
+  A_rpy(1:3,i) = C_rpy_enu(1:3,1:3)' * A_enu; 
   
   % true magnetic field vector
-  M_rpy(1:3,i) = C_rpy_enu(1:3,1:3)' * M_enu;             
+  M_rpy(1:3,i) = C_rpy_enu(1:3,1:3)' * M_enu; 
   
-  % true azimuth angle
+  % true magnetic azimuth angle
   Azimuth(i) = Y(i);                                      
   
   % accelerometer error model application 
@@ -88,7 +86,7 @@ for i = 1:N
   % q2m convertion 
   C_rpy_enu_new(1:3,1:3) = q2mat(Quat_rpy_enu_new); 
   
-  % magnetometer measurements convertion from body frame coordinates to LCS
+  % magnetometer measurements convertion from body frame coordinates to horizontal
   ym_enu(1:3,i) = C_rpy_enu_new(1:3,1:3) * ym_rpy(1:3,i); 
   %ym_enu(1:3,i) = C_rpy_enu_new(1:3,1:3) * M_rpy(1:3,i);
   
