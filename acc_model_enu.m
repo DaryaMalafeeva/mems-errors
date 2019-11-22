@@ -11,7 +11,6 @@ err_RPY = zeros(N,3);
 M_rpy = zeros(3,N);
 A_rpy = zeros(3,N);
 ym_rpy = zeros(3,N);
-% ym_rp0 = zeros();
 Azimuth_magn = zeros(1,N);
 err_Azimuth = zeros(1,N);
 Azimuth = zeros(1,N);
@@ -36,12 +35,15 @@ Y = (rand(N,1)*2*pi - pi)* 165/180;
 % angles matrix
 RPY = [R P Y];            
 
-% vector of the true value of the magnetic field 
+% true magnetic induction vector
 M_enu = [0; 11; -8] * 1e-6 * 1;  % uT
 A_enu = [0; 0; -1];  % g
 
-% [acc_parameters, magn_parameters, imu_name] = get_MPU9250A_parameters();
-[acc_parameters, magn_parameters, imu_name] = get_ADIS16488A_parameters();
+%--------------------------------Choose IMU--------------------------------
+
+[acc_parameters, magn_parameters, imu_name] = get_MPU9250A_parameters();
+%[acc_parameters, magn_parameters, imu_name] = get_ADIS16488A_parameters();
+%--------------------------------------------------------------------------
 
 % calculations
 for i = 1:N
@@ -70,11 +72,11 @@ for i = 1:N
   %RPY_new1 = angle_calc(A_rpy(1:3,i));  
   
   % angles calculating by accelerometer measurements
-  RPY_new1 = angle_calc(ya_rpy(1:3,i));                    
-  RPY_new(i,1:3)= RPY_new1; 
+  RPY_new = angle_calc(ya_rpy(1:3,i));                    
+  RPY_new(i,1:3)= RPY_new; 
   
   % debug
-  % RPY_new1 = RPY(i,1:3);
+  % RPY_new1 = RPY(0000FFi,1:3);
   %RPY_new(i,1:3)= RPY(i,1:3);
 
   %C_rpy_enu(1:3,1:3) = rpy2mat([R(i); P(i); 0]);
@@ -86,7 +88,7 @@ for i = 1:N
 % % %   % q2m convertion 
 % % %   C_rpy_enu_new(1:3,1:3) = q2mat(Quat_rpy_enu_new); 
 % % %   
-  C_rpy_enu_new(1:3,1:3) = rpy2mat([RPY_new1(1:2)'; 0]); % magn to horizontal plane
+  C_rpy_enu_new(1:3,1:3) = rpy2mat([RPY_new(1:2)'; 0]); % magn to horizontal plane
   
   % magnetometer measurements convertion from body frame coordinates to horizontal
   ym_enu(1:3,i) = C_rpy_enu_new(1:3,1:3) * ym_rpy(1:3,i); 
@@ -117,19 +119,17 @@ err_PPY_deg = err_RPY*180/pi;
 err_Azimuth_deg = err_Azimuth*180/pi;
 
 % plotting
-
 % roll error vs roll & pitch
 figure
 plot3(R*180/pi, P*180/pi, err_PPY_deg(:,1), '.')
 ax = gca;
 set(ax,'xtick',(-180:90:180));
 set(ax,'ytick',(-90:30:90));
-% title('?????? ????? ?? ????? ? ???????')
-title(['roll error vs roll&pitch ' imu_name])
+title(['roll error vs roll & pitch for ' imu_name])
 grid on
-xlabel('????, ????')
-ylabel('??????, ????')
-zlabel('r?????? ?????, ????')
+xlabel('roll, deg')
+ylabel('pitch, deg')
+zlabel('roll error, deg')
 grid on
 
 % pitch error vs roll & pitch
@@ -138,10 +138,10 @@ plot3(R*180/pi, P*180/pi, err_PPY_deg(:,2), '.')
 ax = gca;
 set(ax,'xtick',(-180:90:180));
 set(ax,'ytick',(-90:90:90));
-title('?????? ??????? ?? ????? ? ???????')
-xlabel('????, ????')
-ylabel('??????, ????')
-zlabel('?????? ???????, ????')
+title(['pitch error vs roll & pitch for ' imu_name])
+xlabel('roll, deg')
+ylabel('pitch, deg')
+zlabel('pitch error, deg')
 grid on
 
 % to plot the following dependencies correctly you must set one of the
