@@ -120,8 +120,11 @@ err_Azimuth_deg = err_Azimuth*180/pi;
 
 % plotting
 % roll error vs roll & pitch
-figure
-plot3(R*180/pi, P*180/pi, err_PPY_deg(:,1), '.')
+
+h = figure();
+
+subplot(1,2,1)
+plot3(R*180/pi, P*180/pi, err_PPY_deg(:,1), '.b')
 ax = gca;
 set(ax,'xtick',(-180:90:180));
 set(ax,'ytick',(-90:30:90));
@@ -133,8 +136,8 @@ zlabel('roll error, deg')
 grid on
 
 % pitch error vs roll & pitch
-figure
-plot3(R*180/pi, P*180/pi, err_PPY_deg(:,2), '.')
+subplot(1,2,2)
+plot3(R*180/pi, P*180/pi, err_PPY_deg(:,2), '.r')
 ax = gca;
 set(ax,'xtick',(-180:90:180));
 set(ax,'ytick',(-90:90:90));
@@ -144,6 +147,14 @@ ylabel('pitch, deg')
 zlabel('pitch error, deg')
 grid on
 
+
+        
+        set(h, 'Position', [100,100,720,320], 'PaperPositionMode', 'auto');
+        
+        cmnstr = ['.\pitch_err.png'];
+        print(h, cmnstr, '-dpng', '-r300');
+        
+        
 % to plot the following dependencies correctly you must set one of the
 % angles by zeros 
 
