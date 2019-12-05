@@ -97,21 +97,23 @@ cy\cdot cp &-cr\cdot sy+sr\cdot cy\cdot sp &sr\cdot sy+cr\cdot cy\cdot sp \\
 <li>Применяем модель измерения акселерометра:$$display$$a_{XYZ}=\left ( I+m_{a} \right )\cdot A_{XYZ}+b_{a}+n_{a},$$display$$</li>
 <li>По измерениям акселерометра рассчитываются новые углы по формулам:
 	$$display$$roll'=\arctan \left ( \frac{a_{Y}}{a_{Z}} \right ),$$display$$ $$display$$pitch'=\arctan\left ( \frac{-a_{X}}{\sqrt{a_{Y}^{2}+a_{Z}^{2}}} \right ).$$display$$</li>
-<li>Формируем вектор истинных магнитных плотностей в ЛСК ENU и пересчитываем его в ССК XYZ:$$display$$M_{XYZ}=\left ( C_{ENU}^{XYZ} \right )\cdot M_{ENU},$$display$$ $inline$ M_{ENU}$inline$ - сформированный вектор истинных магнитных плотностей. </li>
+
 <li>Также необходимо сформировать матрицу углов Эйлера в следующем виде: 
 $$display$$RPY=\begin{bmatrix}
 roll'\\ 
 pitch'\\ 
 0
 \end{bmatrix},$$display$$ где углы roll' и pitch' - это углы, рассчитанные по измерениям акселерометра, а угол yaw - нулевой.</li>
-<li>Теперь сформируем новую матрицу преобразования координат из этих углов, для этого воспользуемся функцией <b>rpy2mat</b>:$$display$$C_{RPY}^{ENU}=rpy2mat\left ( \begin{bmatrix}
+<li>Теперь сформируем новую матрицу преобразования координат из этих углов, для этого воспользуемся функцией <b>rpy2mat</b>:$$display$$C_{XYZ}^{ENU}=rpy2mat\left ( \begin{bmatrix}
 roll'\\ 
 pitch'\\ 
 0
 \end{bmatrix}^{T} \right );$$display$$</li>
+
+<li>Формируем вектор истинных магнитных плотностей в ЛСК ENU и пересчитываем его в ССК XYZ:$$display$$M_{XYZ}=\left ( C_{ENU}^{XYZ} \right )\cdot M_{ENU},$$display$$ $inline$ M_{ENU}$inline$ - сформированный вектор истинных магнитных плотностей. </li>
 <li>Применяем модель измерений магнитометра:$$display$$m_{XYZ}=S_{m}\cdot M_{XYZ}+b_{m}+n_{m};$$display$$</li>
-<li>Осталось пересчитать измерения магнитометра из ССК в ЛСК и найти угол магнитного азимута:$$display$$m_{ENU}=C_{RPY}^{ENU}\cdot m_{XYZ}$$display$$</li>
-<li>По измерениям магнитометра расcчитывается угол магнитного азимута:$$display$$yaw'=\arctan 2\left ( \frac{m_{E}}{m_{N}} \right ).$$display$$ </li>
+<li>Осталось пересчитать измерения магнитометра из ССК в горизонт:$$display$$m_{ENU}=C_{XYZ}^{XYZ'}\cdot m_{XYZ}$$display$$</li>
+<li>По "горизонтированным" измерениям магнитометра расcчитывается угол магнитного азимута:$$display$$yaw'=\arctan 2\left ( \frac{m_{Y'}}{m_{X'}} \right ).$$display$$ </li>
 <li>Ошибки оценивания углов ориентации рассчитываются как разность между истинными углами roll, pitch, yaw и рассчитанными по измерениям датчиков - roll', pitch', yaw'.</li>
 </ul>
 
