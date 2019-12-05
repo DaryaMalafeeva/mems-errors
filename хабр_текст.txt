@@ -120,19 +120,23 @@ pitch'\\
 <li>Совместное влияние погрешностей акселерометра и магнитометра на оценивание углов крена и тангажа</li>
 </ul>
 Ошибки оценивания крена:
-<img src="https://habrastorage.org/webt/bu/ei/i4/bueii4dxmev4m4fupum3yefmgfw.png" alt="image"/>
+<img src="https://habrastorage.org/webt/jx/oe/np/jxoenpth2ncopan-z3b50duh2ru.png" />
 
 Ошибки оценивания тангажа:
-<img src="https://habrastorage.org/webt/c6/uy/et/c6uyetxuqads3qpju__7m9kwvis.png" />
+<img src="https://habrastorage.org/webt/uj/gr/6p/ujgr6pneknswc4xnqrsizqaehg8.png" />
 
 Как можно заметить - величина ошибок растёт с приближением к границе диапазонов измерений углов.
 
 <spoiler title="Можем поиграться с входными параметрами и понять, чем определяются ошибки:">
-<ul>
 <li>Влияние погрешностей магнитометра на ошибки оценивания магнитного азимута</li>
 
 <li>Совместное влияние погрешностей акселерометра и магнитометра на ошибки оценивания магнитного азимута</li>
-</ul>
+Ошибки оценивания магнитного азимута от углов крена и тангажа:
+<img src="https://habrastorage.org/webt/ha/pp/mb/happmbuwulm5six2mps4rbgcbf4.png" />
+Ошибки оценивания магнитного азимута от углов крена и магнитного азимута:
+<img src="https://habrastorage.org/webt/kd/4_/cz/kd4_czwnzae4iml1edycd1-v1ii.png" />
+Ошибки оценивания магнитного азимута от углов тангажа и магнитного азимута:
+<img src="https://habrastorage.org/webt/0b/oz/zb/0bozzbnr5f_-wzgbtz316o3m7gk.png" />
 </spoiler> 
 <h2>Итог</h2> 
 <ul><li>Разработана модель, позволяющая оценивать погрешности расчёта углов ориентации по измерениям акселерометров и магнитометров с учётом их погрешностей.</li>
