@@ -6,7 +6,7 @@ imu_name = 'MPU9250A';
 mis_m = zeros(3,3); % unknown
 
 % sensitivity initial tolerance
-m_m = diag([ sign(randn(1))*1/10; sign(randn(1))*1/10; sign(randn(1))*1/10]); % random sign, let it be 0.1 
+m_m = diag([ sign(randn(1))*1/20; sign(randn(1))*1/20; sign(randn(1))*1/20]); % random sign, let it be 0.05 
 
 % post-calibration bias
 b_m = [sign(randn(1))*1 ; sign(randn(1))*1; sign(randn(1))*1]* 1e-6 * 1; % random sign, let it be 1 uT

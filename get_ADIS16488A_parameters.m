@@ -5,7 +5,7 @@ imu_name = 'ADIS16488A';
 % MAGNETOMETER
 
 % initial bias error - ???????? ????? ???????????? from mGauss to T
-bias_error = 15e-3 * 1e-4; % error, T
+bias_error = 5e-3 * 1e-4; % error, T
 b_m = [sign(randn(1))*bias_error; 
     sign(randn(1))*bias_error; 
     sign(randn(1))*bias_error]; % random sign biases vector

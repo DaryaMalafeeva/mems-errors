@@ -41,17 +41,15 @@ A_enu = [0; 0; -1];  % g
 
 %--------------------------------Choose IMU--------------------------------
 
-[acc_parameters, magn_parameters, imu_name] = get_MPU9250A_parameters();
-%[acc_parameters, magn_parameters, imu_name] = get_ADIS16488A_parameters();
+% [acc_parameters, magn_parameters, imu_name] = get_MPU9250A_parameters();
+[acc_parameters, magn_parameters, imu_name] = get_ADIS16488A_parameters();
 %--------------------------------------------------------------------------
 
 % calculations
 for i = 1:N
-  % true angles to quaternion convertion
-  Quat_rpy_enu = rpy2q(RPY(i,1:3)');        
-  
+   
   % quaternion to matrix convertion
-  C_rpy_enu(1:3,1:3) = q2mat(Quat_rpy_enu);               
+  C_rpy_enu(1:3,1:3) = rpy2mat(RPY(i,1:3)');  
   
   % true acceleration vector
   A_rpy(1:3,i) = C_rpy_enu(1:3,1:3)' * A_enu; 
