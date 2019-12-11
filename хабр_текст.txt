@@ -113,13 +113,29 @@ pitch'\\
 <h2>Результаты - расчет погрешостей оценки углов</h2> 
 Для двух датчиков, которые мы взяли для примера - ADIS16488A и MPU-9250, получены предельные ошибки оценивания углов ориентации при совместном влиянии погрешностей акселерометра и магнитометра.
 
-ТАБЛИЦА
-
-датчик 1 датчик2
-крен
-тангаж
-рыскание
-
+В таблице ниже - максимальные значения полученных ошибок:
+<table>
+    <tr>
+        <td><b>Угол</b></td>
+        <td> <b>MPU-9250</b></td>
+        <td><b>ADIS16488A</b></td>
+    </tr>
+    <tr>
+        <td>Крен</td>
+        <td>$$display$$30^{\circ}$$display$$</td>
+        <td>$$display$$6^{\circ}$$display$$</td>
+    </tr>
+    <tr>
+        <td>Тангаж</td>
+        <td>$$display$$10^{\circ}$$display$$</td>
+        <td>$$display$$2^{\circ}$$display$$</td>
+    </tr>
+    <tr>
+        <td>Магнитный азимут</td>
+        <td>$$display$$50^{\circ}$$display$$</td>
+        <td>$$display$$60^{\circ}$$display$$</td>
+    </tr>
+</table>
 Вот так выглядят ошибки оценивания крена в зависимости от значений крена и тангажа:
 <img src="https://habrastorage.org/webt/jx/oe/np/jxoenpth2ncopan-z3b50duh2ru.png" />
 
@@ -136,7 +152,6 @@ pitch'\\
 здесь три графика как выше в условиях
 - только ошибки аксов
 - только ошибки магнитометров
-
 
 <li>Влияние погрешностей магнитометра на ошибки оценивания магнитного азимута</li>
 
@@ -159,8 +174,9 @@ pitch'\\
 <ul>
 	<li>Перов А. И., Харисов В. Н. ГЛОНАСС. Принципы построения и функционирования М.:Радиотехника, 2010. – 800 с.</li>
 	<li><a href="https://www.nxp.com/docs/en/application-note/AN3461.pdf">Tilt Sensing Using a Three-Axis Accelerometer, Rev. 6 - Freescale Semiconductor, Inc.</a></li>
+<li><a href="https://www.nxp.com/docs/en/application-note/AN4248.pdf">Implementing a Tilt-Compensated eCompass using Accelerometer and Magnetometer Sensors - Freescale Semiconductor
+Application Note.</a></li>
 	<li><a href="https://www.invensense.com/wp-content/uploads/2015/02/PS-MPU-9250A-01-v1.1.pdf">MPU-9250 Product Specification Revision 1.1 - InvenSense Inc.</a></li>
 <li><a href="https://www.analog.com/media/en/technical-documentation/data-sheets/ADIS16488A.pdf"> ADIS16488A Data Sheet - Analog Devices, Inc.</a></li>
-	<li></a>
 </ul>
 </spoiler>
