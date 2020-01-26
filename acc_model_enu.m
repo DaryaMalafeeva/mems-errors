@@ -20,7 +20,7 @@ ym_enu = zeros(3,N);
 % random limited angles 
 R = (rand(N,1)*2*pi - pi)* 165/180;
 P = (rand(N,1)*pi - pi/2)* 75/90; 
-Y = (rand(N,1)*2*pi - pi)* 165/180; 
+%Y = (rand(N,1)*2*pi - pi)* 165/180; 
 
 % constant angles
 %R = ones(N,1)*deg2rad(180);  
@@ -30,7 +30,7 @@ Y = (rand(N,1)*2*pi - pi)* 165/180;
 % zero angles
 %R = zeros(N,1);                    
 %P = zeros(N,1);
-% Y = zeros(N,1);
+Y = zeros(N,1);
 
 % angles matrix
 RPY = [R P Y];            
@@ -41,7 +41,7 @@ A_enu = [0; 0; -1];  % g
 
 %--------------------------------Choose IMU--------------------------------
 
-% [acc_parameters, magn_parameters, imu_name] = get_MPU9250A_parameters();
+%[acc_parameters, magn_parameters, imu_name] = get_MPU9250A_parameters();
 [acc_parameters, magn_parameters, imu_name] = get_ADIS16488A_parameters();
 %--------------------------------------------------------------------------
 
@@ -119,76 +119,81 @@ err_Azimuth_deg = err_Azimuth*180/pi;
 % plotting
 % roll error vs roll & pitch
 
-h = figure();
-
-subplot(1,2,1)
-plot3(R*180/pi, P*180/pi, err_PPY_deg(:,1), '.b')
-ax = gca;
-set(ax,'xtick',(-180:90:180));
-set(ax,'ytick',(-90:30:90));
-title(['roll error vs roll & pitch for ' imu_name])
-grid on
-xlabel('roll, deg')
-ylabel('pitch, deg')
-zlabel('roll error, deg')
-grid on
-
-% pitch error vs roll & pitch
-subplot(1,2,2)
-plot3(R*180/pi, P*180/pi, err_PPY_deg(:,2), '.r')
-ax = gca;
-set(ax,'xtick',(-180:90:180));
-set(ax,'ytick',(-90:90:90));
-title(['pitch error vs roll & pitch for ' imu_name])
-xlabel('roll, deg')
-ylabel('pitch, deg')
-zlabel('pitch error, deg')
-grid on
-
-
-        
-        set(h, 'Position', [100,100,720,320], 'PaperPositionMode', 'auto');
-        
-        cmnstr = ['.\pitch_err.png'];
-        print(h, cmnstr, '-dpng', '-r300');
-        
-        
-% to plot the following dependencies correctly you must set one of the
-% angles by zeros 
-
-% % azimuth error vs roll & pitch
-% figure
-% plot3(R*180/pi, P*180/pi, err_Azimuth_deg, '.')
+% figure(1);
+% plot3(R*180/pi, P*180/pi, err_PPY_deg(:,1), '.r')
 % ax = gca;
 % set(ax,'xtick',(-180:90:180));
 % set(ax,'ytick',(-90:30:90));
-% title('azimuth error vs roll & pitch ')
+% set(ax,'ztick',(-30:10:30));
+% %legend(['roll error vs roll & pitch for ' imu_name])
+% title(['roll error vs roll & pitch for ' imu_name])
+% grid on
 % xlabel('roll, deg')
 % ylabel('pitch, deg')
-% zlabel('azimuth error, deg')
+% zlabel('roll error, deg')
 % grid on
+% cmnstr = 'r_err_vs_r_p_err.png';
+% print(figure(1), cmnstr, '-dpng', '-r300');
 % 
+% 
+% % pitch error vs roll & pitch
+% figure(2);
+% plot3(R*180/pi, P*180/pi, err_PPY_deg(:,2),'.r')
+% ax = gca;
+% set(ax,'xtick',(-180:90:180));
+% set(ax,'ytick',(-90:90:90));
+% set(ax,'ztick',(-10:2:10));
+% title(['pitch error vs roll & pitch for ' imu_name])
+% xlabel('roll, deg')
+% ylabel('pitch, deg')
+% zlabel('pitch error, deg')
+% grid on
+% cmnstr = 'p_err_vs_r_p_err.png';
+% print(figure(2), cmnstr, '-dpng', '-r300');
+             
+% to plot the following dependencies correctly you must set one of the
+% angles by zeros 
+% azimuth error vs roll & pitch
+figure(3);
+plot3(R*180/pi, P*180/pi, err_Azimuth_deg, '.b')
+ax = gca;
+set(ax,'xtick',(-180:90:180));
+set(ax,'ytick',(-90:30:90));
+set(ax,'ztick',(-50:10:50));
+title(['azimuth error vs roll & pitch' imu_name])
+xlabel('roll, deg')
+ylabel('pitch, deg')
+zlabel('azimuth error, deg')
+grid on
+cmnstr = 'az_err_vs_r_p.png';
+print(figure(3), cmnstr, '-dpng', '-r300');
+
 % % azimuth error vs roll & azimuth
-% figure
-% plot3(R*180/pi, Y*180/pi, err_Azimuth_deg, '.')
+% figure(4);
+% plot3(R*180/pi, Y*180/pi, err_Azimuth_deg, '.r')
 % ax = gca;
 % set(ax,'xtick',(-180:90:180));
 % set(ax,'ytick',(-180:90:180));
-% title('azimuth error vs roll & azimuth ')
+% set(ax,'ztick',(-20:5:20));
+% title(['azimuth error vs roll & azimuth' imu_name])
 % xlabel('roll, deg')
 % ylabel('azimuth, deg')
 % zlabel('azimuth error, deg')
 % grid on
-% 
-% % azimuth error vs pitch & azimuth
-% figure
-% plot3(P*180/pi, Y*180/pi, err_Azimuth_deg, '.')
+% cmnstr = 'az_err_vs_r_az.png';
+% print(figure(4), cmnstr, '-dpng', '-r300');
+
+% azimuth error vs pitch & azimuth
+% figure(5);
+% plot3(P*180/pi, Y*180/pi, err_Azimuth_deg, '.r')
 % ax = gca;
 % set(ax,'xtick',(-90:30:90));
 % set(ax,'ytick',(-180:90:180));
-% title('azimuth error vs pitch & azimuth')
+% set(ax,'ztick',(-180:60:180));
+% title(['azimuth error vs pitch & azimuth' imu_name])
 % xlabel('pitch, deg')
 % ylabel('azimuth, deg')
 % zlabel('azimuth error')
 % grid on
-% 
+% cmnstr = 'az_err_vs_p_az.png';
+% print(figure(5), cmnstr, '-dpng', '-r300');
