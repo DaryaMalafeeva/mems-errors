@@ -113,6 +113,7 @@ pitch'\\
 <h2>Результаты - расчет погрешостей оценки углов</h2> 
 Для двух датчиков, которые мы взяли для примера - ADIS16488A и MPU-9250, получены предельные ошибки оценивания углов ориентации при совместном влиянии погрешностей акселерометра и магнитометра.
 
+(с азимутом ерунда, может вообще убрать таблицу?)
 В таблице ниже - максимальные значения полученных ошибок:
 <table>
     <tr>
@@ -123,7 +124,7 @@ pitch'\\
     <tr>
         <td>Крен</td>
         <td>$$display$$30^{\circ}$$display$$</td>
-        <td>$$display$$6^{\circ}$$display$$</td>
+        <td>$$display$$8^{\circ}$$display$$</td>
     </tr>
     <tr>
         <td>Тангаж</td>
@@ -136,18 +137,24 @@ pitch'\\
         <td>$$display$$60^{\circ}$$display$$</td>
     </tr>
 </table>
+
+
 Совместное влияние погрешностей акселерометра и магнитометра на ошибки оценивания углов ориентации:
 <ul>
 <li> Вот так выглядят ошибки оценивания крена в зависимости от значений крена и тангажа:
-<img src="https://habrastorage.org/webt/jx/oe/np/jxoenpth2ncopan-z3b50duh2ru.png" /></li>
+<a target='_blank' href='https://habrastorage.org/webt/zp/_o/ui/zp_ouiqcq4gwt6qylkmuojzsx7o.jpeg'><img src='https://habrastorage.org/webt/zp/_o/ui/zp_ouiqcq4gwt6qylkmuojzsx7o.jpeg'></a></li>
+
 <li> Ошибки оценивания тангажа в зависимости от значений крена и тангажа:
-<img src="https://habrastorage.org/webt/uj/gr/6p/ujgr6pneknswc4xnqrsizqaehg8.png" /></li>
+<a target='_blank' href='https://habrastorage.org/webt/40/te/kh/40tekhvik8xfm4aohc7gw8wms1m.jpeg'><img src="https://habrastorage.org/webt/40/te/kh/40tekhvik8xfm4aohc7gw8wms1m.jpeg"/></a></li>
+
 <li>Ошибки оценивания магнитного азимута от углов крена и тангажа:
-<img src="https://habrastorage.org/webt/ha/pp/mb/happmbuwulm5six2mps4rbgcbf4.png" /></li>
+<a target='_blank' href='https://habrastorage.org/webt/d7/98/pb/d798pb-mpmlwex107mahspho4v0.jpeg'><img src="https://habrastorage.org/webt/d7/98/pb/d798pb-mpmlwex107mahspho4v0.jpeg"/></a></li>
+
 <li>Ошибки оценивания магнитного азимута от углов крена и магнитного азимута:
-<img src="https://habrastorage.org/webt/kd/4_/cz/kd4_czwnzae4iml1edycd1-v1ii.png" /></li>
+<a target='_blank' href='https://habrastorage.org/webt/q5/cm/yg/q5cmygz7fcvfwgx59dekjndhqpc.jpeg'><img src="https://habrastorage.org/webt/q5/cm/yg/q5cmygz7fcvfwgx59dekjndhqpc.jpeg"/></a></li>
+
 <li>Ошибки оценивания магнитного азимута от углов тангажа и магнитного азимута:
-<img src="https://habrastorage.org/webt/ik/pj/vs/ikpjvslorwfykuvj3oxlgjnm2za.png" /></li>
+<a target='_blank' href='https://habrastorage.org/webt/nk/oo/r0/nkoor0jpgncbdn-mczcnyl0gphe.jpeg'><img src="https://habrastorage.org/webt/nk/oo/r0/nkoor0jpgncbdn-mczcnyl0gphe.jpeg"/></a></li>
 </ul>
 Как можно заметить - величина ошибок растёт с приближением к границе диапазонов измерений углов. ПОЧЕМУ? 
 
@@ -155,28 +162,38 @@ pitch'\\
 Влияние погрешностей акселерометра на ошибки оценивания углов ориентации:
 <ul>
 <li>Влияние погрешностей акселерометра на ошибки оценивания крена от крена и тангажа
-<img src="https://habrastorage.org/webt/je/vz/zj/jevzzj_0snqcnpip9uxebzsw_00.png" /></li>
+<a target='_blank' href='https://habrastorage.org/webt/x1/ch/yv/x1chyvul7wvnrtba_jk-dq2ew4g.jpeg'><img src="https://habrastorage.org/webt/x1/ch/yv/x1chyvul7wvnrtba_jk-dq2ew4g.jpeg"/></a></li>
+
 <li>Влияние погрешностей акселерометра на ошибки оценивания тангажа от крена и тангажа
-<img src="https://habrastorage.org/webt/ke/gt/6u/kegt6ufghw8fa_s5f9dlv5tivaa.png" /></li>
+<a target='_blank' href='https://habrastorage.org/webt/0b/ic/ok/0bicok12pompatsdbjnmscat-vy.jpeg'><img src="https://habrastorage.org/webt/0b/ic/ok/0bicok12pompatsdbjnmscat-vy.jpeg"/></a></li>
+
 <li>Влияние погрешностей акселерометра на ошибки оценивания магнитного азимута от крена и тангажа
-<img src="https://habrastorage.org/webt/b1/uw/al/b1uwalqr16024lrcyq8iph5dtiq.png" /></li>
+<a target='_blank' href='https://habrastorage.org/webt/-h/ug/ka/-hugkabcfvczoheokdceiic8ooa.jpeg'><img src="https://habrastorage.org/webt/-h/ug/ka/-hugkabcfvczoheokdceiic8ooa.jpeg"/></a></li>
+
 <li>Влияние погрешностей акселерометра на ошибки оценивания магнитного азимута от крена и магнитного азимута
-<img src="https://habrastorage.org/webt/sv/bc/l8/svbcl8oqhqxqsvtnjcmzu5pu7tg.png" /></li>
+<a target='_blank' href='https://habrastorage.org/webt/mx/a0/86/mxa086e6km5ycwp-djco7_blht8.jpeg'><img src="https://habrastorage.org/webt/mx/a0/86/mxa086e6km5ycwp-djco7_blht8.jpeg"/></a></li>
+
 <li>Влияние погрешностей акселерометра на ошибки оценивания магнитного азимута от тангажа магнитного азимута
-<img src="https://habrastorage.org/webt/a5/la/az/a5laaz-dmu1ey3vx67c12qd19ky.png" /></li>
+<a target='_blank' href='https://habrastorage.org/webt/cw/qp/yf/cwqpyfv35gtvmr4p93vu8ffdjuc.jpeg'><img src="https://habrastorage.org/webt/cw/qp/yf/cwqpyfv35gtvmr4p93vu8ffdjuc.jpeg"/></a></li>
 </ul>
+
+
 Влияние погрешностей магнитометра на ошибки оценивания углов ориентации:
 <ul>
 <li>Влияние погрешностей магнитометра на ошибки оценивания крена от крена и тангажа 
-<img src="https://habrastorage.org/webt/6y/57/1c/6y571cjkyowfhswspol3j92zmyw.png" /></li>
+<a target='_blank' href='https://habrastorage.org/webt/ph/rh/ow/phrhowgyimr6n56lpisnbgzcpdu.jpeg'><img src="https://habrastorage.org/webt/ph/rh/ow/phrhowgyimr6n56lpisnbgzcpdu.jpeg"/></a></li>
+
 <li>Влияние погрешностей магнитометра на ошибки оценивания тангажа от крена и тангажа
-<img src="https://habrastorage.org/webt/6i/rh/uc/6irhuctkunahy5jdl3pd3fekvww.png" /></li>
+<a target='_blank' href='https://habrastorage.org/webt/2q/jh/zt/2qjhztswxb6awbbbtin7quz4fci.jpeg'><img src="https://habrastorage.org/webt/2q/jh/zt/2qjhztswxb6awbbbtin7quz4fci.jpeg"/></a></li>
+
 <li>Влияние погрешностей магнитометра на ошибки оценивания магнитного азимута от крена и тангажа
-<img src="https://habrastorage.org/webt/co/o_/5u/coo_5urxiftbcmvhjkmsoznvhzi.png" /></li>
+<a target='_blank' href='https://habrastorage.org/webt/ff/oe/s8/ffoes8wsnlnkjzzknr6o6hyn4ek.jpeg'><img src="https://habrastorage.org/webt/ff/oe/s8/ffoes8wsnlnkjzzknr6o6hyn4ek.jpeg"/></a></li>
+
 <li>Влияние погрешностей магнитометра  на ошибки оценивания магнитного азимута от крена и магнитного азимута
-<img src="https://habrastorage.org/webt/sz/cv/ey/szcveywz0fvedmamapz3ih86zom.png" /></li>
+<a target='_blank' href='https://habrastorage.org/webt/st/4g/md/st4gmdnkf4skgqogylksw5uguve.jpeg'><img src="https://habrastorage.org/webt/st/4g/md/st4gmdnkf4skgqogylksw5uguve.jpeg"/></a></li>
+
 <li>Влияние погрешностей магнитометра на ошибки оценивания магнитного азимута от тангажа магнитного азимута
-<img src="https://habrastorage.org/webt/js/rn/xy/jsrnxydsa4d3pjlccxankpfehjk.png" /></li>
+<a target='_blank' href='https://habrastorage.org/webt/5o/o9/a_/5oo9a_dcr6df7eupotcyrbipzpy.jpeg'><img src="https://habrastorage.org/webt/5o/o9/a_/5oo9a_dcr6df7eupotcyrbipzpy.jpeg"/></a></li>
 </ul>
 </spoiler> 
 <h2>Итог</h2> 
