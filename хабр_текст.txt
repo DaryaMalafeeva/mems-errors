@@ -213,4 +213,3 @@ Application Note.</a></li>
 <li><a href="https://www.analog.com/media/en/technical-documentation/data-sheets/ADIS16488A.pdf"> ADIS16488A Data Sheet - Analog Devices, Inc.</a></li>
 </ul>
 </spoiler>
-<img src="https://habrastorage.org/webt/hc/kw/7m/hckw7mfxddsggwnzstxbbiqga18.png" />
