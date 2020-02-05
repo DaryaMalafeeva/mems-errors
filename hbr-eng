@@ -1,4 +1,4 @@
-<img src = "https://habrastorage.org/webt/ta/gq/z3/tagqz3fsjdoj62pof0za8sgsoku.png" />
+<img src="https://habrastorage.org/webt/wk/8t/dp/wk8tdp67ywmjqthhrqjyigki-ly.png" />
 When it's necessary to evaluate the orientation angles you may have the question - which MEMS sensor to choose. Sensors developers provide a great amound of different parameters and it's a pretty hard deal to get the information about the quality of the sensor. 
 
 Here's the description of the script for Octave/Matlab which allows to estimate the orientation angles errors from MEMS accelerometer and magnetometer measurements. The input data for script are datasheet parameters for the sensors. Article can be useful for those who start using MEMS sensors in their devices. You can find the project on <a href="https://github.com/DaryaMalafeeva/mems-errors"> GitHub</a>.
