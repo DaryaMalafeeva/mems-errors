@@ -1,215 +1,200 @@
-<img src="https://habrastorage.org/webt/ta/gq/z3/tagqz3fsjdoj62pof0za8sgsoku.png" />
-При разработке устройств, в которых необходимо оценивать углы ориентации, может встать вопрос - какой МЭМС датчик выбрать. Производители датчиков приводят множество параметров, из которых нам требуется получить полезную информацию о качестве датчика.
-Чтобы понять, на какие точности углов мы можем рассчитывать, нужно приложить некоторое количество усилий.  
-<b>TL;DR</b>: Описан небольшой скрипт для Octave/MATLAB, позволяющий оценить ошибки расчёта углов ориентации по измерениям МЭМС акселерометров и магнитометров. На входе скрипта - параметры датчиков из даташитов (и/или погрешности калибровки). Статья может быть полезна тем, кто начинает использовать инерциальные датчики в своих устройствах. Небольшой ликбез по датчикам прилагается. <a href="https://github.com/DaryaMalafeeva/mems-errors">Ссылка на гитхаб</a> тоже.
-<habracut text="Вот как мы решили эту задачу:"/>
-Сходу примем такие условия:
-<ul><li>Мы хотим оценить углы ориентации неподвижного устройства. <spoiler title="Почему?">
-Ориентацию подвижного устройства просто по формулам не посчитать, нужно использовать хитрые алгоритмы.</spoiler></li>
-<li>Для оценки углов мы будем использовать измерения МЭМС акселерометров и магнитометров.</li>
-</ul>
-<i>Краткий ликбез</i>
-<h2>Углы ориентации</h2>
-<img src="https://habrastorage.org/webt/0h/za/ze/0hzazeqlyderpj80nirkuuwustg.png" />
-Будем понимать под углами ориентации объекта углы Эйлера - крен (roll), тангаж (pitch), рыскание (yaw), связывающие собственную систему координат XYZ объекта и локальную систему координат восток-север-верх (ENU - East North Up). Углы roll, pitch, yaw обозначают поворот, который нужно совершить осям XYZ чтобы перейти в оси ENU. Соответственно, нулевые углы означают, что ось X объекта смотрит на восток, ось Y объекта смотрит на север, ось Z - вверх. Порядок поворота осей - начиная с последнего угла: сначала на yaw (вокруг оси Z), потом на pitch (вокруг оси Y), потом на roll (вокруг оси X).
+<img src="https://habrastorage.org/webt/wk/8t/dp/wk8tdp67ywmjqthhrqjyigki-ly.png" />
+When it's necessary to evaluate the orientation angles you may have the question - which MEMS sensor to choose. Sensors developers provide a great amound of different parameters and it's a pretty hard deal to get the information about the quality of the sensor. 
 
-<h2>Акселерометр</h2>Это датчик, измеряющий проекцию кажущегося ускорения на ось чувствительности. Кажущегося - потому что измеряет и силу тяжести тоже, даже в то время как акселерометр неподвижен. Проще всего представить акселерометр как грузик на пружинке, его  выдаваемые измерения  пропорциональны степени растяжения пружины. Если акселерометр покоится - пружина растянута лишь силой тяжести. Если ускоряется - то будет сумма сил: инерции грузика $inline$\left (F=m\overrightarrow{a}\right )$inline$ и силы тяжести $inline$\left (F_{g}=m\overrightarrow{g}\right )$inline$.
-Примем следующую модель измерений триады ортогональных (взаимно перпендикулярных) акселерометров:
-$$display$$a_{XYZ}= m_{a} \cdot A_{XYZ}+b_{a}+n_{a},$$display$$ где $inline$a_{XYZ}$inline$ – измеряемое ускорение в ССК (собственной системе координат) XYZ, $inline$m_{a}$inline$ – матрица перекоса осей и масштабных коэффициентов акселерометра, $inline$A_{XYZ}$inline$ – вектор истинного ускорения в ССК XYZ, $inline$b_{a}$inline$ – вектор смещения нуля акселерометра, $inline$n_{a}$inline$ – шум измерений.
-<i>Подробнее о матрице перекоса осей и масштабных коэффициентов</i>
-Матрица перекоса осей и масштабных коэффициентов выглядит следующим образом:
-$$display$$m_{a}=\begin{bmatrix}1+m_{a,1,1} & m_{a,1,2} & m_{a,1,3}\\ 
-m_{a,2,1}& 1+m_{a,2,2} & m_{a,2,3}\\ 
-m_{a,3,1} & m_{a,3,2} & 1+m_{a,3,3}
-\end{bmatrix},$$display$$ где элементы, расположенные по главной диагонали ($inline$ 1+m_{a,1,1}, 1+m_{a,2,2}, 1+m_{a,3,3}$inline$) - это масштабные коэффициенты и их погрешности по трём осям акселерометра, а остальные элементы матрицы - перекосы осей акселерометра.
+Here's the description of the script for Octave/Matlab which allows to estimate the orientation angles errors from MEMS accelerometer and magnetometer measurements. The input data for script are datasheet parameters for the sensors. Article can be useful for those who start using MEMS sensors in their devices. You can find the project on <a href="https://github.com/DaryaMalafeeva/mems-errors"> GitHub</a>.
+<habracut text = "This is how we solved this problem:" />
+Accept the following conditions:
+<ul> <li> We're going to estimate the orientation angles of the stationary device. <spoiler title = "Why?">
+The orientation of the mobile device simply cannot be calculated using formulas and you'll have to use tricky algorithms. </spoiler> </li>
+<li> We will use MEMS measurements of accelerometers and magnetometers to estimate angles. </li></ul>
 
-<spoiler title="Выбор параметров акселерометра из даташита ">
+<i> Bit of theory </i>
+<h2> Orientation angles </h2>
+<img src = "https://habrastorage.org/webt/0h/za/ze/0hzazeqlyderpj80nirkuuwustg.png" />
+We will understand the orientation angles as the Euler Angles - Roll, Pitch and Yaw. They connect the body frame coordinate system XYZ and the local coordinate system East-North-Up (ENU). The Roll, Pitch and Yaw angles denote the rotation that the XYZ axes must make in order to move in the ENU axis. Accordingly, zero angles means that the X axis of the object is oriented to the east, the Y axis of the object is oriented to the north, the Z axis is oriented up. The rotation order of the axes is from the last corner: first on Yaw (around Z axis), then on Pitch (around  Y axis) and then on Roll (around  X axis).
 
-<h3>Акселерометр MPU-9250:</h3>
+<h2> Accelerometer </h2> This sensor measures the projection of apparent acceleration onto the sensitivity axis. It's apparent acceleration because the accelerometer measures gravity too even while the sensor is stationary. You can imagine the accelerometer as the weight on a spring. Its measured values are proportional to the degree of tention of the spring. If the accelerometer is stationary the spring is stretched only by gravity. If the accelerometer is in a dynamic state then there'll be a sum of forces: inertia of the weight $inline$\left(F=m\overrightarrow{a}\right) $inline$ and gravity $inline$ \left (F_{g}=m\overrightarrow{g}\right) $inline$.
+
+We accept the following model of measurements of the triad of orthogonal (mutually perpendicular) accelerometers:
+$$display$$ a_{XYZ} = m_{a}\cdot A_{XYZ} + b_{a} + n_{a}, $$display$$ where $inline$ a_{XYZ} $inline$ is the measured acceleration in body frame coordinate system XYZ, $inline$ m_{a} $inline$ is the matrix of axes misalignment and scale factors of the accelerometer, $inline$ A_{XYZ} $inline$ is the true acceleration vector in body frame coordinate system XYZ, $inline$ b_{a} $inline$ is the accelerometer zero displacement vector, $inline$ n_{a} $inline$ is the measurement noise.
+
+<i> More about the matrix of the axis misalignment and scale factors</i>
+The matrix of the axes misalignment and scale factors is:
+$$display$$ m_{a} =\begin{bmatrix} 1 + m_{a, 1,1} & m_{a, 1,2} & m_{a, 1,3} \\
+m_{a, 2,1} & 1 + m_{a, 2,2} & m_{a, 2,3} \\
+m_{a, 3,1} & m_{a, 3,2} & 1 + m_{a, 3,3}
+\end {bmatrix}, $$display$$ where the elements located on the main diagonal ($inline$ 1 + m_{a, 1,1}, 1 + m_{a, 2,2}, 1 + m_{a, 3,3} $inline$) are scale factors and their errors along the three axes of the accelerometer and the remaining elements of the matrix are axes misalignment of the accelerometer.
+<spoiler title = "Selecting accelerometer parameters from the datasheet">
+<h3> Accelerometer MPU-9250: </h3>
 <ul>
-	<li>Смещение нуля акселерометра - Zero-G Initial Calibration Tolerance ($inline$\pm60mg$inline$ для компонент $inline$X, Y$inline$, $inline$\pm80mg$inline$ для компоненты $inline$Z$inline$) - для расчётов переводим в единицы $inline$g$inline$ домножив на $inline$10^{-3};$inline$</li>
-        <li>Погрешность масштабного коэффициента - Initial Tolerance ($inline$\pm3\%$inline$) - выражается в процентах. Для расчётов надо перевести в разы, домножив на $inline$10^{-2};$inline$</li>
-        <li>Перекосы осей - Cross Axis Sensitivity ($inline$\pm2\%$inline$) - также умножаем на $inline$10^{-2};$inline$</li>
-        <li>Спектральная плотность мощности шума акселерометра - Noise Power Spectral Density $inline$\left (300\frac{\mu g}{\sqrt{Hz}}  \right )$inline$ -  переводим числитель в $inline$g$inline$ домножая все на $inline$10^{-6};$inline$</li>
-<li>Полоса пропускания - Low Pass Filter Response $inline$\left (5-260 Hz\right )$inline$  - приведены границы, в пределах которых её можно изменять. Установим максимальную полосу. Все равно ошибки будут определяться не шумами;</li></ul>
-Зная спектральную плотность мощности шума и полосу пропускания датчика можно рассчитать СКО шума на выходе датчика:
-$$display$$\sigma _{noise}=G_{0}\cdot\sqrt{\Pi_{noise}};$$display$$
-<h3>Акселерометр ADIS16488A:</h3>
-<ul>
-       <li> Смещение нуля - Bias Repeatability ($inline$\pm 16mg$inline$)  - переводим в $inline$g$inline$ домножая на $inline$10^{-3};$inline$</li>
-       <li> Погрешность масштабного коэффициента - (Sensitivity) Repeatability ($inline$\pm 0.5\%$inline$) - переводим из процентов в разы;</li>
-       <li> Перекосы осей - Misalignment Axis to frame  ($inline$\pm1^{\circ}$inline$) - в градусах, переводим в разы (радианы, поскольку величины малые);</li>
-       <li> Спектральная плотность мощности шума - Noise Density $inline$\left ( 0.063\frac{mg}{\sqrt{Hz}}rms  \right )$inline$ - переводим числитель в $inline$g;$inline$</li>
-       <li> Полоса пропускания - $inline$\left (3dB Bandwidth\right)$inline$ - выберем такой же, как у MPU-9250;</li>
+<li> Accelerometer Zero Offset - Zero-G Initial Calibration Tolerance ($inline$ \pm 60 mg $inline$ for $inline$ X, Y $inline$, $inline$ \pm 80 mg $inline$ for $inline$ Z $inline$) - for calculations translate into units $inline$ g $inline$ multiplying by $inline$ 10^{-3}; $inline$</li>
+        <li> The error of the scale factor - Initial Tolerance ($inline$ \pm3\% $inline$) - is expressed as a percentage. For calculations you need to convert to times multiplying by $inline$ 10^{-2};$inline$ </li>
+        <li> Axis misalignment - Cross Axis Sensitivity ($inline$ \pm2\%$inline$) - also convert to times multiplying by $inline$ 10^{-2}; $inline$ </li>
+        <li> Accelerometer noise power spectral density - Noise Power Spectral Density $inline$ \left (300\frac{\mu g} {\sqrt{Hz}}\right) $inline$ - convert the numerator to $inline$ g $inline$ multiplying everything by $inline$10^{- 6};$inline$ </li>
+<li> Bandwidth - Low Pass Filter Response $inline$ \left (5-260 Hz\right) $inline$ - shows the boundaries within which it can be changed. Set the maximum band. Anyway errors won't be determined by noise; </li> 
+When you know spectral density of the noise power and the passband of the sensor you can calculate the standard deviation of the noise at the output of the sensor:
+$$display$$ \sigma _ {noise}=G_{0} \cdot \sqrt{\Pi_{noise}}; $$display$$
 </ul>
-</spoiler>
-<h2>Магнитометр</h2>Датчик, который измеряет проекцию индукции магнитного поля на ось чувствительности. Магнитометру свойственны искажения hard-iron и soft-iron. Hard-iron искажение - это аддитивный эффект, когда к измеряемому полю добавляется постоянная составляющая. Причиной может быть, например, действие постоянного магнита или собственное смещение нуля датчика. Искажение soft-iron - мультипликативный эффект, отражающий изменение направления и/или ослабление вектора магнитной индукции. Этот эффект может быть вызван наличием металлического предмета в непосредственной близости от магнитометра или же собственными искажениями датчика - погрешностью масштабного коэффициента или перекосом его оси чувствительности.
-Примем модель измерений триады магнитометров:
-$$display$$m_{XYZ}=S_{m}\cdot M_{XYZ}+b_{m}+n_{m},$$display$$ где $inline$m_{XYZ}$inline$ – измерения магнитометра в ССК XYZ, $inline$S_{m}$inline$ – диагональная матрица перекоса осей и масштабных коэффициентов (которая описывает эффект soft–iron), $inline$M_{XYZ}$inline$ – вектор истинной магнитной индукции в ССК, $inline$b_{m}$inline$ – смещение нулей магнитометра (описывает эффект hard–iron), $inline$n_{m}$inline$ – шум измерений.
-<i>Матрица перекоса осей и масштабных коэффициентов магнитометра:</i>
-$$display$$S_{m}=\begin{bmatrix}1+S_{m,1,1} & S_{m,1,2} &S_{m,1,3}\\ 
-S_{m,2,1}& 1+S_{m,2,2} & S_{m,2,3}\\ 
-S_{m,3,1} & S_{m,3,2}&1+ S_{m,3,3}
-\end{bmatrix},$$display$$элементы, расположенные на главной диагонали ($inline$S_{m,1,1}, S_{m,2,2}, S_{m,3,3}$inline$) - масштабные коэффициенты и их погрешности по трём осям магнитометра, остальные элементы матрицы - перекосы осей магнитометра. Все элементы матрицы также учитывают эффект soft-iron.
-<spoiler title="Выбор параметров магнитометра из даташита">
-<h3>Магнитометр MPU-9250:</h3>
-В даташите нужных нам параметров нет, поэтому предположим, что магнитометр откалиброван и возьмем следующие числа:
+
+<h3> Accelerometer ADIS16488A: </h3>
 <ul>
-	<li> смещение нуля - $inline$(1\mu T);$inline$</li>
-    <li> погрешность масштабных коэффициентов - $inline$(5\%);$inline$</li>
-    <li> перекосы осей - предположим, что они такие же, как у акселерометров - $inline$(\pm2\%);$inline$</li>
-    <li> шум на выходе  - $inline$(0.6\mu T);$inline$</li>
-</ul>
-<h3>Магнитометр ADIS16488A:</h3>
-<ul>
-       <li>Смещение нуля - Initial Bias  Error $inline$\left (\pm15 mgauss = 1.5 \mu T \right )$inline$ - будем считать, что мы его откалибровали до $inline$(0.5 \mu T)$inline$;</li>
-       <li> Погрешность масштабного коэффициента - Initial Sensitivity Tolerance $inline$\left (2\% \right );$inline$</li>
-       <li>Перекосы осей - Misalignment Axis to axis $inline$\left (0.35^{\circ} \right )$inline$ - в градусах, переводим в разы (радианы, так как величина маленькая);</li>
-       <li> Спектральная плотность мощности шума - Noise Density $inline$\left (0.042\frac{mgauss}{\sqrt{Hz}} \right )$inline$ - переводим в $inline$\left (\frac{Tesla}{\sqrt{Hz}}  \right );$inline$</li> 
-      <li> Полоса пропускания - возьмем для модели значение  $inline$260 Hz;$inline$</li> 
+       <li> Zero offset - Bias Repeatability ($inline$\pm 16mg $inline$) - convert to $inline$ g $inline$ multiplying by $inline$ 10^{- 3}; $inline$ </li>
+       <li> Scale factor error - (Sensitivity) Repeatability ($inline$ \pm0.5 \% $inline$) - convert from percent to times; </li>
+       <li> Axis misalignment - Misalignment Axis to frame ($inline$ \pm1^{\circ} $inline$) - in degrees, convert to times (or radians because the values are small); </li>
+       <li> Noise power spectral density - Noise Density $inline$ \left (0.063\frac{mg}{\sqrt{Hz}}rms\right) $inline$ - convert the numerator to $inline$ g; $inline$ </ li>
+       <li> Bandwidth - $inline$ \left (3dB Bandwidth\right) $inline$ - choose the same as the MPU-9250; </li>
 </ul>
 </spoiler>
-<h2>Расчет углов ориентации</h2>Благодаря наличию на Земле силы тяжести, акселерометры "чувствуют" направление вниз. Их измерения используются для расчета углов крена и тангажа. Формулы для расчёта можно найти <a href="https://www.nxp.com/docs/en/application-note/AN3461.pdf"> тут</a>. Третий - угол рыскания (а в данном случае - магнитного азимута), может быть определен благодаря наличию у Земли магнитного поля. Вектор индукции магнитного поля измеряется магнитометрами и их измерения участвуют в расчете угла рыскания. Нужно отметить, что в расчёте магнитного азимута используются измерения магнитометра, пересчитанные в плоскость. <a href="https://www.nxp.com/docs/en/application-note/AN4248.pdf">Здесь</a> можно найти формулу для расчёта магнитного азимута.
-$$display$$roll=atan\left ( \frac{a_{Y}}{a_{Z}} \right ),$$display$$ $$display$$pitch=atan\left ( \frac{-a_{X}}{\sqrt{a_{Y}^{2}+a_{Z}^{2}}} \right ),$$display$$ $$display$$yaw=atan2\left ( \frac{m_{E}}{m_{N}} \right ),$$display$$ где $inline$atan2$inline$ - функция полного арктангенса, $inline$a_{X}$inline$, $inline$a_{Y}$inline$, $inline$a_{Z}$inline$ - измерения акселерометра по трём осям в ССК, $inline$m_{E}$inline$, $inline$m_{N}$inline$ - измерения магнитометра по осям X', Y' (измерения магнитометров пересчитаны в плоскость). 
-
-<h2>Ошибки оценивания углов ориентации</h2> <h3>Описание алгоритма</h3>
-<img src="habrastorage.org/webt/o9/o8/zs/o9o8zsy01wyfkjho_8f0ip-lstk.jpeg"/>
+<h2> Magnetometer </h2> The sensor that measures the projection of the magnetic field induction onto the sensitivity axis. The magnetometer is characterized by distortions of hard-iron and soft-iron. Hard-iron distortion is an additive effect: a constant component is added to the measured field. For example, the reason may be the action of a permanent magnet or a self-zero offset of the sensor. Soft-iron distortion is a multiplier effect: it's reflecting a change in direction and/ or attenuation of the magnetic induction vector. This effect can be caused by the presence of a metal object in the immediate vicinity of the magnetometer or by the sensor’s own distortions - an error in the scale factor or a distortion of its sensitivity axis.
+We accept the measurement model of the triad of magnetometers:
+$$display$$ m_{XYZ} = S_{m} \cdot M_{XYZ} + b_{m} + n_{m}, $$display$$ where $inline$ m_{XYZ} $inline$ is the magnetometer measurements in body frame coordinate system XYZ, $inline$ S_{m} $inline$ is the diagonal matrix of the axis misalignment and scale factors (which describes the soft–iron effect), $inline$ M_{XYZ} $inline$ is the true magnetic induction vector in body frame coordinates, $inline$ b_{m} $inline$ is the displacement of the zeros of the magnetometer (also describes the hard–iron effect), $inline$ n_{m} $inline$ is the measurement noise.
+<i>Matrix of the axis misalignment and scale factors of the magnetometer:</i>
+$$display$$ S_{m} = \begin {bmatrix} 1 + S_{m, 1,1} & S_{m, 1,2} & S_{m, 1,3} \\
+S_{m, 2,1} & 1 + S_{m, 2,2} & S_{m, 2,3} \\
+S_{m, 3,1} & S_{m, 3,2} & 1 + S_{m, 3,3} \end {bmatrix}, $$display$$ 
+elements located on the main diagonal ($inline$ S_{m, 1,1}, S_{m, 2,2}, S_{m, 3,3} $inline$) are the scale factors and their errors along the three axes of the magnetometer, the remaining elements of the matrix are distortions of the axes of the magnetometer. All the elements also take into account the effect of soft-iron.
+<spoiler title = "Selecting magnetometer parameters from a datasheet">
+<h3> MPU-9250 Magnetometer:</h3>
+There are no parameters that we need in the datasheet. So we supposed that the magnetometer is calibrated and took the following numbers:
 <ul>
-<li>Сформируем массивы случайных углов Эйлера roll, pitch, yaw. Они будут задавать наборы вариантов истинной ориентации объекта в модели.<spoiler title="Зачем много углов?">Потому что ошибки зависят от значения углов ориентации, и если мы хотим получить представление об их величине во всем диапазоне изменения - то это самый простой способ.</spoiler></li>
-<li> Из случайных углов roll, pitch, yaw формируется матрица преобразования из ССК XYZ в ЛСК ENU:
-$$display$$C_{XYZ}^{ENU}=\begin{vmatrix}
-cy\cdot cp &-cr\cdot sy+sr\cdot cy\cdot sp &sr\cdot sy+cr\cdot cy\cdot sp \\ 
-	sy\cdot cp &cr\cdot cy+sr\cdot sy\cdot sp & -sr\cdot cy+cr\cdot sy\cdot sp \\ 
-	-sp &sr\cdot cp &cr\cdot cp 
-	\end{vmatrix},$$display$$  где $inline$cr=\cos (roll)$inline$, $inline$sr=\sin(roll)$inline$, $inline$cp=\cos(pitch)$inline$, $inline$sp=\sin(pitch)$inline$, $inline$cy=\cos(yaw)$inline$, $inline$sy=\sin(yaw)$inline$.</li>
-<li>Используя данную матрицу можно получить выражение для истинных ускорений в ССК:
-	$$display$$A_{XYZ}=\left ( C_{XYZ}^{ENU} \right )^{T}\cdot \begin{vmatrix}
-	0\\ 
-	0\\
-	-1\\
-	\end{vmatrix},$$display$$
-	$inline$\begin{vmatrix}
-	0\\ 
-	0\\ 
-	-1\\
-	\end{vmatrix}$inline$ - вектор, определяющий направление гравитационного ускорения, выраженный в единицах g, $inline${(C_{XYZ}^{ENU} )}^{T}$inline$- матрица преобразования координат из ЛСК в ССК (обратная матрице преобразования из ССК в ЛСК). </li>
-<li>Применяем модель измерения акселерометра:$$display$$a_{XYZ}=\left ( I+m_{a} \right )\cdot A_{XYZ}+b_{a}+n_{a},$$display$$</li>
-<li>По измерениям акселерометра рассчитываются новые углы крена и тангажа (оценки) по формулам:
-	$$display$$roll'=atan \left ( \frac{a_{Y}}{a_{Z}} \right ),$$display$$ $$display$$pitch'=atan\left ( \frac{-a_{X}}{\sqrt{a_{Y}^{2}+a_{Z}^{2}}} \right ).$$display$$</li>
+<li> Zero offset - $inline$ (1 \mu T); $inline$</li>
+    <li>Scale factors error - $inline$ (5 \%); $inline$</li>
+    <li> Axis misalignment - suppose that they are the same as accelerometers - $inline$ (\pm2 \%); $inline$ </li>
+    <li> Output noise - $inline$ (0.6 \mu T); $inline$</li>
+</ul>
+<h3> Magnetometer ADIS16488A: </h3>
+<ul>
+       <li>Zero offset - Initial Bias Error $inline$ \left (\pm15 mgauss = 1.5\ mu T \right) $inline$ - we assume that we calibrated it to $inline$ (0.5 \mu T) $inline$;</li>
+       <li>Scale factor error - Initial Sensitivity Tolerance $inline$ \left (2 \% \right); $inline$</li>
+       <li>Axes misalignment - Misalignment Axis to axis $inline$ \left (0.35^{\circ} \right) $inline$ - is in degrees, so we need to convert to times (or radians because the values are small); </li>
+       <li>Noise power spectral density - Noise Density $inline$ \left (0.042 \frac {mgauss} {\sqrt {Hz}} \right) $inline$ - convert to $inline$ \left (\frac {Tesla} { \sqrt {Hz}} \right); $inline$</li>
+      <li>Bandwidth - we took for the model the value $inline$ 260 Hz; $inline$ </li>
+</ul>
+</spoiler>
+<h2>Orientation angles calculation </h2> Due to the the Earth gravity accelerometers "feel" the direction down. Their measurements are used to calculate roll and pitch angles. <a href="https://www.nxp.com/docs/en/application-note/AN3461.pdf"> Here </a> you'll find the formulas to calculate them. The yaw angle (in this case it's the magnetic azimuth) can be determined due the Earth’s magnetic field. The induction vector of the magnetic field is measured by magnetometers and their measurements are involved in the calculation of the yaw angle.
+We should notice that to calculate the magnetic azimuth it's necessary to use the magnetometer measurements calculated in the plane. <a href="https://www.nxp.com/docs/en/application-note/AN4248.pdf"> Here </a> you'll find the formula for calculating the magnetic azimuth.
+$$display$$ roll=atan\left(\frac{a_{Y}}{a_{Z}}\right), $$display$$ $$display$$ pitch=atan\left(\frac{-a_{X}}{\sqrt{a_{Y}^{2} + a_{Z}^{2}}}\right), $$display$$ $$display$$ yaw=atan2\left(\frac{m_{E}}{m_{N}}\right), $$display$$ where $inline$ atan2 $inline$ is the full arctangent function, $inline$ a_{X} $inline$, $inline$ a_{Y} $inline$, $inline$ a_{Z} $inline$ -measurements of the accelerometer along three axes in the body frame coordinate system, $inline$ m_{E} $inline$, $inline$ m_{N} $inline$ - measurements of the magnetometer along the axes X ', Y' (measurements of magnetometers are counted in the plane).
 
-<li>Также необходимо сформировать матрицу пересчета в "горизонт" из этих углов, для этого воспользуемся функцией <b>rpy2mat</b>:$$display$$C_{XYZ}^{XYZ'}=rpy2mat\left ( \begin{bmatrix}
-roll'\\ 
-pitch'\\ 
+<h2> Errors in estimating orientation angles </h2> <h3> Algorithm description </h3>
+<img src = "habrastorage.org/webt/o9/o8/zs/o9o8zsy01wyfkjho_8f0ip-lstk.jpeg" />
+<ul>
+<li> We formed arrays of random Euler angles roll, pitch, yaw. They specify sets of options for the true orientation of the object in the model. <Spoiler title = "Why we took so many angles?"> Errors depend on the value of the orientation angles and if we want to get an idea of their magnitude over the entire range of changes then this is the easiest way.</spoiler> </li>
+<li>By using the random angles we formed transformation matrix from body frame coordinate system to the local coordinate system: $$display$$ C_{XYZ}^{ENU}=\begin{vmatrix}cy\cdot cp& -cr\cdot sy + sr\cdot cy\cdot sp & sr\cdot sy + cr\cdot cy\cdot sp\\
+sy\cdot cp & cr\cdot cy + sr\cdot sy\cdot sp & -sr\cdot cy + cr\cdot sy\cdot sp\\
+-sp & sr\cdot cp & cr\cdot cp \end{vmatrix}, $$display$$ where $inline$ cr = \cos(roll)$inline$, $inline$ sr = \sin(roll) $inline$, $inline$ cp = \cos (pitch) $inline$, $inline$ sp = \sin(pitch) $inline$, $inline$ cy = \cos(yaw) $inline$, $inline$ sy = \sin(yaw) $inline$. </li>
+<li> Using this matrix we got an expression for true accelerations in body frame coordinate system:
+$$display$$ A_ {XYZ}=\left (C_{XYZ}^{ENU}\right)^{T}\cdot \begin {vmatrix}
+0 \\
+0 \\
+-1\\
+\end {vmatrix}, $$display$$
+$inline$ \begin {vmatrix}
+0 \\
+0 \\
+-1\\
+\end {vmatrix} $inline$ is the vector that determines the direction of gravitational acceleration expressed in units of g, $inline$ {(C_{XYZ}^{ENU})}^{T} $inline$ is the coordinate transformation matrix from the local coordinate system to the body frame coordinate system (the inverse of the transformation matrix from the body frame coordinate system to the local coordinate system).</li>
+<li> Accelerometer measurement model that we used: $$display$$ a_{XYZ}=\left (I + m_{a}\right)\cdot A_{XYZ} + b_{a} + n_{a}, $$display$$</li>
+<li> According to the accelerometer measurements new roll and pitch angles (estimates) calculated using the formulas:
+$$display$$ roll'=atan\left(\frac{a_{Y}}{a_{Z}}\right), $$display$$ $$display$$ pitch'=atan\left(\frac {-a_{X}}{\sqrt{a_{Y}^{2} + a_{Z}^{2}}}\right).$$display$$ </li>
+<li> It's also necessary to form a matrix of conversion to the "horizon" from these angles. We used the function <b>rpy2mat</b>: $$display$$ C_{XYZ}^{XYZ'}=rpy2mat\left(\begin{bmatrix}
+roll '\\
+pitch '\\
 0
-\end{bmatrix}^{T} \right ),$$display$$ где углы roll' и pitch' - это углы, рассчитанные по измерениям акселерометра, а третий угол - нулевой.</li>
-
-<li>Возьмем вектор истинных магнитных плотностей в ЛСК ENU и пересчитаем его в ССК XYZ:$$display$$M_{XYZ}= {(C_{XYZ}^{ENU} )}^{T}\cdot M_{ENU}.$$display$$   </li>
-<li>Применяем модель измерений магнитометра:$$display$$m_{XYZ}=S_{m}\cdot M_{XYZ}+b_{m}+n_{m}.$$display$$</li>
-<li>Осталось пересчитать измерения магнитометра из ССК в "горизонт":$$display$$m_{XYZ'}=C_{XYZ}^{XYZ'}\cdot m_{XYZ}.$$display$$</li>
-<li>По "горизонтированным" измерениям магнитометра расcчитывается угол магнитного азимута:$$display$$yaw'=atan2\left ( \frac{m_{Y'}}{m_{X'}} \right ).$$display$$ </li>
-<li>Ошибки оценивания углов ориентации рассчитываются как разность между истинными углами roll, pitch, yaw и рассчитанными по измерениям датчиков - roll', pitch', yaw'.</li>
+\end{bmatrix}^{T}\right), $$display$$ where the roll and pitch angles are the angles calculated from the accelerometer measurements and the third angle is zero.</li>
+<li> Than we took the vector of true magnetic induction in the local coordinate system ENU and recalculated it in the body frame coordinate system XYZ: $$display$$ M_{XYZ}={(C_{XYZ}^{ENU})}^{T}\cdot M_{ENU}.$$display$$</li>
+<li> We used the following magnetometer measurement model: $$display$$ m_{XYZ}=S_{m}\cdot M_{XYZ} + b_{m} + n_{m}. $$display$$</li>
+<li> Recalculated the magnetometer measurements from the body frame coordinates to the "horizon": $$display$$ m_{XYZ'} = C_{XYZ}^{XYZ'}\cdot m_{XYZ}.$$display$$</li>
+<li> According to the "horizontal" measurements of the magnetometer we calculated the magnetic azimuth: $$display$$ yaw'=atan2\left(\frac{m_{Y'}}{m_{X'}}\right).$$display$$</li>
+<li> Errors of orientation angles estimation calculated as the difference between the true angles of roll, pitch, yaw and calculated from the measurements of the sensors - roll', pitch', yaw'. </li>
 </ul>
-
-<h2>Результаты - расчет погрешостей оценки углов</h2> 
-Для двух датчиков, которые мы взяли для примера - ADIS16488A и MPU-9250, получены предельные ошибки оценивания углов ориентации при совместном влиянии погрешностей акселерометра и магнитометра.
-
-(с азимутом ерунда, может вообще убрать таблицу?)
-В таблице ниже - максимальные значения полученных ошибок:
+<h2>Results </h2> Here is the results for two sensors which we took as an example - ADIS16488A and MPU-9250.
 <table>
     <tr>
-        <td><b>Угол</b></td>
+        <td><b>Angle</b></td>
         <td> <b>MPU-9250</b></td>
         <td><b>ADIS16488A</b></td>
     </tr>
     <tr>
-        <td>Крен</td>
+        <td>Roll</td>
         <td>$$display$$30^{\circ}$$display$$</td>
         <td>$$display$$8^{\circ}$$display$$</td>
     </tr>
     <tr>
-        <td>Тангаж</td>
+        <td>Pitch</td>
         <td>$$display$$10^{\circ}$$display$$</td>
         <td>$$display$$2^{\circ}$$display$$</td>
     </tr>
     <tr>
-        <td>Магнитный азимут</td>
+        <td>Magnetic azimuth</td>
         <td>$$display$$50^{\circ}$$display$$</td>
         <td>$$display$$60^{\circ}$$display$$</td>
     </tr>
 </table>
-
-
-Совместное влияние погрешностей акселерометра и магнитометра на ошибки оценивания углов ориентации:
+The common influence of the accelerometer and magnetometer errors on the errors of estimation of orientation angles:
 <ul>
-<li> Вот так выглядят ошибки оценивания крена в зависимости от значений крена и тангажа:
+<li> This is how roll estimation errors look depending on the roll and pitch values:
 <a target='_blank' href='https://habrastorage.org/webt/zp/_o/ui/zp_ouiqcq4gwt6qylkmuojzsx7o.jpeg'><img src='https://habrastorage.org/webt/zp/_o/ui/zp_ouiqcq4gwt6qylkmuojzsx7o.jpeg'></a></li>
-
-<li> Ошибки оценивания тангажа в зависимости от значений крена и тангажа:
+<li> Pitch estimation errors depending on roll and pitch values:
 <a target='_blank' href='https://habrastorage.org/webt/40/te/kh/40tekhvik8xfm4aohc7gw8wms1m.jpeg'><img src="https://habrastorage.org/webt/40/te/kh/40tekhvik8xfm4aohc7gw8wms1m.jpeg"/></a></li>
-
-<li>Ошибки оценивания магнитного азимута от углов крена и тангажа:
+<li>Errors of estimation of magnetic azimuth from roll and pitch angles:
 <a target='_blank' href='https://habrastorage.org/webt/d7/98/pb/d798pb-mpmlwex107mahspho4v0.jpeg'><img src="https://habrastorage.org/webt/d7/98/pb/d798pb-mpmlwex107mahspho4v0.jpeg"/></a></li>
-
-<li>Ошибки оценивания магнитного азимута от углов крена и магнитного азимута:
+<li> Errors of estimation of magnetic azimuth from roll angles and magnetic azimuth:
 <a target='_blank' href='https://habrastorage.org/webt/q5/cm/yg/q5cmygz7fcvfwgx59dekjndhqpc.jpeg'><img src="https://habrastorage.org/webt/q5/cm/yg/q5cmygz7fcvfwgx59dekjndhqpc.jpeg"/></a></li>
-
-<li>Ошибки оценивания магнитного азимута от углов тангажа и магнитного азимута:
+<li>Errors of estimation of magnetic azimuth from pitch angles and magnetic azimuth:
 <a target='_blank' href='https://habrastorage.org/webt/nk/oo/r0/nkoor0jpgncbdn-mczcnyl0gphe.jpeg'><img src="https://habrastorage.org/webt/nk/oo/r0/nkoor0jpgncbdn-mczcnyl0gphe.jpeg"/></a></li>
 </ul>
-Как можно заметить - величина ошибок растёт с приближением к границе диапазонов измерений углов. ПОЧЕМУ? 
-
-<spoiler title="Далее можно поиграть с входными параметрами и понять, чем определяются ошибки:">
-Влияние погрешностей акселерометра на ошибки оценивания углов ориентации:
+As you may see - the value of errors increases with approaching the boundary of the ranges of measurements of angles. WHY?
+<spoiler title="Now let's play with the options of the input parameters to understand how the errors are defined:">
+The influence of the accelerometer errors on the errors of estimation of orientation angles:
 <ul>
-<li>Влияние погрешностей акселерометра на ошибки оценивания крена от крена и тангажа
+<li> Effect of accelerometer errors on roll estimation errors from roll and pitch
 <a target='_blank' href='https://habrastorage.org/webt/x1/ch/yv/x1chyvul7wvnrtba_jk-dq2ew4g.jpeg'><img src="https://habrastorage.org/webt/x1/ch/yv/x1chyvul7wvnrtba_jk-dq2ew4g.jpeg"/></a></li>
 
-<li>Влияние погрешностей акселерометра на ошибки оценивания тангажа от крена и тангажа
+<li>Effect of accelerometer errors on pitch estimation errors from roll and pitch
 <a target='_blank' href='https://habrastorage.org/webt/0b/ic/ok/0bicok12pompatsdbjnmscat-vy.jpeg'><img src="https://habrastorage.org/webt/0b/ic/ok/0bicok12pompatsdbjnmscat-vy.jpeg"/></a></li>
 
-<li>Влияние погрешностей акселерометра на ошибки оценивания магнитного азимута от крена и тангажа
+<li>Influence of accelerometer errors on errors of magnetic azimuth estimation from roll and pitch
 <a target='_blank' href='https://habrastorage.org/webt/-h/ug/ka/-hugkabcfvczoheokdceiic8ooa.jpeg'><img src="https://habrastorage.org/webt/-h/ug/ka/-hugkabcfvczoheokdceiic8ooa.jpeg"/></a></li>
 
-<li>Влияние погрешностей акселерометра на ошибки оценивания магнитного азимута от крена и магнитного азимута
+<li>Influence of accelerometer errors on errors of estimation of magnetic azimuth from roll and magnetic azimuth
 <a target='_blank' href='https://habrastorage.org/webt/mx/a0/86/mxa086e6km5ycwp-djco7_blht8.jpeg'><img src="https://habrastorage.org/webt/mx/a0/86/mxa086e6km5ycwp-djco7_blht8.jpeg"/></a></li>
 
-<li>Влияние погрешностей акселерометра на ошибки оценивания магнитного азимута от тангажа магнитного азимута
+<li>Effect of accelerometer errors on magnetic azimuth estimation errors from magnetic azimuth pitch
 <a target='_blank' href='https://habrastorage.org/webt/cw/qp/yf/cwqpyfv35gtvmr4p93vu8ffdjuc.jpeg'><img src="https://habrastorage.org/webt/cw/qp/yf/cwqpyfv35gtvmr4p93vu8ffdjuc.jpeg"/></a></li>
 </ul>
 
-
-Влияние погрешностей магнитометра на ошибки оценивания углов ориентации:
+The effect of the magnetometer errors on errors of estimating orientation angles:
 <ul>
-<li>Влияние погрешностей магнитометра на ошибки оценивания крена от крена и тангажа 
+<li> Effect of magnetometer errors on roll estimation errors from roll and pitch
 <a target='_blank' href='https://habrastorage.org/webt/ph/rh/ow/phrhowgyimr6n56lpisnbgzcpdu.jpeg'><img src="https://habrastorage.org/webt/ph/rh/ow/phrhowgyimr6n56lpisnbgzcpdu.jpeg"/></a></li>
 
-<li>Влияние погрешностей магнитометра на ошибки оценивания тангажа от крена и тангажа
+<li>Influence of magnetometer errors on pitch estimation errors from roll and pitch
 <a target='_blank' href='https://habrastorage.org/webt/2q/jh/zt/2qjhztswxb6awbbbtin7quz4fci.jpeg'><img src="https://habrastorage.org/webt/2q/jh/zt/2qjhztswxb6awbbbtin7quz4fci.jpeg"/></a></li>
 
-<li>Влияние погрешностей магнитометра на ошибки оценивания магнитного азимута от крена и тангажа
+<li> Influence of magnetometer errors on errors of magnetic azimuth estimation from roll and pitch
 <a target='_blank' href='https://habrastorage.org/webt/ff/oe/s8/ffoes8wsnlnkjzzknr6o6hyn4ek.jpeg'><img src="https://habrastorage.org/webt/ff/oe/s8/ffoes8wsnlnkjzzknr6o6hyn4ek.jpeg"/></a></li>
 
-<li>Влияние погрешностей магнитометра  на ошибки оценивания магнитного азимута от крена и магнитного азимута
+<li>Influence of errors of the magnetometer on errors in estimating the magnetic azimuth from the roll and magnetic azimuth
 <a target='_blank' href='https://habrastorage.org/webt/st/4g/md/st4gmdnkf4skgqogylksw5uguve.jpeg'><img src="https://habrastorage.org/webt/st/4g/md/st4gmdnkf4skgqogylksw5uguve.jpeg"/></a></li>
 
-<li>Влияние погрешностей магнитометра на ошибки оценивания магнитного азимута от тангажа магнитного азимута
+<li>Influence of errors of the magnetometer on errors in estimating the magnetic azimuth from the pitch and magnetic azimuth
 <a target='_blank' href='https://habrastorage.org/webt/5o/o9/a_/5oo9a_dcr6df7eupotcyrbipzpy.jpeg'><img src="https://habrastorage.org/webt/5o/o9/a_/5oo9a_dcr6df7eupotcyrbipzpy.jpeg"/></a></li>
 </ul>
 </spoiler> 
-<h2>Итог</h2> 
-<ul><li>Разработана модель, позволяющая оценивать погрешности расчёта углов ориентации по измерениям акселерометров и магнитометров с учётом их погрешностей.</li>
-<li>Ошибки оценивания углов ориентации являются функциями зависимостей от одновременно всех углов ориентации. При этом максимальные значения ошибок наблюдаются на границах выбранных диапазонов измерений углов. </li></ul>
-<spoiler title="Спойлер - дисклеймер: ">
-<ul><li> Не рекламируем и не рекомендуем покупать эти датчики (они уже довольно старые).</li>
-<li> Не учитываем влияние нелинейности измерений, влияние вибрации, нестабильности - это лишь первое приближение к ошибкам датчиков и, соответственно, ошибкам углов.</li>
-</ul></spoiler>
-<h2>Литература</h2>
+<h2>Summary</h2>
+<ul><li> We developed the model that allows to estimate errors in the calculation of orientation angles from measurements of accelerometers and magnetometers taking into account their errors. </li>
+<li> Errors in estimating orientation angles are functions of dependencies on simultaneously all orientation angles. In this case the maximum values of errors are observed at the boundaries of the selected ranges of measurements of angles. </li> </ul>
+<spoiler title = "Spoiler - disclaimer:">
+<ul> <li> We don't recommend buying and using these sensors (they are already quite old). </li>
+<li> We don't take into account the influence of non-linearity of measurements, the influence of vibration, instability.  This is only the first approximation to the errors of the sensors and, accordingly, the errors of the angles. </li>
+</ul> </spoiler>
+<h2> Literature </h2>
 <ul>
-	<li>Перов А. И., Харисов В. Н. ГЛОНАСС. Принципы построения и функционирования М.:Радиотехника, 2010. – 800 с.</li>
-	<li><a href="https://www.nxp.com/docs/en/application-note/AN3461.pdf">Tilt Sensing Using a Three-Axis Accelerometer, Rev. 6 - Freescale Semiconductor, Inc.</a></li>
-<li><a href="https://www.nxp.com/docs/en/application-note/AN4248.pdf">Implementing a Tilt-Compensated eCompass using Accelerometer and Magnetometer Sensors - Freescale Semiconductor
-Application Note.</a></li>
-	<li><a href="https://www.invensense.com/wp-content/uploads/2015/02/PS-MPU-9250A-01-v1.1.pdf">MPU-9250 Product Specification Revision 1.1 - InvenSense Inc.</a></li>
-<li><a href="https://www.analog.com/media/en/technical-documentation/data-sheets/ADIS16488A.pdf"> ADIS16488A Data Sheet - Analog Devices, Inc.</a></li>
+<li> Perov A.I., Kharisov V.N. GLONASS. The principles of construction and functioning of M.: Radio Engineering, 2010. - 800 p. </li>
+<li> <a href="https://www.nxp.com/docs/en/application-note/AN3461.pdf"> Tilt Sensing Using a Three-Axis Accelerometer, Rev. 6 - Freescale Semiconductor, Inc. </a> </li>
+<li> <a href="https://www.nxp.com/docs/en/application-note/AN4248.pdf"> Implementing a Tilt-Compensated eCompass using Accelerometer and Magnetometer Sensors - Freescale Semiconductor
+Application Note. </a> </li>
+<li> <a href="https://www.invensense.com/wp-content/uploads/2015/02/PS-MPU-9250A-01-v1.1.pdf"> MPU-9250 Product Specification Revision 1.1 - InvenSense Inc. </a> </li>
+<li> <a href="https://www.analog.com/media/en/technical-documentation/data-sheets/ADIS16488A.pdf"> ADIS16488A Data Sheet - Analog Devices, Inc. </a> </ li>
 </ul>
 </spoiler>
