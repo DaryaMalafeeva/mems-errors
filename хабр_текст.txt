@@ -76,7 +76,7 @@ We should notice that to calculate the magnetic azimuth it's necessary to use th
 $$display$$ roll=atan\left(\frac{a_{Y}}{a_{Z}}\right), $$display$$ $$display$$ pitch=atan\left(\frac{-a_{X}}{\sqrt{a_{Y}^{2} + a_{Z}^{2}}}\right), $$display$$ $$display$$ yaw=atan2\left(\frac{m_{E}}{m_{N}}\right), $$display$$ where $inline$ atan2 $inline$ is the full arctangent function, $inline$ a_{X} $inline$, $inline$ a_{Y} $inline$, $inline$ a_{Z} $inline$ -measurements of the accelerometer along three axes in the body frame coordinate system, $inline$ m_{E} $inline$, $inline$ m_{N} $inline$ - measurements of the magnetometer along the axes X ', Y' (measurements of magnetometers are counted in the plane).
 
 <h2> Errors in estimating orientation angles </h2> <h3> Algorithm description </h3>
-<img src="https://habrastorage.org/webt/bo/w3/ip/bow3ip6sj3dmhsafcamm0pk5g1o.png" />
+<img src="https://habrastorage.org/webt/yp/uw/yk/ypuwykuhlzrm0i8ii3fvy6gbevi.jpeg" />
 <ul>
 <li> We formed arrays of random Euler angles roll, pitch, yaw. They specify sets of options for the true orientation of the object in the model. <Spoiler title = "Why we took so many angles?"> Errors depend on the value of the orientation angles and if we want to get an idea of ​​their magnitude over the entire range of changes then this is the easiest way.</spoiler> </li>
 <li>By using the random angles we formed transformation matrix from body frame coordinate system to the local coordinate system: $$display$$ C_{XYZ}^{ENU}=\begin{vmatrix}cy\cdot cp& -cr\cdot sy + sr\cdot cy\cdot sp & sr\cdot sy + cr\cdot cy\cdot sp\\
