@@ -126,64 +126,71 @@ pitch '\\
     </tr>
     <tr>
         <td>Magnetic azimuth</td>
-        <td>$$display$$50^{\circ}$$display$$</td>
-        <td>$$display$$60^{\circ}$$display$$</td>
+        <td>$$display$$30^{\circ}$$display$$</td>
+        <td>$$display$$20^{\circ}$$display$$</td>
     </tr>
 </table>
 The common influence of the accelerometer and magnetometer errors on the errors of estimation of orientation angles:
 <ul>
 <li> This is how roll estimation errors look depending on the roll and pitch values:
-<a target='_blank' href='https://habrastorage.org/webt/zp/_o/ui/zp_ouiqcq4gwt6qylkmuojzsx7o.jpeg'><img src='https://habrastorage.org/webt/zp/_o/ui/zp_ouiqcq4gwt6qylkmuojzsx7o.jpeg'></a></li>
+<a target='_blank' href='https://habrastorage.org/webt/8h/zt/i_/8hzti_e87qh5fpi0n33blb1mofg.jpeg'><img src="https://habrastorage.org/webt/8h/zt/i_/8hzti_e87qh5fpi0n33blb1mofg.jpeg" /></a></li>
+
 <li> Pitch estimation errors depending on roll and pitch values:
-<a target='_blank' href='https://habrastorage.org/webt/40/te/kh/40tekhvik8xfm4aohc7gw8wms1m.jpeg'><img src="https://habrastorage.org/webt/40/te/kh/40tekhvik8xfm4aohc7gw8wms1m.jpeg"/></a></li>
+<a target='_blank' href='https://habrastorage.org/webt/8-/se/jj/8-sejjpgdcnjb6av8i0_84uejxe.jpeg'><img src="https://habrastorage.org/webt/8-/se/jj/8-sejjpgdcnjb6av8i0_84uejxe.jpeg" /></a></li>
+
 <li>Errors of estimation of magnetic azimuth from roll and pitch angles:
-<a target='_blank' href='https://habrastorage.org/webt/d7/98/pb/d798pb-mpmlwex107mahspho4v0.jpeg'><img src="https://habrastorage.org/webt/d7/98/pb/d798pb-mpmlwex107mahspho4v0.jpeg"/></a></li>
+<a target='_blank' href=https://habrastorage.org/webt/sa/gz/mo/sagzmoutcde7rcylwyflszcqrkc.jpeg''><img src="https://habrastorage.org/webt/sa/gz/mo/sagzmoutcde7rcylwyflszcqrkc.jpeg" /></a></li>
+
 <li> Errors of estimation of magnetic azimuth from roll angles and magnetic azimuth:
-<a target='_blank' href='https://habrastorage.org/webt/q5/cm/yg/q5cmygz7fcvfwgx59dekjndhqpc.jpeg'><img src="https://habrastorage.org/webt/q5/cm/yg/q5cmygz7fcvfwgx59dekjndhqpc.jpeg"/></a></li>
+<a target='_blank' href='https://habrastorage.org/webt/7z/1z/1l/7z1z1lwzpbjo3gx40g9wv6ghhey.jpeg'><img src="https://habrastorage.org/webt/7z/1z/1l/7z1z1lwzpbjo3gx40g9wv6ghhey.jpeg" /></a></li>
+
 <li>Errors of estimation of magnetic azimuth from pitch angles and magnetic azimuth:
-<a target='_blank' href='https://habrastorage.org/webt/nk/oo/r0/nkoor0jpgncbdn-mczcnyl0gphe.jpeg'><img src="https://habrastorage.org/webt/nk/oo/r0/nkoor0jpgncbdn-mczcnyl0gphe.jpeg"/></a></li>
+<a target='_blank' href='https://habrastorage.org/webt/y5/vw/lf/y5vwlfpjztzubfrm73mp_7_mna8.jpeg'><img src="https://habrastorage.org/webt/y5/vw/lf/y5vwlfpjztzubfrm73mp_7_mna8.jpeg" /></a></li>
 </ul>
-As you may see - the value of errors increases with approaching the boundary of the ranges of measurements of angles. WHY?
+
+As you may see - the value of errors increases with approaching the boundary of the ranges of measurements of angles. 
+
+
 <spoiler title="Now let's play with the options of the input parameters to understand how the errors are defined:">
 The influence of the accelerometer errors on the errors of estimation of orientation angles:
 <ul>
 <li> Effect of accelerometer errors on roll estimation errors from roll and pitch
-<a target='_blank' href='https://habrastorage.org/webt/x1/ch/yv/x1chyvul7wvnrtba_jk-dq2ew4g.jpeg'><img src="https://habrastorage.org/webt/x1/ch/yv/x1chyvul7wvnrtba_jk-dq2ew4g.jpeg"/></a></li>
+<a target='_blank' href='https://habrastorage.org/webt/y5/vw/lf/y5vwlfpjztzubfrm73mp_7_mna8.jpeg'><img src="https://habrastorage.org/webt/by/kb/ai/bykbainkdyy_wvsxcfvfuq9dzdy.jpeg" /></a></li>
 
 <li>Effect of accelerometer errors on pitch estimation errors from roll and pitch
-<a target='_blank' href='https://habrastorage.org/webt/0b/ic/ok/0bicok12pompatsdbjnmscat-vy.jpeg'><img src="https://habrastorage.org/webt/0b/ic/ok/0bicok12pompatsdbjnmscat-vy.jpeg"/></a></li>
+<a target='_blank' href='https://habrastorage.org/webt/wj/tc/_l/wjtc_lxe91pebbeazb2rxwxfs1m.jpeg'><img src="https://habrastorage.org/webt/wj/tc/_l/wjtc_lxe91pebbeazb2rxwxfs1m.jpeg" /></a></li>
 
 <li>Influence of accelerometer errors on errors of magnetic azimuth estimation from roll and pitch
-<a target='_blank' href='https://habrastorage.org/webt/-h/ug/ka/-hugkabcfvczoheokdceiic8ooa.jpeg'><img src="https://habrastorage.org/webt/-h/ug/ka/-hugkabcfvczoheokdceiic8ooa.jpeg"/></a></li>
+<a target='_blank' href='https://habrastorage.org/webt/my/gg/td/myggtdgevpkzsraz_rj5s8pefba.jpeg'><img src="https://habrastorage.org/webt/my/gg/td/myggtdgevpkzsraz_rj5s8pefba.jpeg" /></a></li>
 
 <li>Influence of accelerometer errors on errors of estimation of magnetic azimuth from roll and magnetic azimuth
-<a target='_blank' href='https://habrastorage.org/webt/mx/a0/86/mxa086e6km5ycwp-djco7_blht8.jpeg'><img src="https://habrastorage.org/webt/mx/a0/86/mxa086e6km5ycwp-djco7_blht8.jpeg"/></a></li>
+<a target='_blank' href='https://habrastorage.org/webt/ti/_4/ij/ti_4ijkplj_trq3ji5mdvg4ry5m.jpeg'><img src="https://habrastorage.org/webt/ti/_4/ij/ti_4ijkplj_trq3ji5mdvg4ry5m.jpeg" /></a></li>
 
 <li>Effect of accelerometer errors on magnetic azimuth estimation errors from magnetic azimuth pitch
-<a target='_blank' href='https://habrastorage.org/webt/cw/qp/yf/cwqpyfv35gtvmr4p93vu8ffdjuc.jpeg'><img src="https://habrastorage.org/webt/cw/qp/yf/cwqpyfv35gtvmr4p93vu8ffdjuc.jpeg"/></a></li>
+<a target='_blank' href='https://habrastorage.org/webt/ot/mo/dr/otmodr4q7nkky7vta-lli0rym4c.jpeg'><img src="https://habrastorage.org/webt/ot/mo/dr/otmodr4q7nkky7vta-lli0rym4c.jpeg" /></a></li>
 </ul>
 
 The effect of the magnetometer errors on errors of estimating orientation angles:
 <ul>
 <li> Effect of magnetometer errors on roll estimation errors from roll and pitch
-<a target='_blank' href='https://habrastorage.org/webt/ph/rh/ow/phrhowgyimr6n56lpisnbgzcpdu.jpeg'><img src="https://habrastorage.org/webt/ph/rh/ow/phrhowgyimr6n56lpisnbgzcpdu.jpeg"/></a></li>
+<a target='_blank' href='https://habrastorage.org/webt/6t/yl/lp/6tyllphpw0dyad_g2_tladvti98.jpeg'><img src="https://habrastorage.org/webt/6t/yl/lp/6tyllphpw0dyad_g2_tladvti98.jpeg" /></a></li>
 
 <li>Influence of magnetometer errors on pitch estimation errors from roll and pitch
-<a target='_blank' href='https://habrastorage.org/webt/2q/jh/zt/2qjhztswxb6awbbbtin7quz4fci.jpeg'><img src="https://habrastorage.org/webt/2q/jh/zt/2qjhztswxb6awbbbtin7quz4fci.jpeg"/></a></li>
+<a target='_blank' href='https://habrastorage.org/webt/ao/d_/uw/aod_uwzhu6uviujwjpmbdndrcxy.jpeg'><img src="https://habrastorage.org/webt/ao/d_/uw/aod_uwzhu6uviujwjpmbdndrcxy.jpeg" /></a></li>
 
 <li> Influence of magnetometer errors on errors of magnetic azimuth estimation from roll and pitch
-<a target='_blank' href='https://habrastorage.org/webt/ff/oe/s8/ffoes8wsnlnkjzzknr6o6hyn4ek.jpeg'><img src="https://habrastorage.org/webt/ff/oe/s8/ffoes8wsnlnkjzzknr6o6hyn4ek.jpeg"/></a></li>
+<a target='_blank' href='https://habrastorage.org/webt/1b/gk/x4/1bgkx44gsrheco43ljsjbl1a1os.jpeg'><img src="https://habrastorage.org/webt/1b/gk/x4/1bgkx44gsrheco43ljsjbl1a1os.jpeg" /></a></li>
 
 <li>Influence of errors of the magnetometer on errors in estimating the magnetic azimuth from the roll and magnetic azimuth
-<a target='_blank' href='https://habrastorage.org/webt/st/4g/md/st4gmdnkf4skgqogylksw5uguve.jpeg'><img src="https://habrastorage.org/webt/st/4g/md/st4gmdnkf4skgqogylksw5uguve.jpeg"/></a></li>
+<a target='_blank' href='https://habrastorage.org/webt/uy/-j/kt/uy-jkttvi-otrzcdlnizgr7woti.jpeg'><img src="https://habrastorage.org/webt/uy/-j/kt/uy-jkttvi-otrzcdlnizgr7woti.jpeg" /></a></li>
 
 <li>Influence of errors of the magnetometer on errors in estimating the magnetic azimuth from the pitch and magnetic azimuth
-<a target='_blank' href='https://habrastorage.org/webt/5o/o9/a_/5oo9a_dcr6df7eupotcyrbipzpy.jpeg'><img src="https://habrastorage.org/webt/5o/o9/a_/5oo9a_dcr6df7eupotcyrbipzpy.jpeg"/></a></li>
+<a target='_blank' href='https://habrastorage.org/webt/sp/87/k1/sp87k1yxi84ueqesuq1zyih6me4.jpeg'><img src="https://habrastorage.org/webt/sp/87/k1/sp87k1yxi84ueqesuq1zyih6me4.jpeg" /></a></li>
 </ul>
 </spoiler> 
 <h2>Summary</h2>
 <ul><li> We developed the model that allows to estimate errors in the calculation of orientation angles from measurements of accelerometers and magnetometers taking into account their errors. </li>
-<li> Errors in estimating orientation angles are functions of dependencies on simultaneously all orientation angles. In this case the maximum values ​​of errors are observed at the boundaries of the selected ranges of measurements of angles. </li> </ul>
+<li> Errors in estimating orientation angles are functions of dependencies on simultaneously all orientation angles. In this case the maximum values of errors are observed at the boundaries of the selected ranges of measurements of angles. </li> </ul>
 <spoiler title = "Spoiler - disclaimer:">
 <ul> <li> We don't recommend buying and using these sensors (they are already quite old). </li>
 <li> We don't take into account the influence of non-linearity of measurements, the influence of vibration, instability.  This is only the first approximation to the errors of the sensors and, accordingly, the errors of the angles. </li>
