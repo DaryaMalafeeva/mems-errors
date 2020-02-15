@@ -150,7 +150,8 @@ pitch'\\
 </ul>
 
 Как можно заметить - величина ошибок растёт с приближением к границе диапазонов измерений углов. 
-<a target='_blank' href='https://habrastorage.org/webt/-f/7e/tg/-f7etg6yxkvoujyq6hbyt1odr_q.png'><img src="https://habrastorage.org/webt/-f/7e/tg/-f7etg6yxkvoujyq6hbyt1odr_q.png" /></a>
+<a target='_blank' href='https://habrastorage.org/webt/km/zr/8m/kmzr8mjgvrsorrirxysosd7w6dm.jpeg'><img src="https://habrastorage.org/webt/km/zr/8m/kmzr8mjgvrsorrirxysosd7w6dm.jpeg" /></a>
+
 ( я не запомнила что тут было, но вот как я поняла рисунок: чем сильнее oz отклоняется от вектора g - тем сильнее разброс измерений акселерометра и следовательно - больше ошибок.)
 <spoiler title="Поиграем с входными параметрами чтобы понять чем определяются ошибки">
 <b>Влияние только погрешностей акселерометра (магнитометр считаем идеальным) на ошибки оценивания углов ориентации:</b>
