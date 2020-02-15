@@ -134,36 +134,38 @@ pitch'\\
 <b>Совместное влияние погрешностей акселерометра и магнитометра на ошибки оценивания углов ориентации:</b>
 <ul>
 <li> Вот так выглядят ошибки оценивания крена в зависимости от значений крена и тангажа:
-<a target='_blank' href='https://habrastorage.org/webt/8h/zt/i_/8hzti_e87qh5fpi0n33blb1mofg.jpeg'><img src="https://habrastorage.org/webt/8h/zt/i_/8hzti_e87qh5fpi0n33blb1mofg.jpeg"/></a></li>
+<a target='_blank' href='https://habrastorage.org/webt/8h/zt/i_/8hzti_e87qh5fpi0n33blb1mofg.jpeg'><img src="https://habrastorage.org/webt/8h/zt/i_/8hzti_e87qh5fpi0n33blb1mofg.jpeg" /></a></li>
 
 <li> Ошибки оценивания тангажа в зависимости от значений крена и тангажа:
-<a target='_blank' href='https://habrastorage.org/webt/8-/se/jj/8-sejjpgdcnjb6av8i0_84uejxe.jpeg'><img src="https://habrastorage.org/webt/8-/se/jj/8-sejjpgdcnjb6av8i0_84uejxe.jpeg"/></a></li>
+<a target='_blank' href='https://habrastorage.org/webt/8-/se/jj/8-sejjpgdcnjb6av8i0_84uejxe.jpeg'><img src="https://habrastorage.org/webt/8-/se/jj/8-sejjpgdcnjb6av8i0_84uejxe.jpeg" /></a></li>
 
 <li>Ошибки оценивания магнитного азимута от углов крена и тангажа:
 <a target='_blank' href=https://habrastorage.org/webt/sa/gz/mo/sagzmoutcde7rcylwyflszcqrkc.jpeg''><img src="https://habrastorage.org/webt/sa/gz/mo/sagzmoutcde7rcylwyflszcqrkc.jpeg" /></a></li>
 
 <li>Ошибки оценивания магнитного азимута от углов крена и магнитного азимута:
-<a target='_blank' href='https://habrastorage.org/webt/y5/vw/lf/y5vwlfpjztzubfrm73mp_7_mna8.jpeg'><img src="https://habrastorage.org/webt/7z/1z/1l/7z1z1lwzpbjo3gx40g9wv6ghhey.jpeg" /></a></li>
+<a target='_blank' href='https://habrastorage.org/webt/7z/1z/1l/7z1z1lwzpbjo3gx40g9wv6ghhey.jpeg'><img src="https://habrastorage.org/webt/7z/1z/1l/7z1z1lwzpbjo3gx40g9wv6ghhey.jpeg" /></a></li>
 
 <li>Ошибки оценивания магнитного азимута от углов тангажа и магнитного азимута:
 <a target='_blank' href='https://habrastorage.org/webt/y5/vw/lf/y5vwlfpjztzubfrm73mp_7_mna8.jpeg'><img src="https://habrastorage.org/webt/y5/vw/lf/y5vwlfpjztzubfrm73mp_7_mna8.jpeg" /></a></li>
 </ul>
+
 Как можно заметить - величина ошибок растёт с приближением к границе диапазонов измерений углов. 
-<a target='_blank' href='https://habrastorage.org/webt/-f/7e/tg/-f7etg6yxkvoujyq6hbyt1odr_q.png'><img src="https://habrastorage.org/webt/-f/7e/tg/-f7etg6yxkvoujyq6hbyt1odr_q.png" /></a></li>
+<a target='_blank' href='https://habrastorage.org/webt/-f/7e/tg/-f7etg6yxkvoujyq6hbyt1odr_q.png'><img src="https://habrastorage.org/webt/-f/7e/tg/-f7etg6yxkvoujyq6hbyt1odr_q.png" /></a>
 ( я не запомнила что тут было, но вот как я поняла рисунок: чем сильнее oz отклоняется от вектора g - тем сильнее разброс измерений акселерометра и следовательно - больше ошибок.)
+<spoiler title="Поиграем с входными параметрами чтобы понять чем определяются ошибки">
 <b>Влияние только погрешностей акселерометра (магнитометр считаем идеальным) на ошибки оценивания углов ориентации:</b>
 <ul>
 <li>Влияние погрешностей акселерометра на ошибки оценивания крена от крена и тангажа
 <a target='_blank' href='https://habrastorage.org/webt/y5/vw/lf/y5vwlfpjztzubfrm73mp_7_mna8.jpeg'><img src="https://habrastorage.org/webt/by/kb/ai/bykbainkdyy_wvsxcfvfuq9dzdy.jpeg" /></a></li>
 
 <li>Влияние погрешностей акселерометра на ошибки оценивания тангажа от крена и тангажа
-<a target='_blank' href='https://habrastorage.org/webt/y5/vw/lf/y5vwlfpjztzubfrm73mp_7_mna8.jpeg'><img src="https://habrastorage.org/webt/wj/tc/_l/wjtc_lxe91pebbeazb2rxwxfs1m.jpeg" /></a></li>
+<a target='_blank' href='https://habrastorage.org/webt/wj/tc/_l/wjtc_lxe91pebbeazb2rxwxfs1m.jpeg'><img src="https://habrastorage.org/webt/wj/tc/_l/wjtc_lxe91pebbeazb2rxwxfs1m.jpeg" /></a></li>
 
 <li>Влияние погрешностей акселерометра на ошибки оценивания магнитного азимута от крена и тангажа
-<a target='_blank' href='https://habrastorage.org/webt/y5/vw/lf/y5vwlfpjztzubfrm73mp_7_mna8.jpeg'><img src="https://habrastorage.org/webt/my/gg/td/myggtdgevpkzsraz_rj5s8pefba.jpeg" /></a></li>
+<a target='_blank' href='https://habrastorage.org/webt/my/gg/td/myggtdgevpkzsraz_rj5s8pefba.jpeg'><img src="https://habrastorage.org/webt/my/gg/td/myggtdgevpkzsraz_rj5s8pefba.jpeg" /></a></li>
 
 <li>Влияние погрешностей акселерометра на ошибки оценивания магнитного азимута от крена и магнитного азимута
-<a target='_blank' href='https://habrastorage.org/webt/y5/vw/lf/y5vwlfpjztzubfrm73mp_7_mna8.jpeg'><img src="https://habrastorage.org/webt/ti/_4/ij/ti_4ijkplj_trq3ji5mdvg4ry5m.jpeg" /></a></li>
+<a target='_blank' href='https://habrastorage.org/webt/ti/_4/ij/ti_4ijkplj_trq3ji5mdvg4ry5m.jpeg'><img src="https://habrastorage.org/webt/ti/_4/ij/ti_4ijkplj_trq3ji5mdvg4ry5m.jpeg" /></a></li>
 
 <li>Влияние погрешностей акселерометра на ошибки оценивания магнитного азимута от тангажа магнитного азимута
 <a target='_blank' href='https://habrastorage.org/webt/ot/mo/dr/otmodr4q7nkky7vta-lli0rym4c.jpeg'><img src="https://habrastorage.org/webt/ot/mo/dr/otmodr4q7nkky7vta-lli0rym4c.jpeg" /></a></li>
@@ -186,7 +188,7 @@ pitch'\\
 <li>Влияние погрешностей магнитометра на ошибки оценивания магнитного азимута от тангажа магнитного азимута
 <a target='_blank' href='https://habrastorage.org/webt/sp/87/k1/sp87k1yxi84ueqesuq1zyih6me4.jpeg'><img src="https://habrastorage.org/webt/sp/87/k1/sp87k1yxi84ueqesuq1zyih6me4.jpeg" /></a></li>
 </ul>
-</spoiler> 
+</spoiler>
 <h2>Итог</h2> 
 <ul><li>Разработана модель, позволяющая оценивать погрешности расчёта углов ориентации по измерениям акселерометров и магнитометров с учётом их погрешностей.</li>
 <li>Ошибки оценивания углов ориентации являются функциями зависимостей от одновременно всех углов ориентации. При этом максимальные значения ошибок наблюдаются на границах выбранных диапазонов измерений углов. </li></ul>
@@ -203,4 +205,3 @@ Application Note.</a></li>
 	<li><a href="https://www.invensense.com/wp-content/uploads/2015/02/PS-MPU-9250A-01-v1.1.pdf">MPU-9250 Product Specification Revision 1.1 - InvenSense Inc.</a></li>
 <li><a href="https://www.analog.com/media/en/technical-documentation/data-sheets/ADIS16488A.pdf"> ADIS16488A Data Sheet - Analog Devices, Inc.</a></li>
 </ul>
-</spoiler>
