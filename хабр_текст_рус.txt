@@ -153,6 +153,216 @@ pitch'\\
 Почему? ">
 Это можно понять из рисунка ниже.
 <img src="https://habrastorage.org/webt/vq/_1/w7/vq_1w73b1prfynf7lx6yaoyl-du.png" />
+Допустим мы поворачиваем ось чувствительности Z (z1\rightarrowz2) акселерометра так, чтобы проекция силы тяжести на эту ось стала меньше (g'\rightarrowg"). Значение проекции силы тяжести плюс погрешность акселерометра дадут область возможных значений измерения (розовая область). Погрешность оценки угла при этом возрастает (\Delta _{1}\rightarrow \Delta _{2}). Таким образом, при уменьшении проекции вектора силы тяжести на ось чувствительности ошибка акселерометра начинает вносить бОльшую ошибку в оценку угла.
+</spoiler>
+<spoiler title="Поиграем с входными параметрами чтобы понять чем определяются ошибки">
+<b>Влияние только погрешностей акселерометра (магнитометр считаем идеальным) на ошибки оценивания углов ориентации:</b>
+<ul>
+<li>Влияние погрешностей акселерометра на ошибки оценивания крена от крена и тангажа
+<a target='_blank' href='https://habrastorage.org/webt/y5/vw/lf/y5vwlfpjztzubfrm73mp_7_mna8.jpeg'><img src="https://habrastorage.org/webt/by/kb/ai/bykbainkdyy_wvsxcfvfuq9dzdy.jpeg" /></a></li>
+
+<li>Влияние погрешностей акселерометра на ошибки оценивания тангажа от крена и тангажа
+<a target='_blank' href='https://habrastorage.org/webt/wj/tc/_l/wjtc_lxe91pebbeazb2rxwxfs1m.jpeg'><img src="https://habrastorage.org/webt/wj/tc/_l/wjtc_lxe91pebbeazb2rxwxfs1m.jpeg" /></a></li>
+
+<li>Влияние погрешностей акселерометра на ошибки оценивания магнитного азимута от крена и тангажа
+<a target='_blank' href='https://habrastorage.org/webt/my/gg/td/myggtdgevpkzsraz_rj5s8pefba.jpeg'><img src="https://habrastorage.org/webt/my/gg/td/myggtdgevpkzsraz_rj5s8pefba.jpeg" /></a></li>
+
+<li>Влияние погрешностей акселерометра на ошибки оценивания магнитного азимута от крена и магнитного азимута
+<a target='_blank' href='https://habrastorage.org/webt/ti/_4/ij/ti_4ijkplj_trq3ji5mdvg4ry5m.jpeg'><img src="https://habrastorage.org/webt/ti/_4/ij/ti_4ijkplj_trq3ji5mdvg4ry5m.jpeg" /></a></li>
+
+<li>Влияние погрешностей акселерометра на ошибки оценивания магнитного азимута от тангажа и магнитного азимута
+<a target='_blank' href='https://habrastorage.org/webt/ot/mo/dr/otmodr4q7nkky7vta-lli0rym4c.jpeg'><img src="https://habrastorage.org/webt/ot/mo/dr/otmodr4q7nkky7vta-lli0rym4c.jpeg" /></a></li>
+</ul>
+
+<b>Влияние погрешностей только магнитометра (акселерометр считаем идеальным) на ошибки оценивания углов ориентации:</b>
+<ul>
+<li>Влияние погрешностей магнитометра на ошибки оценивания крена от крена и тангажа 
+<a target='_blank' href='https://habrastorage.org/webt/6t/yl/lp/6tyllphpw0dyad_g2_tladvti98.jpeg'><img src="https://habrastorage.org/webt/6t/yl/lp/6tyllphpw0dyad_g2_tladvti98.jpeg" /></a></li>
+
+<li>Влияние погрешностей магнитометра на ошибки оценивания тангажа от крена и тангажа
+<a target='_blank' href='https://habrastorage.org/webt/ao/d_/uw/aod_uwzhu6uviujwjpmbdndrcxy.jpeg'><img src="https://habrastorage.org/webt/ao/d_/uw/aod_uwzhu6uviujwjpmbdndrcxy.jpeg" /></a></li>
+
+<li>Влияние погрешностей магнитометра на ошибки оценивания магнитного азимута от крена и тангажа
+<a target='_blank' href='https://habrastorage.org/webt/1b/gk/x4/1bgkx44gsrheco43ljsjbl1a1os.jpeg'><img src="https://habrastorage.org/webt/1b/gk/x4/1bgkx44gsrheco43ljsjbl1a1os.jpeg" /></a></li>
+
+<li>Влияние погрешностей магнитометра  на ошибки оценивания магнитного азимута от крена и магнитного азимута
+<a target='_blank' href='https://habrastorage.org/webt/uy/-j/kt/uy-jkttvi-otrzcdlnizgr7woti.jpeg'><img src="https://habrastorage.org/webt/uy/-j/kt/uy-jkttvi-otrzcdlnizgr7woti.jpeg" /></a></li>
+
+<li>Влияние погрешностей магнитометра на ошибки оценивания магнитного азимута от тангажа магнитного азимута
+<a target='_blank' href='https://habrastorage.org/webt/sp/87/k1/sp87k1yxi84ueqesuq1zyih6me4.jpeg'><img src="https://habrastorage.org/webt/sp/87/k1/sp87k1yxi84ueqesuq1zyih6me4.jpeg" /></a></li>
+</ul>
+</spoiler>
+<h2>Итог</h2> 
+<ul><li>Разработана модель, позволяющая оценивать погрешности расчёта углов ориентации. Углы ориентации рассчитаны по измерениям акселерометров и магнитометров. В расчете погрешности углов учитываются модели погрешностей этих датчиков.</li>
+<li>Ошибки оценивания углов ориентации являются функциями одновременно всех углов ориентации. При этом максимальные значения ошибок наблюдаются на границах диапазонов измерений углов. </li></ul>
+<spoiler title="Спойлер - дисклеймер: ">
+<ul><li> Не рекламируем и не рекомендуем покупать эти датчики (они уже довольно старые).</li>
+<li> Не учитываем влияние нелинейности измерений, влияние вибрации, нестабильности и т.д. - используем лишь первое приближение к модели ошибок датчиков.</li>
+</ul></spoiler>
+<h2>Литература</h2>
+<ul>	
+<li><a href="https://www.nxp.com/docs/en/application-note/AN3461.pdf">Tilt Sensing Using a Three-Axis Accelerometer, Rev. 6 - Freescale Semiconductor, Inc.</a></li>
+<li><a href="https://www.nxp.com/docs/en/application-note/AN4248.pdf">Implementing a Tilt-Compensated eCompass using Accelerometer and Magnetometer Sensors - Freescale Semiconductor
+Application Note.</a></li>
+<li><a href="https://www.invensense.com/wp-content/uploads/2015/02/PS-MPU-9250A-01-v1.1.pdf">MPU-9250 Product Specification Revision 1.1 - InvenSense Inc.</a></li>
+<li><a href="https://www.analog.com/media/en/technical-documentation/data-sheets/ADIS16488A.pdf"> ADIS16488A Data Sheet - Analog Devices, Inc.</a></li>
+<li>Перов А. И., Харисов В. Н. ГЛОНАСС. Принципы построения и функционирования М.:Радиотехника, 2010. – 800 с.</li>
+</ul>
+<img src="https://habrastorage.org/webt/ta/gq/z3/tagqz3fsjdoj62pof0za8sgsoku.png" />
+При разработке устройств, в которых необходимо оценивать углы ориентации, может встать вопрос - какой МЭМС датчик выбрать. Производители датчиков приводят множество параметров, из которых нам требуется получить полезную информацию о качестве датчика.
+Чтобы понять, на какие точности углов мы можем рассчитывать, нужно приложить некоторое количество усилий.  
+<b>TL;DR</b>: Описан небольшой скрипт для Octave/MATLAB, позволяющий оценить ошибки расчёта углов ориентации по измерениям МЭМС акселерометров и магнитометров. На входе скрипта - параметры датчиков из даташитов (и/или погрешности калибровки). Статья может быть полезна тем, кто начинает использовать инерциальные датчики в своих устройствах. Небольшой ликбез по датчикам прилагается. <a href="https://github.com/DaryaMalafeeva/mems-errors">Ссылка на гитхаб</a> тоже.
+<habracut text="Вот как мы решили эту задачу:"/>
+Сходу примем такие условия:
+<ul><li>Мы хотим оценить углы ориентации неподвижного устройства. <spoiler title="Почему?">
+Ориентацию подвижного устройства просто по формулам не посчитать, нужно использовать хитрые алгоритмы.</spoiler></li>
+<li>Для оценки углов мы будем использовать измерения МЭМС акселерометров и магнитометров.</li>
+</ul>
+<h2>1. Краткий ликбез</h2><h3>Углы ориентации</h3>
+<img src="https://habrastorage.org/webt/0h/za/ze/0hzazeqlyderpj80nirkuuwustg.png" />
+Будем понимать под углами ориентации объекта углы Эйлера - крен (roll), тангаж (pitch), рыскание (yaw), связывающие собственную систему координат XYZ объекта и локальную систему координат восток-север-верх (ENU - East North Up). Углы roll, pitch, yaw обозначают поворот, который нужно совершить осям XYZ чтобы перейти в оси ENU. Соответственно, нулевые углы означают, что ось X объекта смотрит на восток, ось Y объекта смотрит на север, ось Z - вверх. Порядок поворота осей - начиная с последнего угла: сначала на yaw (вокруг оси Z), потом на pitch (вокруг оси Y), потом на roll (вокруг оси X).
+
+<h3>Акселерометр</h3>Это датчик, измеряющий проекцию кажущегося ускорения на ось чувствительности. Кажущегося - потому что измеряет и силу тяжести тоже, даже в то время как акселерометр неподвижен. Проще всего представить акселерометр как грузик на пружинке, его  выдаваемые измерения  пропорциональны степени растяжения пружины. Если акселерометр покоится - пружина растянута лишь силой тяжести. Если ускоряется - то будет сумма сил: инерции грузика $inline$\left (F=m\overrightarrow{a}\right )$inline$ и силы тяжести $inline$\left (F_{g}=m\overrightarrow{g}\right )$inline$.
+Примем следующую модель измерений триады ортогональных (взаимно перпендикулярных) акселерометров:
+$$display$$a_{XYZ}= m_{a} \cdot A_{XYZ}+b_{a}+n_{a},$$display$$ где $inline$a_{XYZ}$inline$ – измеряемое ускорение в ССК (собственной системе координат) XYZ, $inline$m_{a}$inline$ – матрица перекоса осей и масштабных коэффициентов акселерометра, $inline$A_{XYZ}$inline$ – вектор истинного ускорения в ССК XYZ, $inline$b_{a}$inline$ – вектор смещения нуля акселерометра, $inline$n_{a}$inline$ – шум измерений.
+Матрица перекоса осей и масштабных коэффициентов выглядит следующим образом:
+$$display$$m_{a}=\begin{bmatrix}1+m_{a,1,1} & m_{a,1,2} & m_{a,1,3}\\ 
+m_{a,2,1}& 1+m_{a,2,2} & m_{a,2,3}\\ 
+m_{a,3,1} & m_{a,3,2} & 1+m_{a,3,3}
+\end{bmatrix},$$display$$ где элементы, расположенные по главной диагонали ($inline$ 1+m_{a,1,1}, 1+m_{a,2,2}, 1+m_{a,3,3}$inline$) - это масштабные коэффициенты и их погрешности по трём осям акселерометра, а остальные элементы матрицы - перекосы осей акселерометра.
+
+<spoiler title="Выбор параметров акселерометра из даташита ">
+
+<h3>Акселерометр MPU-9250:</h3>
+<ul>
+	<li>Смещение нуля акселерометра - Zero-G Initial Calibration Tolerance ($inline$\pm60mg$inline$ для компонент $inline$X, Y$inline$, $inline$\pm80mg$inline$ для компоненты $inline$Z$inline$) - для расчётов переводим в единицы $inline$g$inline$ домножив на $inline$10^{-3};$inline$</li>
+        <li>Погрешность масштабного коэффициента - Initial Tolerance ($inline$\pm3\%$inline$) - выражается в процентах. Для расчётов надо перевести в разы, домножив на $inline$10^{-2};$inline$</li>
+        <li>Перекосы осей - Cross Axis Sensitivity ($inline$\pm2\%$inline$) - также умножаем на $inline$10^{-2};$inline$</li>
+        <li>Спектральная плотность мощности шума акселерометра - Noise Power Spectral Density $inline$\left (300\frac{\mu g}{\sqrt{Hz}}  \right )$inline$ -  переводим числитель в $inline$g$inline$ домножая все на $inline$10^{-6};$inline$</li>
+<li>Полоса пропускания - Low Pass Filter Response $inline$\left (5-260 Hz\right )$inline$  - приведены границы, в пределах которых её можно изменять. Установим максимальную полосу. Все равно ошибки будут определяться не шумами;</li></ul>
+Зная спектральную плотность мощности шума и полосу пропускания датчика можно рассчитать СКО шума на выходе датчика:
+$$display$$\sigma _{noise}=G_{0}\cdot\sqrt{\Pi_{noise}};$$display$$
+<h3>Акселерометр ADIS16488A:</h3>
+<ul>
+       <li> Смещение нуля - Bias Repeatability ($inline$\pm 16mg$inline$)  - переводим в $inline$g$inline$ домножая на $inline$10^{-3};$inline$</li>
+       <li> Погрешность масштабного коэффициента - (Sensitivity) Repeatability ($inline$\pm 0.5\%$inline$) - переводим из процентов в разы;</li>
+       <li> Перекосы осей - Misalignment Axis to frame  ($inline$\pm1^{\circ}$inline$) - в градусах, переводим в разы (радианы, поскольку величины малые);</li>
+       <li> Спектральная плотность мощности шума - Noise Density $inline$\left ( 0.063\frac{mg}{\sqrt{Hz}}rms  \right )$inline$ - переводим числитель в $inline$g;$inline$</li>
+       <li> Полоса пропускания - $inline$\left (3dB Bandwidth\right)$inline$ - выберем такой же, как у MPU-9250;</li>
+</ul>
+</spoiler>
+<h3>Магнитометр</h3>Датчик, который измеряет проекцию индукции магнитного поля на ось чувствительности. Магнитометру свойственны искажения hard-iron и soft-iron. Hard-iron искажение - это аддитивный эффект, когда к измеряемому полю добавляется постоянная составляющая. Причиной может быть, например, действие постоянного магнита или собственное смещение нуля датчика. Искажение soft-iron - мультипликативный эффект, отражающий изменение направления и/или ослабление вектора магнитной индукции. Этот эффект может быть вызван наличием металлического предмета в непосредственной близости от магнитометра или же собственными искажениями датчика - погрешностью масштабного коэффициента или перекосом его оси чувствительности.
+Примем модель измерений триады магнитометров:
+$$display$$m_{XYZ}=S_{m}\cdot M_{XYZ}+b_{m}+n_{m},$$display$$ где $inline$m_{XYZ}$inline$ – измерения магнитометра в ССК XYZ, $inline$S_{m}$inline$ – диагональная матрица перекоса осей и масштабных коэффициентов (которая описывает эффект soft–iron), $inline$M_{XYZ}$inline$ – вектор истинной магнитной индукции в ССК, $inline$b_{m}$inline$ – смещение нулей магнитометра (описывает эффект hard–iron), $inline$n_{m}$inline$ – шум измерений.
+Матрица перекоса осей и масштабных коэффициентов магнитометра:
+$$display$$S_{m}=\begin{bmatrix}1+S_{m,1,1} & S_{m,1,2} &S_{m,1,3}\\ 
+S_{m,2,1}& 1+S_{m,2,2} & S_{m,2,3}\\ 
+S_{m,3,1} & S_{m,3,2}&1+ S_{m,3,3}
+\end{bmatrix},$$display$$элементы, расположенные на главной диагонали ($inline$S_{m,1,1}, S_{m,2,2}, S_{m,3,3}$inline$) - масштабные коэффициенты и их погрешности по трём осям магнитометра, остальные элементы матрицы - перекосы осей магнитометра. Все элементы матрицы также учитывают эффект soft-iron.
+<spoiler title="Выбор параметров магнитометра из даташита">
+<h3>Магнитометр MPU-9250:</h3>
+В даташите нужных нам параметров нет, поэтому предположим, что магнитометр откалиброван и возьмем следующие числа:
+<ul>
+	<li> смещение нуля - $inline$(1\mu T);$inline$</li>
+    <li> погрешность масштабных коэффициентов - $inline$(5\%);$inline$</li>
+    <li> перекосы осей - предположим, что они такие же, как у акселерометров - $inline$(\pm2\%);$inline$</li>
+    <li> шум на выходе  - $inline$(0.6\mu T);$inline$</li>
+</ul>
+<h3>Магнитометр ADIS16488A:</h3>
+<ul>
+       <li>Смещение нуля - Initial Bias  Error $inline$\left (\pm15 mgauss = 1.5 \mu T \right )$inline$ - будем считать, что мы его откалибровали до $inline$(0.5 \mu T)$inline$;</li>
+       <li> Погрешность масштабного коэффициента - Initial Sensitivity Tolerance $inline$\left (2\% \right );$inline$</li>
+       <li>Перекосы осей - Misalignment Axis to axis $inline$\left (0.35^{\circ} \right )$inline$ - в градусах, переводим в разы (радианы, так как величина маленькая);</li>
+       <li> Спектральная плотность мощности шума - Noise Density $inline$\left (0.042\frac{mgauss}{\sqrt{Hz}} \right )$inline$ - переводим в $inline$\left (\frac{Tesla}{\sqrt{Hz}}  \right );$inline$</li> 
+      <li> Полоса пропускания - возьмем для модели значение  $inline$260 Hz;$inline$</li> 
+</ul>
+</spoiler>
+<h3>Расчет углов ориентации</h3>Благодаря наличию на Земле силы тяжести, акселерометры "чувствуют" направление вниз. Их измерения используются для расчета углов крена и тангажа. Формулы для расчёта можно найти <a href="https://www.nxp.com/docs/en/application-note/AN3461.pdf"> тут</a>. Третий - угол рыскания (а в данном случае - магнитного азимута), может быть определен благодаря наличию у Земли магнитного поля. Вектор индукции магнитного поля измеряется магнитометрами и их измерения участвуют в расчете угла рыскания. Нужно отметить, что в расчёте магнитного азимута используются измерения магнитометра, пересчитанные в плоскость. <a href="https://www.nxp.com/docs/en/application-note/AN4248.pdf">Здесь</a> можно найти формулу для расчёта магнитного азимута.
+$$display$$roll=atan\left ( \frac{a_{Y}}{a_{Z}} \right ),$$display$$ $$display$$pitch=atan\left ( \frac{-a_{X}}{\sqrt{a_{Y}^{2}+a_{Z}^{2}}} \right ),$$display$$ $$display$$yaw=atan2\left ( \frac{m_{E}}{m_{N}} \right ),$$display$$ где $inline$atan2$inline$ - функция полного арктангенса, $inline$a_{X}$inline$, $inline$a_{Y}$inline$, $inline$a_{Z}$inline$ - измерения акселерометра по трём осям в ССК, $inline$m_{E}$inline$, $inline$m_{N}$inline$ - измерения магнитометра по осям X', Y' (измерения магнитометров пересчитаны в плоскость). 
+
+<h2>2. Ошибки оценивания углов ориентации</h2> <h3>Описание алгоритма</h3>
+<img src="habrastorage.org/webt/o9/o8/zs/o9o8zsy01wyfkjho_8f0ip-lstk.jpeg"/>
+<ul>
+<li>Сформируем массивы случайных углов Эйлера roll, pitch, yaw. Они будут задавать наборы вариантов истинной ориентации объекта в модели.<spoiler title="Зачем много углов?">Потому что ошибки зависят от значения углов ориентации, и если мы хотим получить представление об их величине во всем диапазоне изменения - то это самый простой способ.</spoiler></li>
+<li> Из случайных углов roll, pitch, yaw формируется матрица преобразования из ССК XYZ в ЛСК ENU:
+$$display$$C_{XYZ}^{ENU}=\begin{vmatrix}
+cy\cdot cp &-cr\cdot sy+sr\cdot cy\cdot sp &sr\cdot sy+cr\cdot cy\cdot sp \\ 
+	sy\cdot cp &cr\cdot cy+sr\cdot sy\cdot sp & -sr\cdot cy+cr\cdot sy\cdot sp \\ 
+	-sp &sr\cdot cp &cr\cdot cp 
+	\end{vmatrix},$$display$$  где $inline$cr=\cos (roll)$inline$, $inline$sr=\sin(roll)$inline$, $inline$cp=\cos(pitch)$inline$, $inline$sp=\sin(pitch)$inline$, $inline$cy=\cos(yaw)$inline$, $inline$sy=\sin(yaw)$inline$.</li>
+<li>Используя данную матрицу можно получить выражение для истинных ускорений в ССК:
+	$$display$$A_{XYZ}=\left ( C_{XYZ}^{ENU} \right )^{T}\cdot \begin{vmatrix}
+	0\\ 
+	0\\
+	-1\\
+	\end{vmatrix},$$display$$
+	$inline$\begin{vmatrix}
+	0\\ 
+	0\\ 
+	-1\\
+	\end{vmatrix}$inline$ - вектор, определяющий направление гравитационного ускорения, выраженный в единицах g, $inline${(C_{XYZ}^{ENU} )}^{T}$inline$- матрица преобразования координат из ЛСК в ССК (обратная матрице преобразования из ССК в ЛСК). </li>
+<li>Применяем модель измерения акселерометра:$$display$$a_{XYZ}=\left ( I+m_{a} \right )\cdot A_{XYZ}+b_{a}+n_{a},$$display$$</li>
+<li>По измерениям акселерометра рассчитываются новые углы крена и тангажа (оценки) по формулам:
+	$$display$$roll'=atan \left ( \frac{a_{Y}}{a_{Z}} \right ),$$display$$ $$display$$pitch'=atan\left ( \frac{-a_{X}}{\sqrt{a_{Y}^{2}+a_{Z}^{2}}} \right ).$$display$$</li>
+<li>Также необходимо сформировать матрицу пересчета в "горизонт" из этих углов, для этого воспользуемся функцией <b>rpy2mat</b>:$$display$$C_{XYZ}^{XYZ'}=rpy2mat\left ( \begin{bmatrix}
+roll'\\ 
+pitch'\\ 
+0
+\end{bmatrix}^{T} \right ),$$display$$ где углы roll' и pitch' - это углы, рассчитанные по измерениям акселерометра, а третий угол - нулевой.</li>
+<li>Возьмем вектор истинных магнитных плотностей в ЛСК ENU и пересчитаем его в ССК XYZ:$$display$$M_{XYZ}= {(C_{XYZ}^{ENU} )}^{T}\cdot M_{ENU}.$$display$$   </li>
+<li>Применяем модель измерений магнитометра:$$display$$m_{XYZ}=S_{m}\cdot M_{XYZ}+b_{m}+n_{m}.$$display$$</li>
+<li>Осталось пересчитать измерения магнитометра из ССК в "горизонт":$$display$$m_{XYZ'}=C_{XYZ}^{XYZ'}\cdot m_{XYZ}.$$display$$</li>
+<li>По "горизонтированным" измерениям магнитометра расcчитывается угол магнитного азимута:$$display$$yaw'=atan2\left ( \frac{m_{Y'}}{m_{X'}} \right ).$$display$$ </li>
+<li>Ошибки оценивания углов ориентации рассчитываются как разность между истинными углами roll, pitch, yaw и рассчитанными по измерениям датчиков - roll', pitch', yaw'.</li>
+</ul>
+
+<h2>3. Результаты - расчет погрешостей оценки углов</h2> 
+Для двух датчиков, которые мы взяли для примера - ADIS16488A и MPU-9250, получены предельные ошибки оценивания углов ориентации при совместном влиянии погрешностей акселерометра и магнитометра.
+В таблице ниже - максимальные значения полученных ошибок:
+<table>
+    <tr>
+        <td><b>Угол</b></td>
+        <td> <b>MPU-9250</b></td>
+        <td><b>ADIS16488A</b></td>
+    </tr>
+    <tr>
+        <td>Крен</td>
+        <td>$$display$$30^{\circ}$$display$$</td>
+        <td>$$display$$8^{\circ}$$display$$</td>
+    </tr>
+    <tr>
+        <td>Тангаж</td>
+        <td>$$display$$10^{\circ}$$display$$</td>
+        <td>$$display$$2^{\circ}$$display$$</td>
+    </tr>
+    <tr>
+        <td>Магнитный азимут</td>
+        <td>$$display$$30^{\circ}$$display$$</td>
+        <td>$$display$$20^{\circ}$$display$$</td>
+    </tr>
+</table>
+<b>Совместное влияние погрешностей акселерометра и магнитометра на ошибки оценивания углов ориентации:</b>
+<ul>
+<li> Вот так выглядят ошибки оценивания крена в зависимости от значений крена и тангажа:
+<a target='_blank' href='https://habrastorage.org/webt/8h/zt/i_/8hzti_e87qh5fpi0n33blb1mofg.jpeg'><img src="https://habrastorage.org/webt/8h/zt/i_/8hzti_e87qh5fpi0n33blb1mofg.jpeg" /></a></li>
+
+<li> Ошибки оценивания тангажа в зависимости от значений крена и тангажа:
+<a target='_blank' href='https://habrastorage.org/webt/8-/se/jj/8-sejjpgdcnjb6av8i0_84uejxe.jpeg'><img src="https://habrastorage.org/webt/8-/se/jj/8-sejjpgdcnjb6av8i0_84uejxe.jpeg" /></a></li>
+
+<li>Ошибки оценивания магнитного азимута от углов крена и тангажа:
+<a target='_blank' href=https://habrastorage.org/webt/sa/gz/mo/sagzmoutcde7rcylwyflszcqrkc.jpeg''><img src="https://habrastorage.org/webt/sa/gz/mo/sagzmoutcde7rcylwyflszcqrkc.jpeg" /></a></li>
+
+<li>Ошибки оценивания магнитного азимута от углов крена и магнитного азимута:
+<a target='_blank' href='https://habrastorage.org/webt/7z/1z/1l/7z1z1lwzpbjo3gx40g9wv6ghhey.jpeg'><img src="https://habrastorage.org/webt/7z/1z/1l/7z1z1lwzpbjo3gx40g9wv6ghhey.jpeg" /></a></li>
+
+<li>Ошибки оценивания магнитного азимута от углов тангажа и магнитного азимута:
+<a target='_blank' href='https://habrastorage.org/webt/y5/vw/lf/y5vwlfpjztzubfrm73mp_7_mna8.jpeg'><img src="https://habrastorage.org/webt/y5/vw/lf/y5vwlfpjztzubfrm73mp_7_mna8.jpeg" /></a></li>
+</ul>
+
+<spoiler title="Как можно заметить - величина ошибок растёт с приближением к границе диапазонов измерений углов. 
+Почему? ">
+Это можно понять из рисунка ниже.
+<img src="https://habrastorage.org/webt/vq/_1/w7/vq_1w73b1prfynf7lx6yaoyl-du.png" />
 Допустим мы поворачиваем ось чувствительности Z (z1->z2) акселерометра так, чтобы проекция силы тяжести на эту ось стала меньше (g'->g"). Значение проекции силы тяжести плюс погрешность акселерометра дадут область возможных значений измерения (розовая область). Погрешность оценки угла при этом возрастает ($inline$\Delta _{1}$inline$->$inline$\Delta _{2}$inline$). Таким образом, при уменьшении проекции вектора силы тяжести на ось чувствительности ошибка акселерометра начинает вносить бОльшую ошибку в оценку угла.
 </spoiler>
 <spoiler title="Поиграем с входными параметрами чтобы понять чем определяются ошибки">
