@@ -8,17 +8,15 @@ Accept the following conditions:
 The orientation of the mobile device simply cannot be calculated using formulas and you'll have to use tricky algorithms. </spoiler> </li>
 <li> We will use MEMS measurements of accelerometers and magnetometers to estimate angles. </li></ul>
 
-<i> Bit of theory </i>
-<h2> Orientation angles </h2>
+<h2>1. Bit of theory </h2><h3> Orientation angles </h3>
 <img src = "https://habrastorage.org/webt/0h/za/ze/0hzazeqlyderpj80nirkuuwustg.png" />
+
 We will understand the orientation angles as the Euler Angles - Roll, Pitch and Yaw. They connect the body frame coordinate system XYZ and the local coordinate system East-North-Up (ENU). The Roll, Pitch and Yaw angles denote the rotation that the XYZ axes must make in order to move in the ENU axis. Accordingly, zero angles means that the X axis of the object is oriented to the east, the Y axis of the object is oriented to the north, the Z axis is oriented up. The rotation order of the axes is from the last corner: first on Yaw (around Z axis), then on Pitch (around  Y axis) and then on Roll (around  X axis).
 
-<h2> Accelerometer </h2> This sensor measures the projection of apparent acceleration onto the sensitivity axis. It's apparent acceleration because the accelerometer measures gravity too even while the sensor is stationary. You can imagine the accelerometer as the weight on a spring. Its measured values are proportional to the degree of tention of the spring. If the accelerometer is stationary the spring is stretched only by gravity. If the accelerometer is in a dynamic state then there'll be a sum of forces: inertia of the weight $inline$\left(F=m\overrightarrow{a}\right) $inline$ and gravity $inline$ \left (F_{g}=m\overrightarrow{g}\right) $inline$.
+<h3> Accelerometer </h3> This sensor measures the projection of apparent acceleration onto the sensitivity axis. It's apparent acceleration because the accelerometer measures gravity too even while the sensor is stationary. You can imagine the accelerometer as the weight on a spring. Its measured values are proportional to the degree of tention of the spring. If the accelerometer is stationary the spring is stretched only by gravity. If the accelerometer is in a dynamic state then there'll be a sum of forces: inertia of the weight $inline$\left(F=m\overrightarrow{a}\right) $inline$ and gravity $inline$ \left (F_{g}=m\overrightarrow{g}\right) $inline$.
 
 We accept the following model of measurements of the triad of orthogonal (mutually perpendicular) accelerometers:
 $$display$$ a_{XYZ} = m_{a}\cdot A_{XYZ} + b_{a} + n_{a}, $$display$$ where $inline$ a_{XYZ} $inline$ is the measured acceleration in body frame coordinate system XYZ, $inline$ m_{a} $inline$ is the matrix of axes misalignment and scale factors of the accelerometer, $inline$ A_{XYZ} $inline$ is the true acceleration vector in body frame coordinate system XYZ, $inline$ b_{a} $inline$ is the accelerometer zero displacement vector, $inline$ n_{a} $inline$ is the measurement noise.
-
-<i> More about the matrix of the axis misalignment and scale factors</i>
 The matrix of the axes misalignment and scale factors is:
 $$display$$ m_{a} =\begin{bmatrix} 1 + m_{a, 1,1} & m_{a, 1,2} & m_{a, 1,3} \\
 m_{a, 2,1} & 1 + m_{a, 2,2} & m_{a, 2,3} \\
@@ -31,10 +29,9 @@ m_{a, 3,1} & m_{a, 3,2} & 1 + m_{a, 3,3}
         <li> The error of the scale factor - Initial Tolerance ($inline$ \pm3\% $inline$) - is expressed as a percentage. For calculations you need to convert to times multiplying by $inline$ 10^{-2};$inline$ </li>
         <li> Axis misalignment - Cross Axis Sensitivity ($inline$ \pm2\%$inline$) - also convert to times multiplying by $inline$ 10^{-2}; $inline$ </li>
         <li> Accelerometer noise power spectral density - Noise Power Spectral Density $inline$ \left (300\frac{\mu g} {\sqrt{Hz}}\right) $inline$ - convert the numerator to $inline$ g $inline$ multiplying everything by $inline$10^{- 6};$inline$ </li>
-<li> Bandwidth - Low Pass Filter Response $inline$ \left (5-260 Hz\right) $inline$ - shows the boundaries within which it can be changed. Set the maximum band. Anyway errors won't be determined by noise; </li> 
+<li> Bandwidth - Low Pass Filter Response $inline$ \left (5-260 Hz\right) $inline$ - shows the boundaries within which it can be changed. Set the maximum band. Anyway errors won't be determined by noise; </li> </ul>
 When you know spectral density of the noise power and the passband of the sensor you can calculate the standard deviation of the noise at the output of the sensor:
 $$display$$ \sigma _ {noise}=G_{0} \cdot \sqrt{\Pi_{noise}}; $$display$$
-</ul>
 
 <h3> Accelerometer ADIS16488A: </h3>
 <ul>
@@ -42,13 +39,12 @@ $$display$$ \sigma _ {noise}=G_{0} \cdot \sqrt{\Pi_{noise}}; $$display$$
        <li> Scale factor error - (Sensitivity) Repeatability ($inline$ \pm0.5 \% $inline$) - convert from percent to times; </li>
        <li> Axis misalignment - Misalignment Axis to frame ($inline$ \pm1^{\circ} $inline$) - in degrees, convert to times (or radians because the values are small); </li>
        <li> Noise power spectral density - Noise Density $inline$ \left (0.063\frac{mg}{\sqrt{Hz}}rms\right) $inline$ - convert the numerator to $inline$ g; $inline$ </ li>
-       <li> Bandwidth - $inline$ \left (3dB Bandwidth\right) $inline$ - choose the same as the MPU-9250; </li>
-</ul>
+       <li> Bandwidth - $inline$ \left (3dB Bandwidth\right) $inline$ - choose the same as the MPU-9250; </li></ul>
 </spoiler>
-<h2> Magnetometer </h2> The sensor that measures the projection of the magnetic field induction onto the sensitivity axis. The magnetometer is characterized by distortions of hard-iron and soft-iron. Hard-iron distortion is an additive effect: a constant component is added to the measured field. For example, the reason may be the action of a permanent magnet or a self-zero offset of the sensor. Soft-iron distortion is a multiplier effect: it's reflecting a change in direction and/ or attenuation of the magnetic induction vector. This effect can be caused by the presence of a metal object in the immediate vicinity of the magnetometer or by the sensor’s own distortions - an error in the scale factor or a distortion of its sensitivity axis.
+<h3> Magnetometer </h3> The sensor that measures the projection of the magnetic field induction onto the sensitivity axis. The magnetometer is characterized by distortions of hard-iron and soft-iron. Hard-iron distortion is an additive effect: a constant component is added to the measured field. For example, the reason may be the action of a permanent magnet or a self-zero offset of the sensor. Soft-iron distortion is a multiplier effect: it's reflecting a change in direction and/ or attenuation of the magnetic induction vector. This effect can be caused by the presence of a metal object in the immediate vicinity of the magnetometer or by the sensor’s own distortions - an error in the scale factor or a distortion of its sensitivity axis.
 We accept the measurement model of the triad of magnetometers:
 $$display$$ m_{XYZ} = S_{m} \cdot M_{XYZ} + b_{m} + n_{m}, $$display$$ where $inline$ m_{XYZ} $inline$ is the magnetometer measurements in body frame coordinate system XYZ, $inline$ S_{m} $inline$ is the diagonal matrix of the axis misalignment and scale factors (which describes the soft–iron effect), $inline$ M_{XYZ} $inline$ is the true magnetic induction vector in body frame coordinates, $inline$ b_{m} $inline$ is the displacement of the zeros of the magnetometer (also describes the hard–iron effect), $inline$ n_{m} $inline$ is the measurement noise.
-<i>Matrix of the axis misalignment and scale factors of the magnetometer:</i>
+Matrix of the axis misalignment and scale factors of the magnetometer:
 $$display$$ S_{m} = \begin {bmatrix} 1 + S_{m, 1,1} & S_{m, 1,2} & S_{m, 1,3} \\
 S_{m, 2,1} & 1 + S_{m, 2,2} & S_{m, 2,3} \\
 S_{m, 3,1} & S_{m, 3,2} & 1 + S_{m, 3,3} \end {bmatrix}, $$display$$ 
@@ -71,11 +67,11 @@ There are no parameters that we need in the datasheet. So we supposed that the m
       <li>Bandwidth - we took for the model the value $inline$ 260 Hz; $inline$ </li>
 </ul>
 </spoiler>
-<h2>Orientation angles calculation </h2> Due to the the Earth gravity accelerometers "feel" the direction down. Their measurements are used to calculate roll and pitch angles. <a href="https://www.nxp.com/docs/en/application-note/AN3461.pdf"> Here </a> you'll find the formulas to calculate them. The yaw angle (in this case it's the magnetic azimuth) can be determined due the Earth’s magnetic field. The induction vector of the magnetic field is measured by magnetometers and their measurements are involved in the calculation of the yaw angle.
+<h3>Orientation angles calculation </h3> Due to the the Earth gravity accelerometers "feel" the direction down. Their measurements are used to calculate roll and pitch angles. <a href="https://www.nxp.com/docs/en/application-note/AN3461.pdf"> Here </a> you'll find the formulas to calculate them. The yaw angle (in this case it's the magnetic azimuth) can be determined due the Earth’s magnetic field. The induction vector of the magnetic field is measured by magnetometers and their measurements are involved in the calculation of the yaw angle.
 We should notice that to calculate the magnetic azimuth it's necessary to use the magnetometer measurements calculated in the plane. <a href="https://www.nxp.com/docs/en/application-note/AN4248.pdf"> Here </a> you'll find the formula for calculating the magnetic azimuth.
 $$display$$ roll=atan\left(\frac{a_{Y}}{a_{Z}}\right), $$display$$ $$display$$ pitch=atan\left(\frac{-a_{X}}{\sqrt{a_{Y}^{2} + a_{Z}^{2}}}\right), $$display$$ $$display$$ yaw=atan2\left(\frac{m_{E}}{m_{N}}\right), $$display$$ where $inline$ atan2 $inline$ is the full arctangent function, $inline$ a_{X} $inline$, $inline$ a_{Y} $inline$, $inline$ a_{Z} $inline$ -measurements of the accelerometer along three axes in the body frame coordinate system, $inline$ m_{E} $inline$, $inline$ m_{N} $inline$ - measurements of the magnetometer along the axes X ', Y' (measurements of magnetometers are counted in the plane).
 
-<h2> Errors in estimating orientation angles </h2> <h3> Algorithm description </h3>
+<h2>2. Errors in estimating orientation angles </h2> <h3> Algorithm description </h3>
 <img src="https://habrastorage.org/webt/yp/uw/yk/ypuwykuhlzrm0i8ii3fvy6gbevi.jpeg" />
 <ul>
 <li> We formed arrays of random Euler angles roll, pitch, yaw. They specify sets of options for the true orientation of the object in the model. <Spoiler title = "Why we took so many angles?"> Errors depend on the value of the orientation angles and if we want to get an idea of ​​their magnitude over the entire range of changes then this is the easiest way.</spoiler> </li>
@@ -107,7 +103,7 @@ pitch '\\
 <li> According to the "horizontal" measurements of the magnetometer we calculated the magnetic azimuth: $$display$$ yaw'=atan2\left(\frac{m_{Y'}}{m_{X'}}\right).$$display$$</li>
 <li> Errors of orientation angles estimation calculated as the difference between the true angles of roll, pitch, yaw and calculated from the measurements of the sensors - roll', pitch', yaw'. </li>
 </ul>
-<h2>Results </h2> Here is the results for two sensors which we took as an example - ADIS16488A and MPU-9250.
+<h2>3. Results </h2> Here is the results for two sensors which we took as an example - ADIS16488A and MPU-9250.
 <table>
     <tr>
         <td><b>Angle</b></td>
@@ -148,9 +144,12 @@ The common influence of the accelerometer and magnetometer errors on the errors 
 <a target='_blank' href='https://habrastorage.org/webt/y5/vw/lf/y5vwlfpjztzubfrm73mp_7_mna8.jpeg'><img src="https://habrastorage.org/webt/y5/vw/lf/y5vwlfpjztzubfrm73mp_7_mna8.jpeg" /></a></li>
 </ul>
 
-As you may see - the value of errors increases with approaching the boundary of the ranges of measurements of angles. 
+<spoiler title="As you can see, the magnitude of the errors increases with approaching the boundary of the ranges of measurements of angles. Why?">
+Сonsider the figure below:
 
-
+<img src="https://habrastorage.org/webt/1c/yb/0s/1cyb0sdbvm45nxpgbfnj8polgje.png" />
+Suppose that we rotate the sensitivity axis Z $inline$(z1 \rightarrow z2)$inline$ of the accelerometer so that the projection of gravity on this axis becomes smaller $inline$(g '\rightarrow g ")$inline$. The value of the gravity projection plus the error of the accelerometer will give the range of possible measurement values (pink area). The angle increases $inline$(\Delta _ {1} \rightarrow \Delta _ {2})$inline$. So with a decrease in the projection of the gravity vector on the sensitivity axis the accelerometer error begins to introduce a larger error into the angle estimate.
+</spoiler>
 <spoiler title="Now let's play with the options of the input parameters to understand how the errors are defined:">
 The influence of the accelerometer errors on the errors of estimation of orientation angles:
 <ul>
@@ -197,11 +196,11 @@ The effect of the magnetometer errors on errors of estimating orientation angles
 </ul> </spoiler>
 <h2> Literature </h2>
 <ul>
-<li> Perov A.I., Kharisov V.N. GLONASS. The principles of construction and functioning of M.: Radio Engineering, 2010. - 800 p. </li>
 <li> <a href="https://www.nxp.com/docs/en/application-note/AN3461.pdf"> Tilt Sensing Using a Three-Axis Accelerometer, Rev. 6 - Freescale Semiconductor, Inc. </a> </li>
 <li> <a href="https://www.nxp.com/docs/en/application-note/AN4248.pdf"> Implementing a Tilt-Compensated eCompass using Accelerometer and Magnetometer Sensors - Freescale Semiconductor
 Application Note. </a> </li>
 <li> <a href="https://www.invensense.com/wp-content/uploads/2015/02/PS-MPU-9250A-01-v1.1.pdf"> MPU-9250 Product Specification Revision 1.1 - InvenSense Inc. </a> </li>
 <li> <a href="https://www.analog.com/media/en/technical-documentation/data-sheets/ADIS16488A.pdf"> ADIS16488A Data Sheet - Analog Devices, Inc. </a> </ li>
+<li> Perov A.I., Kharisov V.N. GLONASS. The principles of construction and functioning of M.: Radio Engineering, 2010. - 800 p. </li>
 </ul>
 </spoiler>
