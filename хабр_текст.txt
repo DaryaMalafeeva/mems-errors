@@ -21,16 +21,16 @@ The matrix of the axes misalignment and scale factors is:
 $$display$$ m_{a} =\begin{bmatrix} 1 + m_{a, 1,1} & m_{a, 1,2} & m_{a, 1,3} \\
 m_{a, 2,1} & 1 + m_{a, 2,2} & m_{a, 2,3} \\
 m_{a, 3,1} & m_{a, 3,2} & 1 + m_{a, 3,3}
-\end {bmatrix}, $$display$$ where the elements located on the main diagonal ($inline$ 1 + m_{a, 1,1}, 1 + m_{a, 2,2}, 1 + m_{a, 3,3} $inline$) are scale factors and their errors along the three axes of the accelerometer and the remaining elements of the matrix are axes misalignment of the accelerometer.
+\end {bmatrix}, $$display$$ where the elements located on the main diagonal ($inline$ 1 + m_{a, 1,1}, 1 + m_{a, 2,2}, 1 + m_{a, 3,3} $inline$) are scale factors and their errors along three axes of the accelerometer and the remaining elements of the matrix are axes misalignment of the accelerometer.
 <spoiler title = "Selecting accelerometer parameters from the datasheet">
 <h3> Accelerometer MPU-9250: </h3>
 <ul>
 <li> Accelerometer Zero Offset - Zero-G Initial Calibration Tolerance ($inline$ \pm 60 mg $inline$ for $inline$ X, Y $inline$, $inline$ \pm 80 mg $inline$ for $inline$ Z $inline$) - for calculations translate into units $inline$ g $inline$ multiplying by $inline$ 10^{-3}; $inline$</li>
-        <li> The error of the scale factor - Initial Tolerance ($inline$ \pm3\% $inline$) - is expressed as a percentage. For calculations you need to convert to times multiplying by $inline$ 10^{-2};$inline$ </li>
-        <li> Axis misalignment - Cross Axis Sensitivity ($inline$ \pm2\%$inline$) - also convert to times multiplying by $inline$ 10^{-2}; $inline$ </li>
+        <li> The error of the scale factor - Initial Tolerance ($inline$ \pm3\% $inline$) - is expressed as a percentage. For calculations you need to convert it to times multiplying by $inline$ 10^{-2};$inline$ </li>
+        <li> Axis misalignment - Cross Axis Sensitivity ($inline$ \pm2\%$inline$) - convert to times multiplying by $inline$ 10^{-2}; $inline$ </li>
         <li> Accelerometer noise power spectral density - Noise Power Spectral Density $inline$ \left (300\frac{\mu g} {\sqrt{Hz}}\right) $inline$ - convert the numerator to $inline$ g $inline$ multiplying everything by $inline$10^{- 6};$inline$ </li>
-<li> Bandwidth - Low Pass Filter Response $inline$ \left (5-260 Hz\right) $inline$ - shows the boundaries within which it can be changed. Set the maximum band. Anyway errors won't be determined by noise; </li> </ul>
-When you know spectral density of the noise power and the passband of the sensor you can calculate the standard deviation of the noise at the output of the sensor:
+<li> Bandwidth - Low Pass Filter Response $inline$ \left (5-260 Hz\right) $inline$ - shows the boundaries within which it can be changed. We use the maximum band. Anyway errors won't be determined by noise; </li> </ul>
+When you know spectral density of the noise power and the passband of the sensor you can calculate the standard deviation of the output noise:
 $$display$$ \sigma _ {noise}=G_{0} \cdot \sqrt{\Pi_{noise}}; $$display$$
 
 <h3> Accelerometer ADIS16488A: </h3>
@@ -51,7 +51,7 @@ S_{m, 3,1} & S_{m, 3,2} & 1 + S_{m, 3,3} \end {bmatrix}, $$display$$
 elements located on the main diagonal ($inline$ S_{m, 1,1}, S_{m, 2,2}, S_{m, 3,3} $inline$) are the scale factors and their errors along the three axes of the magnetometer, the remaining elements of the matrix are distortions of the axes of the magnetometer. All the elements also include the effect of soft-iron.
 <spoiler title = "Selecting magnetometer parameters from a datasheet">
 <h3> MPU-9250 Magnetometer:</h3>
-There are no parameters that we need in the datasheet. So we supposed that the magnetometer is calibrated and took the following numbers:
+There are no required parameters in the datasheet. So we supposed that the magnetometer is calibrated and took the following numbers:
 <ul>
 <li> Zero offset - $inline$ (1 \mu T); $inline$</li>
     <li>Scale factors error - $inline$ (5 \%); $inline$</li>
@@ -69,13 +69,13 @@ There are no parameters that we need in the datasheet. So we supposed that the m
 </spoiler>
 <h3>Orientation angles calculation </h3> Due to the the Earth gravity accelerometers "feel" the direction down. Their measurements are used to calculate roll and pitch angles. <a href="https://www.nxp.com/docs/en/application-note/AN3461.pdf"> Here </a> you'll find the formulas to calculate them. The yaw angle (in this case it's the magnetic azimuth) can be determined due the Earth’s magnetic field. The induction vector of the magnetic field is measured by magnetometers and their measurements are involved in the calculation of the yaw angle.
 We should notice that to calculate the magnetic azimuth it's necessary to use the magnetometer measurements calculated in the plane. <a href="https://www.nxp.com/docs/en/application-note/AN4248.pdf"> Here </a> you'll find the formula for calculating the magnetic azimuth.
-$$display$$ roll=atan\left(\frac{a_{Y}}{a_{Z}}\right), $$display$$ $$display$$ pitch=atan\left(\frac{-a_{X}}{\sqrt{a_{Y}^{2} + a_{Z}^{2}}}\right), $$display$$ $$display$$ yaw=atan2\left(\frac{m_{E}}{m_{N}}\right), $$display$$ where $inline$ atan2 $inline$ is the full arctangent function, $inline$ a_{X} $inline$, $inline$ a_{Y} $inline$, $inline$ a_{Z} $inline$ -measurements of the accelerometer along three axes in the body frame coordinate system, $inline$ m_{E} $inline$, $inline$ m_{N} $inline$ - measurements of the magnetometer along the axes X ', Y' (measurements of magnetometers are counted in the plane).
+$$display$$ roll=atan\left(\frac{a_{Y}}{a_{Z}}\right), $$display$$ $$display$$ pitch=atan\left(\frac{-a_{X}}{\sqrt{a_{Y}^{2} + a_{Z}^{2}}}\right), $$display$$ $$display$$ yaw=atan2\left(\frac{m_{E}}{m_{N}}\right), $$display$$ where $inline$ atan2 $inline$ is the full arctangent function, $inline$ a_{X} $inline$, $inline$ a_{Y} $inline$, $inline$ a_{Z} $inline$ - measurements of the accelerometer along three axes in the body frame coordinates, $inline$ m_{E} $inline$, $inline$ m_{N} $inline$ - measurements of the magnetometer along the axes X ', Y' (measurements of magnetometers are counted in the plane).
 
 <h2>2. Errors in estimating orientation angles </h2> <h3> Algorithm description </h3>
 <img src="https://habrastorage.org/webt/yp/uw/yk/ypuwykuhlzrm0i8ii3fvy6gbevi.jpeg" />
 <ul>
-<li> We formed arrays of random Euler angles roll, pitch, yaw. They specify sets of options for the true orientation of the object in the model. <Spoiler title = "Why we took so many angles?"> Errors depend on the value of the orientation angles and if we want to get an idea of ​​their magnitude over the entire range of changes then this is the easiest way.</spoiler> </li>
-<li>By using the random angles we formed transformation matrix from body frame coordinate system to the local coordinate system: $$display$$ C_{XYZ}^{ENU}=\begin{vmatrix}cy\cdot cp& -cr\cdot sy + sr\cdot cy\cdot sp & sr\cdot sy + cr\cdot cy\cdot sp\\
+<li> We formed arrays of random Euler angles roll, pitch, yaw. They specify sets of options for the true orientation of the object in the model. <Spoiler title = "Why do we use so many angles?"> Errors depend on the value of the orientation angles and if we want to get an idea of ​​their magnitude over the entire range of changes then this is the easiest way.</spoiler> </li>
+<li>By using the random angles we formed transformation matrix from body frame coordinates to the local coordinate system: $$display$$ C_{XYZ}^{ENU}=\begin{vmatrix}cy\cdot cp& -cr\cdot sy + sr\cdot cy\cdot sp & sr\cdot sy + cr\cdot cy\cdot sp\\
 sy\cdot cp & cr\cdot cy + sr\cdot sy\cdot sp & -sr\cdot cy + cr\cdot sy\cdot sp\\
 -sp & sr\cdot cp & cr\cdot cp \end{vmatrix}, $$display$$ where $inline$ cr = \cos(roll)$inline$, $inline$ sr = \sin(roll) $inline$, $inline$ cp = \cos (pitch) $inline$, $inline$ sp = \sin(pitch) $inline$, $inline$ cy = \cos(yaw) $inline$, $inline$ sy = \sin(yaw) $inline$. </li>
 <li> Using this matrix we got an expression for true accelerations in body frame coordinate system:
@@ -88,18 +88,18 @@ $inline$ \begin {vmatrix}
 0 \\
 0 \\
 -1\\
-\end {vmatrix} $inline$ is the vector that determines the direction of gravitational acceleration expressed in units of g, $inline$ {(C_{XYZ}^{ENU})}^{T} $inline$ is the coordinate transformation matrix from the local coordinate system to the body frame coordinate system (the inverse of the transformation matrix from the body frame coordinate system to the local coordinate system).</li>
-<li> Accelerometer measurement model that we used: $$display$$ a_{XYZ}=\left (I + m_{a}\right)\cdot A_{XYZ} + b_{a} + n_{a}, $$display$$</li>
+\end {vmatrix} $inline$ is the vector that determines the direction of gravitational acceleration expressed in units of g, $inline$ {(C_{XYZ}^{ENU})}^{T} $inline$ is the coordinate transformation matrix from the local coordinate system to the body frame coordinates (the inverse of the transformation matrix from the body frame coordinates to the local coordinate system).</li>
+<li> Accelerometer measurement model: $$display$$ a_{XYZ}=\left (I + m_{a}\right)\cdot A_{XYZ} + b_{a} + n_{a}, $$display$$</li>
 <li> According to the accelerometer measurements new roll and pitch angles (estimates) calculated using the formulas:
 $$display$$ roll'=atan\left(\frac{a_{Y}}{a_{Z}}\right), $$display$$ $$display$$ pitch'=atan\left(\frac {-a_{X}}{\sqrt{a_{Y}^{2} + a_{Z}^{2}}}\right).$$display$$ </li>
-<li> It's also necessary to form a matrix of conversion to the "horizon" from these angles. We used the function <b>rpy2mat</b>: $$display$$ C_{XYZ}^{XYZ'}=rpy2mat\left(\begin{bmatrix}
+<li> It's also necessary to form a matrix of conversion to the "horizon" from these angles. We used MATLAB function <b>rpy2mat</b>: $$display$$ C_{XYZ}^{XYZ'}=rpy2mat\left(\begin{bmatrix}
 roll '\\
 pitch '\\
 0
 \end{bmatrix}^{T}\right), $$display$$ where the roll and pitch angles are the angles calculated from the accelerometer measurements and the third angle is zero.</li>
-<li> Then we took the vector of true magnetic induction in the local coordinate system ENU and recalculated it in the body frame coordinate system XYZ: $$display$$ M_{XYZ}={(C_{XYZ}^{ENU})}^{T}\cdot M_{ENU}.$$display$$</li>
-<li> We used the following magnetometer measurement model: $$display$$ m_{XYZ}=S_{m}\cdot M_{XYZ} + b_{m} + n_{m}. $$display$$</li>
-<li> Recalculated the magnetometer measurements from the body frame coordinates to the "horizon": $$display$$ m_{XYZ'} = C_{XYZ}^{XYZ'}\cdot m_{XYZ}.$$display$$</li>
+<li> Then we took the vector of true magnetic induction in the local coordinate system ENU and recalculated it in the body frame coordinates XYZ: $$display$$ M_{XYZ}={(C_{XYZ}^{ENU})}^{T}\cdot M_{ENU}.$$display$$</li>
+<li> Magnetometer measurement model: $$display$$ m_{XYZ}=S_{m}\cdot M_{XYZ} + b_{m} + n_{m}. $$display$$</li>
+<li> Then we recalculated the magnetometer measurements from the body frame coordinates to the "horizon": $$display$$ m_{XYZ'} = C_{XYZ}^{XYZ'}\cdot m_{XYZ}.$$display$$</li>
 <li> According to the "horizontal" measurements of the magnetometer we calculated the magnetic azimuth: $$display$$ yaw'=atan2\left(\frac{m_{Y'}}{m_{X'}}\right).$$display$$</li>
 <li> Errors of orientation angles estimation calculated as the difference between the true angles of roll, pitch, yaw and calculated from the measurements of the sensors - roll', pitch', yaw'. </li>
 </ul>
@@ -126,73 +126,73 @@ pitch '\\
         <td>$$display$$20^{\circ}$$display$$</td>
     </tr>
 </table>
-The common influence of the accelerometer and magnetometer errors on the errors of estimation of orientation angles:
+Common influence of the accelerometer and magnetometer errors on the errors of the orientation angles estimation:
 <ul>
-<li> This is how roll estimation errors look depend on the roll and pitch values:
+<li> This is how roll estimation errors depend on the roll and pitch values:
 <a target='_blank' href='https://habrastorage.org/webt/8h/zt/i_/8hzti_e87qh5fpi0n33blb1mofg.jpeg'><img src="https://habrastorage.org/webt/8h/zt/i_/8hzti_e87qh5fpi0n33blb1mofg.jpeg" /></a></li>
 
-<li> Pitch estimation errors depend on roll and pitch values:
+<li> How pitch estimation errors depend on roll and pitch values:
 <a target='_blank' href='https://habrastorage.org/webt/8-/se/jj/8-sejjpgdcnjb6av8i0_84uejxe.jpeg'><img src="https://habrastorage.org/webt/8-/se/jj/8-sejjpgdcnjb6av8i0_84uejxe.jpeg" /></a></li>
 
-<li>Errors of magnetic azimuth estimation depend on roll and pitch angles:
+<li>How errors of magnetic azimuth estimation depend on roll and pitch angles:
 <a target='_blank' href=https://habrastorage.org/webt/sa/gz/mo/sagzmoutcde7rcylwyflszcqrkc.jpeg''><img src="https://habrastorage.org/webt/sa/gz/mo/sagzmoutcde7rcylwyflszcqrkc.jpeg" /></a></li>
 
-<li> Errors of magnetic azimuth estimation depend on roll angles and magnetic azimuth:
+<li>How errors of magnetic azimuth estimation depend on roll and magnetic azimuth angles:
 <a target='_blank' href='https://habrastorage.org/webt/7z/1z/1l/7z1z1lwzpbjo3gx40g9wv6ghhey.jpeg'><img src="https://habrastorage.org/webt/7z/1z/1l/7z1z1lwzpbjo3gx40g9wv6ghhey.jpeg" /></a></li>
 
-<li>Errors of magnetic azimuth estimation depend on pitch angles and magnetic azimuth:
+<li>How errors of magnetic azimuth estimation depend on pitch and magnetic azimuth angles:
 <a target='_blank' href='https://habrastorage.org/webt/y5/vw/lf/y5vwlfpjztzubfrm73mp_7_mna8.jpeg'><img src="https://habrastorage.org/webt/y5/vw/lf/y5vwlfpjztzubfrm73mp_7_mna8.jpeg" /></a></li>
 </ul>
 
-<spoiler title="As you can see, the magnitude of the errors increases with approaching the boundary of the ranges of angles measurements. Why?">
+<spoiler title="As you can see the magnitude of the errors increases with approaching the boundary of the ranges of angles measurements. Why?">
 Сonsider the figure below:
 
 <img src="https://habrastorage.org/webt/1c/yb/0s/1cyb0sdbvm45nxpgbfnj8polgje.png" />
 Suppose that we rotate the sensitivity axis Z $inline$(z1 \rightarrow z2)$inline$ of the accelerometer so that the projection of gravity on this axis becomes smaller $inline$(g '\rightarrow g ")$inline$. The value of the gravity projection plus the error of the accelerometer will give the range of possible measurement values (pink area). The error in estimating the angle increases $inline$(\Delta _ {1} \rightarrow \Delta _ {2})$inline$. So with a decrease in the projection of the gravity vector on the sensitivity axis the accelerometer error begins to introduce a larger error into the angle estimate.
 </spoiler>
 <spoiler title="Now let's play with the options of the input parameters to understand how the errors are defined:">
-The influence of the accelerometer errors on the errors of orientation angles estimation:
+Influence of the accelerometer errors on the errors of orientation angles estimation:
 <ul>
-<li> Effect of accelerometer errors on roll estimation errors from roll and pitch
+<li>Influence of accelerometer errors on roll estimation errors depending on roll and pitch angles
 <a target='_blank' href='https://habrastorage.org/webt/y5/vw/lf/y5vwlfpjztzubfrm73mp_7_mna8.jpeg'><img src="https://habrastorage.org/webt/by/kb/ai/bykbainkdyy_wvsxcfvfuq9dzdy.jpeg" /></a></li>
 
-<li>Effect of accelerometer errors on pitch estimation errors from roll and pitch
+<li>Influence of accelerometer errors on pitch estimation errors depending on roll and pitch angles
 <a target='_blank' href='https://habrastorage.org/webt/wj/tc/_l/wjtc_lxe91pebbeazb2rxwxfs1m.jpeg'><img src="https://habrastorage.org/webt/wj/tc/_l/wjtc_lxe91pebbeazb2rxwxfs1m.jpeg" /></a></li>
 
-<li>Influence of accelerometer errors on errors of magnetic azimuth estimation from roll and pitch angles
+<li>Influence of accelerometer errors on magnetic azimuth estimation errors depending on roll and pitch angles
 <a target='_blank' href='https://habrastorage.org/webt/my/gg/td/myggtdgevpkzsraz_rj5s8pefba.jpeg'><img src="https://habrastorage.org/webt/my/gg/td/myggtdgevpkzsraz_rj5s8pefba.jpeg" /></a></li>
 
-<li>Influence of accelerometer errors on errors of estimation of magnetic azimuth from roll and magnetic azimuth
+<li>Influence of accelerometer errors on magnetic azimuth estimation errors depending on roll and magnetic azimuth angles
 <a target='_blank' href='https://habrastorage.org/webt/ti/_4/ij/ti_4ijkplj_trq3ji5mdvg4ry5m.jpeg'><img src="https://habrastorage.org/webt/ti/_4/ij/ti_4ijkplj_trq3ji5mdvg4ry5m.jpeg" /></a></li>
 
-<li>Effect of accelerometer errors on magnetic azimuth estimation errors from magnetic azimuth pitch
+<li>Influence of accelerometer errors on magnetic azimuth estimation errors depending on magnetic azimuth and pitch angles
 <a target='_blank' href='https://habrastorage.org/webt/ot/mo/dr/otmodr4q7nkky7vta-lli0rym4c.jpeg'><img src="https://habrastorage.org/webt/ot/mo/dr/otmodr4q7nkky7vta-lli0rym4c.jpeg" /></a></li>
 </ul>
 
-The effect of the magnetometer errors on errors of estimating orientation angles:
+Influence of the magnetometer errors on orientation angles estimation errors:
 <ul>
-<li> Effect of magnetometer errors on roll estimation errors from roll and pitch
+<li>Influence of the magnetometer errors on roll estimation errors depending on roll and pitch angles
 <a target='_blank' href='https://habrastorage.org/webt/6t/yl/lp/6tyllphpw0dyad_g2_tladvti98.jpeg'><img src="https://habrastorage.org/webt/6t/yl/lp/6tyllphpw0dyad_g2_tladvti98.jpeg" /></a></li>
 
-<li>Influence of magnetometer errors on pitch estimation errors from roll and pitch
+<li>Influence of magnetometer errors on pitch estimation errors depending on roll and pitch angles
 <a target='_blank' href='https://habrastorage.org/webt/ao/d_/uw/aod_uwzhu6uviujwjpmbdndrcxy.jpeg'><img src="https://habrastorage.org/webt/ao/d_/uw/aod_uwzhu6uviujwjpmbdndrcxy.jpeg" /></a></li>
 
-<li> Influence of magnetometer errors on errors of magnetic azimuth estimation from roll and pitch
+<li> Influence of magnetometer errors on magnetic azimuth estimation errors depending on roll and pitch angles
 <a target='_blank' href='https://habrastorage.org/webt/1b/gk/x4/1bgkx44gsrheco43ljsjbl1a1os.jpeg'><img src="https://habrastorage.org/webt/1b/gk/x4/1bgkx44gsrheco43ljsjbl1a1os.jpeg" /></a></li>
 
-<li>Influence of errors of the magnetometer on errors in estimating the magnetic azimuth from the roll and magnetic azimuth
+<li>Influence of magnetometer errors on magnetic azimuth estimation errors depending on roll and magnetic azimuth angles
 <a target='_blank' href='https://habrastorage.org/webt/uy/-j/kt/uy-jkttvi-otrzcdlnizgr7woti.jpeg'><img src="https://habrastorage.org/webt/uy/-j/kt/uy-jkttvi-otrzcdlnizgr7woti.jpeg" /></a></li>
 
-<li>Influence of errors of the magnetometer on errors in estimating the magnetic azimuth from the pitch and magnetic azimuth
+<li>Influence of magnetometer errors on magnetic azimuth estimation errors depending on pitch and magnetic azimuth angles
 <a target='_blank' href='https://habrastorage.org/webt/sp/87/k1/sp87k1yxi84ueqesuq1zyih6me4.jpeg'><img src="https://habrastorage.org/webt/sp/87/k1/sp87k1yxi84ueqesuq1zyih6me4.jpeg" /></a></li>
 </ul>
 </spoiler> 
 <h2>Summary</h2>
-<ul><li> We developed the model that allows to estimate errors in the calculation of orientation angles from measurements of accelerometers and magnetometers taking into account their errors. </li>
-<li> Errors in estimating orientation angles are functions of dependencies on simultaneously all orientation angles. In this case the maximum values of errors are observed at the boundaries of the selected ranges of measurements of angles. </li> </ul>
+<ul><li> We have developed the MATLAB model that allows to estimate errors in the calculation of orientation angles from measurements of accelerometers and magnetometers taking into account their errors. </li>
+<li> Errors in estimating orientation angles are the functions of dependencies on simultaneously all orientation angles. In this case the maximum values of errors are observed at the boundaries of the selected ranges of measurements of angles. </li> </ul>
 <spoiler title = "Spoiler - disclaimer:">
 <ul> <li> We don't recommend buying and using these sensors (they are already quite old). </li>
-<li> We don't take into account the influence of non-linearity of measurements, the influence of vibration, instability.  This is only the first approximation to the errors of the sensors and, accordingly, the errors of the angles. </li>
+<li> We don't take into account the influence of non-linearity of measurements, the influence of vibration, instability.  That's only the first approximation to the errors of the sensors and, accordingly, the errors of the angles. </li>
 </ul> </spoiler>
 <h2> Literature </h2>
 <ul>
