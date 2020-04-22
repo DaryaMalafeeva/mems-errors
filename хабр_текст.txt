@@ -74,7 +74,7 @@ $$display$$ roll=atan\left(\frac{a_{Y}}{a_{Z}}\right), $$display$$ $$display$$ p
 <h2>2. Orientation angles estimation errors </h2> <h3> Algorithm description </h3>
 <img src="https://habrastorage.org/webt/yp/uw/yk/ypuwykuhlzrm0i8ii3fvy6gbevi.jpeg" />
 <ul>
-<li> We create an arrays of random Euler angles roll, pitch, yaw. They specify sets of the true orientation of the object in the model. <Spoiler title = "Why do we use so many angles?"> Errors depends on the values of the orientation angles and if we want to get an idea of ​​errors magnitude over the entire range then this is the easiest way.</spoiler> </li>
+<li> We create an arrays of random Euler angles roll, pitch, yaw. They specify sets of the true orientation of the object in the model. <Spoiler title = "Why do we use so many angles?"> Errors depend on the values of the orientation angles and if we want to get an idea of the errors magnitude over the entire range then this is the easiest way.</spoiler> </li>
 <li>Using created angles we evaluate transformation matrixes from body frame to the local coordinate system: $$display$$ C_{XYZ}^{ENU}=\begin{vmatrix}cy\cdot cp& -cr\cdot sy + sr\cdot cy\cdot sp & sr\cdot sy + cr\cdot cy\cdot sp\\
 sy\cdot cp & cr\cdot cy + sr\cdot sy\cdot sp & -sr\cdot cy + cr\cdot sy\cdot sp\\
 -sp & sr\cdot cp & cr\cdot cp \end{vmatrix}, $$display$$ where $inline$ cr = \cos(roll)$inline$, $inline$ sr = \sin(roll) $inline$, $inline$ cp = \cos (pitch) $inline$, $inline$ sp = \sin(pitch) $inline$, $inline$ cy = \cos(yaw) $inline$, $inline$ sy = \sin(yaw) $inline$. </li>
@@ -130,19 +130,19 @@ Note that this results is not a strict verdict. Results depends on supposed cali
 
 <h3>Accelerometers and magnetometers errors influence on the orientation angles estimation errors</h3>
 <ul>
-<li> This is how roll estimation errors depends on the roll and pitch values:
+<li> This is how roll estimation errors depend on the roll and pitch values:
 <a target='_blank' href='https://habrastorage.org/webt/8h/zt/i_/8hzti_e87qh5fpi0n33blb1mofg.jpeg'><img src="https://habrastorage.org/webt/8h/zt/i_/8hzti_e87qh5fpi0n33blb1mofg.jpeg" /></a></li>
 
-<li> How pitch estimation errors depends on roll and pitch values:
+<li> How pitch estimation errors depend on roll and pitch values:
 <a target='_blank' href='https://habrastorage.org/webt/8-/se/jj/8-sejjpgdcnjb6av8i0_84uejxe.jpeg'><img src="https://habrastorage.org/webt/8-/se/jj/8-sejjpgdcnjb6av8i0_84uejxe.jpeg" /></a></li>
 
-<li>How errors of magnetic azimuth estimation depends on roll and pitch angles:
+<li>How errors of magnetic azimuth estimation depend on roll and pitch angles:
 <a target='_blank' href=https://habrastorage.org/webt/sa/gz/mo/sagzmoutcde7rcylwyflszcqrkc.jpeg''><img src="https://habrastorage.org/webt/sa/gz/mo/sagzmoutcde7rcylwyflszcqrkc.jpeg" /></a></li>
 
-<li>How errors of magnetic azimuth estimation depends on roll and magnetic azimuth angles:
+<li>How errors of magnetic azimuth estimation depend on roll and magnetic azimuth angles:
 <a target='_blank' href='https://habrastorage.org/webt/7z/1z/1l/7z1z1lwzpbjo3gx40g9wv6ghhey.jpeg'><img src="https://habrastorage.org/webt/7z/1z/1l/7z1z1lwzpbjo3gx40g9wv6ghhey.jpeg" /></a></li>
 
-<li>How errors of magnetic azimuth estimation depends on pitch and magnetic azimuth angles:
+<li>How errors of magnetic azimuth estimation depend on pitch and magnetic azimuth angles:
 <a target='_blank' href='https://habrastorage.org/webt/y5/vw/lf/y5vwlfpjztzubfrm73mp_7_mna8.jpeg'><img src="https://habrastorage.org/webt/y5/vw/lf/y5vwlfpjztzubfrm73mp_7_mna8.jpeg" /></a></li>
 </ul>
 
