@@ -25,7 +25,7 @@ m_{a, 3,1} & m_{a, 3,2} & 1 + m_{a, 3,3}
 <spoiler title = "Selecting accelerometers parameters from the datasheet">
 <h3> MPU-9250 accelerometers: </h3>
 <ul>
-<li> Accelerometer Zero Offset - Zero-G Initial Calibration Tolerance ($inline$ \pm 60 mg $inline$ for $inline$ X, Y $inline$, $inline$ \pm 80 mg $inline$ for $inline$ Z $inline$) - translate into units $inline$ g $inline$, multiplying it by $inline$ 10^{-3}; $inline$</li>
+<li> Accelerometer Zero Offset - Zero-G Initial Calibration Tolerance ($inline$ \pm 60 mg $inline$ for $inline$ X, Y $inline$, $inline$ \pm 80 mg $inline$ for $inline$ Z $inline$) - translate into units $inline$ g $inline$ multiplying it by $inline$ 10^{-3}; $inline$</li>
         <li> The error of the scale factor - Initial Tolerance ($inline$ \pm3\% $inline$) - is expressed as a percentage. Convert it multiplying by $inline$ 10^{-2};$inline$ </li>
         <li> Axis misalignment - Cross Axis Sensitivity ($inline$ \pm2\%$inline$) - convert it multiplying by $inline$ 10^{-2}; $inline$ </li>
         <li> Accelerometer noise power spectral density - Noise Power Spectral Density $inline$ \left (300\frac{\mu g} {\sqrt{Hz}}\right) $inline$ - convert the numerator to $inline$ g $inline$ multiplying everything by $inline$10^{- 6};$inline$ </li>
@@ -67,7 +67,7 @@ Datasheet does not contain all required parameters. So we supposed that the magn
       <li>Bandwidth - we use for the model the value $inline$ 260 Hz; $inline$ </li>
 </ul>
 </spoiler>
-<h3>Orientation angles calculation </h3> Due to the the Earth gravity accelerometers "sense" the down direction. Their measurements are used to calculate roll and pitch angles. <a href="https://www.nxp.com/docs/en/application-note/AN3461.pdf"> Here </a> you'll find the formulas to calculate them. The yaw angle (in this case it's the magnetic azimuth) can be determined due the Earth’s magnetic field. The induction vector of the magnetic field is measured by magnetometers and their measurements are involved in the calculation of the yaw angle.
+<h3>Orientation angles calculation </h3> Due to the the Earth gravity accelerometers "sense" the down direction. Their measurements are used to calculate roll and pitch angles. <a href="https://www.nxp.com/docs/en/application-note/AN3461.pdf"> Here </a> you'll find the formulas to calculate them. The yaw angle (in this case it's the magnetic azimuth) can be determined due to the Earth’s magnetic field. The induction vector of the magnetic field is measured by magnetometers and their measurements are involved in the calculation of the yaw angle.
 We should notice that to calculate the magnetic azimuth it's necessary to use the magnetometer measurements translated to the horizontal plane. <a href="https://www.nxp.com/docs/en/application-note/AN4248.pdf"> Here </a> you'll find the formula for calculating the magnetic azimuth.
 $$display$$ roll=atan\left(\frac{a_{Y}}{a_{Z}}\right), $$display$$ $$display$$ pitch=atan\left(\frac{-a_{X}}{\sqrt{a_{Y}^{2} + a_{Z}^{2}}}\right), $$display$$ $$display$$ yaw=atan2\left(\frac{m_{E}}{m_{N}}\right), $$display$$ where $inline$ atan2 $inline$ is the full arctangent function, $inline$ a_{X} $inline$, $inline$ a_{Y} $inline$, $inline$ a_{Z} $inline$ - measurements of the accelerometers along three axes in the body frame, $inline$ m_{E} $inline$, $inline$ m_{N} $inline$ - measurements of the magnetometers along the axes X', Y' (measurements of magnetometers are translated to the horizontal plane).
 
@@ -96,7 +96,7 @@ $$display$$ roll'=atan\left(\frac{a_{Y}}{a_{Z}}\right), $$display$$ $$display$$ 
 roll '\\
 pitch '\\
 0
-\end{bmatrix}^{T}\right), $$display$$ where the roll and pitch angles are the angles, calculated from the accelerometer measurements and the third angle is zero.</li>
+\end{bmatrix}^{T}\right), $$display$$ where the roll and pitch angles are the angles calculated from the accelerometer measurements and the third angle is zero.</li>
 <li> Then we took the vector of true magnetic induction in the local coordinate system ENU and translated it to the body frame XYZ: $$display$$ M_{XYZ}={(C_{XYZ}^{ENU})}^{T}\cdot M_{ENU}.$$display$$</li>
 <li> Magnetometers measurements model: $$display$$ m_{XYZ}=S_{m}\cdot M_{XYZ} + b_{m} + n_{m}. $$display$$</li>
 <li> Then we recalculated the magnetometers measurements from the body frame to the "horizon": $$display$$ m_{XYZ'} = C_{XYZ}^{XYZ'}\cdot m_{XYZ}.$$display$$</li>
@@ -150,7 +150,7 @@ Note that this results is not a strict verdict. Results depends on supposed cali
 Сonsider the figure below:
 
 <img src="https://habrastorage.org/webt/1c/yb/0s/1cyb0sdbvm45nxpgbfnj8polgje.png" />
-Suppose that we rotate the sensitivity axis Z $inline$(z1 \rightarrow z2)$inline$ of the accelerometer so that the projection of gravity on this axis becomes smaller $inline$(g '\rightarrow g ")$inline$. The value of the gravity projection plus the error of the accelerometer will give the range of possible measurement values (pink area). Angle estimation error increases $inline$(\Delta _ {1} \rightarrow \Delta _ {2})$inline$. So when gravity vector projection on the sensitivity axis decreases - constant accelerometer error begins to introduce a larger error into the angle estimate.
+Suppose that we rotate the sensitivity axis Z $inline$(z1 \rightarrow z2)$inline$ of the accelerometer so that the projection of gravity on this axis becomes smaller. $inline$(g '\rightarrow g ")$inline$ The value of the gravity projection plus the error of the accelerometer will give the range of possible measurement values (pink area). Angle estimation error increases $inline$(\Delta _ {1} \rightarrow \Delta _ {2})$inline$. So when gravity vector projection on the sensitivity axis decreases - constant accelerometer error begins to introduce a larger error into the angle estimate.
 </spoiler>
 <spoiler title="Now let's play with the input parameters to understand how the errors are defined:">
 Influence of the ONLY accelerometers errors on the errors of orientation angles estimation:
@@ -207,3 +207,7 @@ Application Note. </a> </li>
 <li> Perov A.I., Kharisov V.N. GLONASS. The principles of construction and functioning of M.: Radio Engineering, 2010. - 800 p. </li>
 </ul>
 </spoiler>
+<h2> Authors </h2><ul>
+<li>Nagin, Ilya - @Stormgazer</li>
+<li>Malafeeva, Darya</li></ul>
+Moscow Power Engineering Institute, Dept. of Radio Systems
